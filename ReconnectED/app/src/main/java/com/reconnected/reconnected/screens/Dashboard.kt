@@ -75,7 +75,7 @@ fun DashboardScreen(modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
 
     ModalNavigationDrawer(
-        modifier = Modifier.background(BackgroundColor),
+        modifier = modifier.background(BackgroundColor),
         drawerState = drawerState,
         drawerContent = {
             DrawerContent()
@@ -128,12 +128,12 @@ fun DashboardContent(modifier: Modifier = Modifier) {
                 defaultElevation = 6.dp
             ), colors = CardDefaults.cardColors(
                 containerColor = DashboardCardBackgroundColor,
-            ), modifier = Modifier
+            ), modifier = modifier
                 .fillMaxWidth()
                 .height(125.dp)
         ) {
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -153,27 +153,27 @@ fun DashboardContent(modifier: Modifier = Modifier) {
                         fontSize = 16.sp
                     ),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(vertical = 8.dp),
+                    modifier = modifier.padding(vertical = 8.dp),
                     color = DashboardCardTextColor
                 )
             }
         }
         Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             StatCard(
                 title = "Screen Time Today",
                 value = "3h 15m",
                 icon = Icons.Default.DateRange,
                 color = DashboardStatCardTextColor,
-                modifier = Modifier.weight(1f)  //.requiredHeight(100.dp)
+                modifier = modifier.weight(1f)  //.requiredHeight(100.dp)
             )
             StatCard(
                 title = "Days Active",
                 value = "14 days",
                 icon = Icons.Default.CheckCircle,
                 color = DashboardDaysActiveCardTextColor,
-                modifier = Modifier.weight(1f)  //.requiredHeight(100.dp)
+                modifier = modifier.weight(1f)  //.requiredHeight(100.dp)
             )
         }
     }
@@ -190,8 +190,7 @@ fun DashboardContent(modifier: Modifier = Modifier) {
  */
 @Composable
 fun StatCard(
-    title: String, value: String, icon: ImageVector, color: Color,
-    modifier: Modifier = Modifier
+    title: String, value: String, icon: ImageVector, color: Color, modifier: Modifier = Modifier
 ) {
     ElevatedCard(
         modifier = modifier,
@@ -201,10 +200,10 @@ fun StatCard(
         )
     ) {
         Row(
-            modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically
+            modifier = modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = modifier.weight(1f)
             ) {
                 Text(
                     text = title, style = TextStyle(
@@ -219,11 +218,9 @@ fun StatCard(
                     ), color = color
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = modifier.width(8.dp))
             Icon(
-                imageVector = icon,
-                contentDescription = title,
-                tint = color
+                imageVector = icon, contentDescription = title, tint = color
             )
         }
     }
@@ -245,14 +242,14 @@ fun DrawerContent(modifier: Modifier = Modifier) {
     )
 
     ModalDrawerSheet(
-        drawerContainerColor = DrawerContainerColor, modifier = Modifier.fillMaxHeight()
+        drawerContainerColor = DrawerContainerColor, modifier = modifier.fillMaxHeight()
     ) {
         Column {
-            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
+            Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxWidth()) {
                 Image(
                     painter = painterResource(id = R.drawable.recologo_ca),
                     contentDescription = "Companion App Logo",
-                    modifier = Modifier
+                    modifier = modifier
                         .width(237.dp)
                         .height(232.dp),
                     contentScale = ContentScale.Fit,
@@ -285,7 +282,7 @@ fun DrawerContent(modifier: Modifier = Modifier) {
                     text = "AI Assistant", style = sidebarButtonText
                 )
             }, selected = false, onClick = { /*TODO*/ })
-            Spacer(modifier = Modifier.fillMaxHeight())
+            Spacer(modifier = modifier.fillMaxHeight())
             BottomAppBar { }
         }
     }
@@ -295,55 +292,58 @@ fun DrawerContent(modifier: Modifier = Modifier) {
  * The top bar of the dashboard screen.
  *
  * @param onOpenDrawer The action to perform when the drawer button is clicked.
+ * @param modifier The modifier to apply to this layout.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    onOpenDrawer: () -> Unit
+    onOpenDrawer: () -> Unit, modifier: Modifier = Modifier
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = DrawerContainerColor,
-            titleContentColor = DrawerBackgroundColor
-        ), title = {
-            Text(
-                text = "Dashboard", style = TextStyle(
-                    fontFamily = interDisplayFamily,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                )
+        containerColor = DrawerContainerColor, titleContentColor = DrawerBackgroundColor
+    ), title = {
+        Text(
+            text = "Dashboard", style = TextStyle(
+                fontFamily = interDisplayFamily,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.ExtraBold,
             )
-        }, navigationIcon = {
-            IconButton(onClick = { onOpenDrawer() }) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = "Menu Icon",
-                    tint = DrawerBackgroundColor
+        )
+    }, navigationIcon = {
+        IconButton(onClick = { onOpenDrawer() }) {
+            Icon(
+                imageVector = Icons.Filled.Menu,
+                contentDescription = "Menu Icon",
+                tint = DrawerBackgroundColor
 
-                )
-            }
-        }, actions = {
-            IconButton(onClick = { /* Handle profile click */ }) {
-                Icon(
-                    imageVector = Icons.Default.AccountCircle,
-                    contentDescription = "User Profile",
-                    modifier = Modifier
-                        .padding(1.dp)
-                        .width(36.dp)
-                        .height(36.dp),
-                    tint = DrawerBackgroundColor
-                )
-            }
-        })
+            )
+        }
+    }, actions = {
+        IconButton(onClick = { /* Handle profile click */ }) {
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = "User Profile",
+                modifier = modifier
+                    .padding(1.dp)
+                    .width(36.dp)
+                    .height(36.dp),
+                tint = DrawerBackgroundColor
+            )
+        }
+    })
 }
 
 /**
  * A composable that displays a greeting with the current time.
  *
  * @param name The name to greet.
+ * @param modifier The modifier to apply to this layout.
  */
 @Composable
-fun GreetingTextWithTime(name: String) {
+fun GreetingTextWithTime(
+    name: String, modifier: Modifier = Modifier
+) {
     val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
     val timeOfDay = when (hour) {
         in 5..11 -> "morning"
@@ -353,7 +353,7 @@ fun GreetingTextWithTime(name: String) {
     }
 
     Text(
-        modifier = Modifier.padding(top = 16.dp),
+        modifier = modifier.padding(top = 16.dp),
         text = "Good $timeOfDay, $name!",
         style = TextStyle(
             fontFamily = interDisplayFamily, fontSize = 24.sp, fontWeight = FontWeight.Bold

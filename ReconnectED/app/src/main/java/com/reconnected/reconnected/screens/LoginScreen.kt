@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,9 +40,12 @@ import kotlinx.coroutines.delay
  * The login screen of the app.
  *
  * @param navController The navigation controller to navigate between screens.
+ * @param modifier The modifier to apply to this layout.
  */
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(
+    navController: NavController, modifier: Modifier = Modifier
+) {
     var startAnimation by remember { mutableStateOf(false) }
 
     // Animate alpha (fade-in) and scale (zoom-in)
@@ -64,7 +66,7 @@ fun LoginScreen(navController: NavController) {
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(DashboardStatCardTextColor)
             .padding(horizontal = 40.dp)
@@ -75,21 +77,21 @@ fun LoginScreen(navController: NavController) {
         Image(
             painter = painterResource(id = R.drawable.recologo_ca),
             contentDescription = "App Logo",
-            modifier = Modifier
+            modifier = modifier
                 .width(338.dp)
                 .height(331.dp)
         )
         Image(
             painter = painterResource(id = R.drawable.google_signin_button),
             contentDescription = "Sign in with Google",
-            modifier = Modifier
+            modifier = modifier
                 .width(210.dp)
                 .height(49.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .clickable {
                     navController.navigate(Screens.DashboardScreen.route)
                 })
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = modifier.height(60.dp))
     }
 }
 
