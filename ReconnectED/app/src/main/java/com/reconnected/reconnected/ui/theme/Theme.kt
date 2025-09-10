@@ -1,6 +1,9 @@
 package com.reconnected.reconnected.ui.theme
 
-import android.app.Activity
+/**
+ * This file contains the theme configuration for the app.
+ */
+
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +36,13 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+/**
+ * The theme configuration for the app.
+ *
+ * @param darkTheme Whether the theme should be dark.
+ * @param dynamicColor Whether to use dynamic colors.
+ * @param content The content of the app.
+ */
 @Composable
 fun ReconnectEDTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
