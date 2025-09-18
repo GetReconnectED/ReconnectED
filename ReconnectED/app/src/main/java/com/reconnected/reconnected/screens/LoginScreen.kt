@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.reconnected.reconnected.R
+import com.reconnected.reconnected.core.auth.GoogleSignInActivity
 import com.reconnected.reconnected.navigation.Screens
 import com.reconnected.reconnected.ui.theme.DashboardStatCardTextColor
 import com.reconnected.reconnected.ui.theme.DefaultFadeSpeed
@@ -47,6 +48,7 @@ fun LoginScreen(
     navController: NavController, modifier: Modifier = Modifier
 ) {
     var startAnimation by remember { mutableStateOf(false) }
+    var gsignin = GoogleSignInActivity()
 
     // Animate alpha (fade-in) and scale (zoom-in)
     val alphaAnim = animateFloatAsState(
@@ -89,7 +91,8 @@ fun LoginScreen(
                 .height(49.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .clickable {
-                    navController.navigate(Screens.DashboardScreen.route)
+                    gsignin.onCreate(null)
+                    gsignin.launchCredentialManager(navController)
                 })
         Spacer(modifier = modifier.height(60.dp))
     }
