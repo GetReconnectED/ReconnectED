@@ -100,7 +100,7 @@ class GoogleSignInActivity : AppCompatActivity() {
             }
     }
 
-    private fun signOut() {
+    public fun signOut() {
         // Firebase sign out
         auth.signOut()
 
