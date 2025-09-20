@@ -50,6 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.reconnected.reconnected.R
+import com.reconnected.reconnected.core.auth.GoogleSignInActivity
 import com.reconnected.reconnected.ui.theme.BackgroundColor
 import com.reconnected.reconnected.ui.theme.DashboardBackgroundGradientColor
 import com.reconnected.reconnected.ui.theme.DashboardCardBackgroundColor
@@ -240,6 +241,7 @@ fun DrawerContent(modifier: Modifier = Modifier) {
         fontWeight = FontWeight.Bold,
         color = DrawerBackgroundColor
     )
+    var gsignin = GoogleSignInActivity()
 
     ModalDrawerSheet(
         drawerContainerColor = DrawerContainerColor, modifier = modifier.fillMaxHeight()
@@ -282,6 +284,13 @@ fun DrawerContent(modifier: Modifier = Modifier) {
                     text = "AI Assistant", style = sidebarButtonText
                 )
             }, selected = false, onClick = { /*TODO*/ })
+            NavigationDrawerItem(label = {
+                Text(
+                    text = "Logout", style = sidebarButtonText
+                )
+            }, selected = false, onClick = {
+                gsignin.signOut()
+            })
             Spacer(modifier = modifier.fillMaxHeight())
             BottomAppBar { }
         }
