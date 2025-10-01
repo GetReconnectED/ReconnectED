@@ -26,9 +26,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.ui.composables.elements.StatCard
+import com.getreconnected.reconnected.ui.theme.DaysActiveTextColorLight
+import com.getreconnected.reconnected.ui.theme.ScreenTimeTextColorLight
+import com.getreconnected.reconnected.ui.theme.TextColorLightPrimary
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 import java.util.Calendar
 
+/**
+ * The content of the dashboard screen.
+ */
 @Composable
 fun Dashboard(modifier: Modifier = Modifier) {
     Column(
@@ -97,24 +103,27 @@ fun Dashboard(modifier: Modifier = Modifier) {
                 title = "Screen Time Today",
                 value = "3h 15m",
                 icon = Icons.Default.DateRange,
-                color = Color(0xFF008F46), // Green color
+                color = ScreenTimeTextColorLight,
                 modifier = Modifier.Companion
                     .weight(1f)
-//                        .requiredHeight(100.dp)
+                    //.requiredHeight(100.dp)
             )
             StatCard(
                 title = "Days Active",
                 value = "14 days",
                 icon = Icons.Default.CheckCircle,
-                color = Color(0xFF0453AE), // Blue color
+                color = DaysActiveTextColorLight,
                 modifier = Modifier.Companion
                     .weight(1f)
-//                        .requiredHeight(100.dp)
+                    //.requiredHeight(100.dp)
             )
         }
     }
 }
 
+/**
+ * Displays a personalized greeting based on the current time.
+ */
 @Composable
 fun GreetingTextWithTime(name: String) {
     // Get the current hour of the day
@@ -136,6 +145,6 @@ fun GreetingTextWithTime(name: String) {
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         ),
-        color = Color(0xFF020202)
+        color = TextColorLightPrimary
     )
 }

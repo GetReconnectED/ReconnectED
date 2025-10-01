@@ -2,17 +2,26 @@ package com.getreconnected.reconnected.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val TextColorPrimary = Color(0xFFF4F4F4)
-val TextColorSelected = Color(0xFF5BB56E)
+val TextColorLightPrimary = Color(0xFF020202)
+val TextColorLightAccent = Color(0xFFF4F4F4)
+val TextColorLightSelected = Color(0xFF5BB56E)
+val TextColorDarkPrimary = Color(0xFFF4F4F4)
 
-val IconColorPrimary = Color(0xFFF4F4F4)
-val IconColorActive = Color.White
+val IconColorLightPrimary = Color(0xFFF4F4F4)
+val IconColorLightActive = Color.White
 
-val ContainerColorPrimary = Color.Transparent
-val ContainerColorSelected = Color(0xFF5BB56E)
+val ContainerColorLightPrimary = Color.Transparent
+val ContainerColorLightSelected = Color(0xFF5BB56E)
+val ContainerColorDarkPrimary = Color.Transparent
+val ContainerColorDarkSelected = Color(0xFF5BB56E)
 
-val DrawerContainerColor = Color(0xFF008F46)
+val DrawerContainerLightColor = Color(0xFF008F46)
 
-val CardColorPrimary = Color(0xFF10B981) // Slightly lighter green
+val CardColorLightPrimary = Color(0xFFF4F4F4)
+val CardColorLightAccent = Color(0xFF10B981) // Slightly lighter green
 
-val BackgroundColorPrimary = Color.White
+val ScreenTimeTextColorLight = Color(0xFF008F46)
+val DaysActiveTextColorLight = Color(0xFF0453AE)
+
+val BackgroundColorLightPrimary = Color.White
+val BackgroundColorDarkPrimary = Color(0xFF1F2226)

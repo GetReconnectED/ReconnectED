@@ -29,7 +29,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -40,15 +39,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.ui.navigation.Menus
 import com.getreconnected.reconnected.ui.navigation.ReconnectedViewModel
-import com.getreconnected.reconnected.ui.theme.BackgroundColorPrimary
-import com.getreconnected.reconnected.ui.theme.CardColorPrimary
-import com.getreconnected.reconnected.ui.theme.ContainerColorPrimary
-import com.getreconnected.reconnected.ui.theme.ContainerColorSelected
-import com.getreconnected.reconnected.ui.theme.DrawerContainerColor
-import com.getreconnected.reconnected.ui.theme.IconColorActive
-import com.getreconnected.reconnected.ui.theme.IconColorPrimary
-import com.getreconnected.reconnected.ui.theme.TextColorPrimary
-import com.getreconnected.reconnected.ui.theme.TextColorSelected
+import com.getreconnected.reconnected.ui.theme.BackgroundColorLightPrimary
+import com.getreconnected.reconnected.ui.theme.CardColorLightAccent
+import com.getreconnected.reconnected.ui.theme.ContainerColorLightPrimary
+import com.getreconnected.reconnected.ui.theme.ContainerColorLightSelected
+import com.getreconnected.reconnected.ui.theme.DrawerContainerLightColor
+import com.getreconnected.reconnected.ui.theme.IconColorLightActive
+import com.getreconnected.reconnected.ui.theme.IconColorLightPrimary
+import com.getreconnected.reconnected.ui.theme.TextColorLightAccent
+import com.getreconnected.reconnected.ui.theme.TextColorLightSelected
 import com.getreconnected.reconnected.ui.theme.sidebarButtonTextStyle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -67,12 +66,12 @@ fun NavDrawerContent(
 
     val drawerItemShape = RectangleShape
     val drawerItemColors = NavigationDrawerItemDefaults.colors(
-        selectedContainerColor = ContainerColorSelected,
-        selectedIconColor = TextColorSelected,
-        selectedTextColor = TextColorSelected,
-        unselectedContainerColor = ContainerColorPrimary,
-        unselectedIconColor = TextColorPrimary,
-        unselectedTextColor = TextColorPrimary
+        selectedContainerColor = ContainerColorLightSelected,
+        selectedIconColor = TextColorLightSelected,
+        selectedTextColor = TextColorLightSelected,
+        unselectedContainerColor = ContainerColorLightPrimary,
+        unselectedIconColor = TextColorLightAccent,
+        unselectedTextColor = TextColorLightAccent
     )
 
     val currentBackStack by navController.currentBackStackEntryAsState()
@@ -91,7 +90,7 @@ fun NavDrawerContent(
     }
 
     ModalDrawerSheet(
-        drawerContainerColor = DrawerContainerColor, modifier = Modifier.fillMaxHeight()
+        drawerContainerColor = DrawerContainerLightColor, modifier = Modifier.fillMaxHeight()
     ) {
         Column {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
@@ -110,8 +109,8 @@ fun NavDrawerContent(
                 Icon(
                     painter = painterResource(R.drawable.dashboard_icon),
                     contentDescription = "Dashboard",
-                    tint = if (currentDestination == Menus.Dashboard.route) IconColorActive
-                    else IconColorPrimary
+                    tint = if (currentDestination == Menus.Dashboard.route) IconColorLightActive
+                    else IconColorLightPrimary
                 )
             },
                 label = { Text("Dashboard", style = sidebarButtonTextStyle) },
@@ -125,8 +124,8 @@ fun NavDrawerContent(
                 Icon(
                     painter = painterResource(R.drawable.screen_time_tracker_icon),
                     contentDescription = "Screen Time Tracker",
-                    tint = if (currentDestination == Menus.ScreenTimeTracker.route) IconColorActive
-                    else IconColorPrimary
+                    tint = if (currentDestination == Menus.ScreenTimeTracker.route) IconColorLightActive
+                    else IconColorLightPrimary
                 )
             },
                 label = { Text("Screen Time Tracker", style = sidebarButtonTextStyle) },
@@ -140,8 +139,8 @@ fun NavDrawerContent(
                 Icon(
                     painter = painterResource(R.drawable.screen_time_limit_icon),
                     contentDescription = "Screen Time Limit",
-                    tint = if (currentDestination == Menus.ScreenTimeLimit.route) IconColorActive
-                    else IconColorPrimary
+                    tint = if (currentDestination == Menus.ScreenTimeLimit.route) IconColorLightActive
+                    else IconColorLightPrimary
                 )
             },
                 label = { Text("Screen Time Limit", style = sidebarButtonTextStyle) },
@@ -155,8 +154,8 @@ fun NavDrawerContent(
                 Icon(
                     painter = painterResource(R.drawable.calendar_icon),
                     contentDescription = "Calendar",
-                    tint = if (currentDestination == Menus.Calendar.route) IconColorActive
-                    else IconColorPrimary
+                    tint = if (currentDestination == Menus.Calendar.route) IconColorLightActive
+                    else IconColorLightPrimary
                 )
             },
                 label = { Text("Calendar", style = sidebarButtonTextStyle) },
@@ -170,8 +169,8 @@ fun NavDrawerContent(
                 Icon(
                     painter = painterResource(R.drawable.ai_assistant_icon),
                     contentDescription = "AI Assistant",
-                    tint = if (currentDestination == Menus.Assistant.route) IconColorActive
-                    else IconColorPrimary
+                    tint = if (currentDestination == Menus.Assistant.route) IconColorLightActive
+                    else IconColorLightPrimary
                 )
             },
                 label = { Text("AI Assistant", style = sidebarButtonTextStyle) },
@@ -191,7 +190,7 @@ fun NavDrawerContent(
                         .height(84.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = CardColorPrimary
+                        containerColor = CardColorLightAccent
                     )
                 ) {
                     Row(
@@ -203,21 +202,21 @@ fun NavDrawerContent(
                         Icon(
                             imageVector = Icons.Default.AccountCircle,
                             contentDescription = "Profile",
-                            tint = IconColorPrimary,
+                            tint = IconColorLightPrimary,
                             modifier = Modifier.size(48.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             text = Build.USER,
                             style = sidebarButtonTextStyle.copy(fontSize = 28.sp),
-                            color = TextColorPrimary,
+                            color = TextColorLightAccent,
                             modifier = Modifier.weight(1f) // Pushes button to the end
                         )
 
                         Box(
                             modifier = Modifier
                                 .size(52.dp)
-                                .background(color = BackgroundColorPrimary)
+                                .background(color = BackgroundColorLightPrimary)
                                 .clickable { /* TODO: Handle button click */ })
                     }
                 }

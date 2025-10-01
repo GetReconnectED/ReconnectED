@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.R
 
 
-
 val interDisplayFamily = FontFamily(
     Font(R.font.interdisplay_black, FontWeight.Black),
     Font(R.font.interdisplay_blackitalic, FontWeight.Black, FontStyle.Italic),
@@ -36,5 +35,5 @@ val sidebarButtonTextStyle = TextStyle(
     fontFamily = interDisplayFamily,
     fontSize = 24.sp,
     fontWeight = FontWeight.Bold,
-    color = TextColorPrimary
+    color = TextColorLightAccent
 )
