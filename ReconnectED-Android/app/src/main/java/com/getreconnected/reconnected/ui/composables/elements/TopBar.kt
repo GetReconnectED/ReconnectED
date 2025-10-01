@@ -14,57 +14,54 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import com.getreconnected.reconnected.ui.theme.BackgroundColorLightPrimary2
+import com.getreconnected.reconnected.ui.theme.IconColorLightPrimary
+import com.getreconnected.reconnected.ui.theme.TextColorLightAccent
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
+/**
+ * The top bar of the app.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    title: String,
-    onOpenDrawer: () -> Unit
+    title: String, onOpenDrawer: () -> Unit
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color(0xFF008F46), // Green background
-            titleContentColor = Color(0xFFF4F4F4)  // Off-white title
-        ),
-        title = {
-            Text(
-                text = title,
-                style = TextStyle(
-                    fontFamily = interDisplayFamily,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Companion.ExtraBold,
-                )
+        containerColor = BackgroundColorLightPrimary2, titleContentColor = TextColorLightAccent
+    ), title = {
+        Text(
+            text = title, style = TextStyle(
+                fontFamily = interDisplayFamily,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Companion.ExtraBold,
             )
-        },
-        navigationIcon = {
-            IconButton(onClick = { onOpenDrawer() }) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = "Menu Icon",
-                    tint = Color(0xFFF4F4F4) // Off-white icon
+        )
+    }, navigationIcon = {
+        IconButton(onClick = { onOpenDrawer() }) {
+            Icon(
+                imageVector = Icons.Filled.Menu,
+                contentDescription = "Menu Icon",
+                tint = IconColorLightPrimary
 
-                )
-            }
-        },
-        actions = {
-            IconButton(onClick = { /* Handle profile click */ }) {
-                Icon(
-                    imageVector = Icons.Default.AccountCircle,
-                    contentDescription = "User Profile",
-                    modifier = Modifier.Companion
-                        .padding(1.dp)
-                        .width(36.dp)
-                        .height(36.dp),
-                    tint = Color(0xFFF4F4F4)
-                )
-            }
+            )
         }
-    )
+    }, actions = {
+        IconButton(onClick = { /* Handle profile click */ }) {
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = "User Profile",
+                modifier = Modifier.Companion
+                    .padding(1.dp)
+                    .width(36.dp)
+                    .height(36.dp),
+                tint = IconColorLightPrimary
+            )
+        }
+    })
 }

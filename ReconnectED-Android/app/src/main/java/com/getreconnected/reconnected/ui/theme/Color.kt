@@ -24,4 +24,5 @@ val ScreenTimeTextColorLight = Color(0xFF008F46)
 val DaysActiveTextColorLight = Color(0xFF0453AE)
 
 val BackgroundColorLightPrimary = Color.White
+val BackgroundColorLightPrimary2 = Color(0xFF008F46)
 val BackgroundColorDarkPrimary = Color(0xFF1F2226)
