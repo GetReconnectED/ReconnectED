@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         // This must be called BEFORE super.onCreate()
-        installSplashScreen()
+        installSplashScreen()  // FIXME: I can't restore the splash screen :<
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {

@@ -25,7 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.delay
 
 import com.getreconnected.reconnected.R
-import com.getreconnected.reconnected.HomeActivity
+import com.getreconnected.reconnected.MainActivity
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 
 @Composable
@@ -75,7 +75,7 @@ fun LoginScreen(navController: NavController) {
                 .height(49.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .clickable {
-                    val loginIntent = Intent(context, HomeActivity::class.java)
+                    val loginIntent = Intent(context, MainActivity::class.java)
                     loginIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
                     context.startActivity(loginIntent)
                 })

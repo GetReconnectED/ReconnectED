@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.ui.composables.elements.StatCard
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
+// TODO: WIP
+
 @Composable
 fun Assistant(modifier: Modifier = Modifier) {
     Column(
