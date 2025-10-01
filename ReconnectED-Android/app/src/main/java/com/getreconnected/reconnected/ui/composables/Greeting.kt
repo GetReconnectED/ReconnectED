@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.getreconnected.reconnected.BuildConfig
 import com.getreconnected.reconnected.core.APPLICATION_NAME
-import com.getreconnected.reconnected.ui.theme.ReconnectEdTheme
+import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 
 
 /**
@@ -23,7 +23,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    ReconnectEdTheme {
+    ReconnectEDTheme {
         Greeting("User")
     }
 }
