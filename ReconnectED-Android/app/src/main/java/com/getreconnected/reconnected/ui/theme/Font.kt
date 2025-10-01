@@ -1,11 +1,15 @@
 package com.getreconnected.reconnected.ui.theme
 
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 import com.getreconnected.reconnected.R
+
+
 
 val interDisplayFamily = FontFamily(
     Font(R.font.interdisplay_black, FontWeight.Black),
@@ -26,4 +30,11 @@ val interDisplayFamily = FontFamily(
     Font(R.font.interdisplay_semibolditalic, FontWeight.SemiBold, FontStyle.Italic),
     Font(R.font.interdisplay_thin, FontWeight.Thin),
     Font(R.font.interdisplay_thinitalic, FontWeight.Thin, FontStyle.Italic)
+)
+
+val sidebarButtonTextStyle = TextStyle(
+    fontFamily = interDisplayFamily,
+    fontSize = 24.sp,
+    fontWeight = FontWeight.Bold,
+    color = TextColorPrimary
 )

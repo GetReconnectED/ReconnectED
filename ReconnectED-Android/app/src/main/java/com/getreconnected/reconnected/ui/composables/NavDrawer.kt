@@ -1,5 +1,6 @@
-package com.getreconnected.reconnected.ui.composables.elements
+package com.getreconnected.reconnected.ui.composables
 
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,8 +33,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -41,10 +40,22 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.ui.navigation.Menus
 import com.getreconnected.reconnected.ui.navigation.ReconnectedViewModel
-import com.getreconnected.reconnected.ui.theme.interDisplayFamily
+import com.getreconnected.reconnected.ui.theme.BackgroundColorPrimary
+import com.getreconnected.reconnected.ui.theme.CardColorPrimary
+import com.getreconnected.reconnected.ui.theme.ContainerColorPrimary
+import com.getreconnected.reconnected.ui.theme.ContainerColorSelected
+import com.getreconnected.reconnected.ui.theme.DrawerContainerColor
+import com.getreconnected.reconnected.ui.theme.IconColorActive
+import com.getreconnected.reconnected.ui.theme.IconColorPrimary
+import com.getreconnected.reconnected.ui.theme.TextColorPrimary
+import com.getreconnected.reconnected.ui.theme.TextColorSelected
+import com.getreconnected.reconnected.ui.theme.sidebarButtonTextStyle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+/**
+ * The content of the navigation drawer.
+ */
 @Composable
 fun NavDrawerContent(
     navController: NavController,
@@ -53,26 +64,23 @@ fun NavDrawerContent(
     scope: CoroutineScope,
     modifier: Modifier = Modifier,
 ) {
-    val sidebarButtonText = TextStyle(
-        fontFamily = interDisplayFamily,
-        fontSize = 24.sp,
-        fontWeight = FontWeight.Bold,
-        color = Color(0xFFF4F4F4)
-    )
-    val drawerItemColors = NavigationDrawerItemDefaults.colors(
-        selectedContainerColor = Color(0xFF5BB56E),
-        selectedIconColor = Color.White,
-        selectedTextColor = Color.White,
-        unselectedContainerColor = Color.Transparent,
-        unselectedIconColor = Color(0xFFF4F4F4),
-        unselectedTextColor = Color(0xFFF4F4F4)
-    )
 
     val drawerItemShape = RectangleShape
+    val drawerItemColors = NavigationDrawerItemDefaults.colors(
+        selectedContainerColor = ContainerColorSelected,
+        selectedIconColor = TextColorSelected,
+        selectedTextColor = TextColorSelected,
+        unselectedContainerColor = ContainerColorPrimary,
+        unselectedIconColor = TextColorPrimary,
+        unselectedTextColor = TextColorPrimary
+    )
 
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStack?.destination?.route
 
+    /**
+     * Navigate to the given route and close the drawer.
+     */
     fun navigateAndClose(route: String) {
         navController.navigate(route) {
             popUpTo(Menus.Dashboard.route) { inclusive = false }
@@ -83,8 +91,7 @@ fun NavDrawerContent(
     }
 
     ModalDrawerSheet(
-        drawerContainerColor = Color(0xFF008F46),
-        modifier = Modifier.fillMaxHeight()
+        drawerContainerColor = DrawerContainerColor, modifier = Modifier.fillMaxHeight()
     ) {
         Column {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
@@ -98,86 +105,76 @@ fun NavDrawerContent(
                     alignment = Alignment.Center
                 )
             }
-
             NavigationDrawerItem(
                 icon = {
-                    Icon(
-                        painter = painterResource(R.drawable.dashboard_icon),
-                        contentDescription = "Dashboard",
-                        tint = if (currentDestination == Menus.Dashboard.route) Color.White else Color(
-                            0xFFF4F4F4
-                        )
-                    )
-                },
-                label = { Text("Dashboard", style = sidebarButtonText) },
+                Icon(
+                    painter = painterResource(R.drawable.dashboard_icon),
+                    contentDescription = "Dashboard",
+                    tint = if (currentDestination == Menus.Dashboard.route) IconColorActive
+                    else IconColorPrimary
+                )
+            },
+                label = { Text("Dashboard", style = sidebarButtonTextStyle) },
                 selected = currentDestination == Menus.Dashboard.route,
                 onClick = { navigateAndClose(Menus.Dashboard.route) },
                 colors = drawerItemColors,
                 shape = drawerItemShape
             )
-
             NavigationDrawerItem(
                 icon = {
-                    Icon(
-                        painter = painterResource(R.drawable.screen_time_tracker_icon),
-                        contentDescription = "Screen Time Tracker",
-                        tint = if (currentDestination == Menus.ScreenTimeTracker.route) Color.White else Color(
-                            0xFFF4F4F4
-                        )
-                    )
-                },
-                label = { Text("Screen Time Tracker", style = sidebarButtonText) },
+                Icon(
+                    painter = painterResource(R.drawable.screen_time_tracker_icon),
+                    contentDescription = "Screen Time Tracker",
+                    tint = if (currentDestination == Menus.ScreenTimeTracker.route) IconColorActive
+                    else IconColorPrimary
+                )
+            },
+                label = { Text("Screen Time Tracker", style = sidebarButtonTextStyle) },
                 selected = currentDestination == Menus.ScreenTimeTracker.route,
                 onClick = { navigateAndClose(Menus.ScreenTimeTracker.route) },
                 colors = drawerItemColors,
                 shape = drawerItemShape
             )
-
             NavigationDrawerItem(
                 icon = {
-                    Icon(
-                        painter = painterResource(R.drawable.screen_time_limit_icon),
-                        contentDescription = "Screen Time Limit",
-                        tint = if (currentDestination == Menus.ScreenTimeLimit.route) Color.White else Color(
-                            0xFFF4F4F4
-                        )
-                    )
-                },
-                label = { Text("Screen Time Limit", style = sidebarButtonText) },
+                Icon(
+                    painter = painterResource(R.drawable.screen_time_limit_icon),
+                    contentDescription = "Screen Time Limit",
+                    tint = if (currentDestination == Menus.ScreenTimeLimit.route) IconColorActive
+                    else IconColorPrimary
+                )
+            },
+                label = { Text("Screen Time Limit", style = sidebarButtonTextStyle) },
                 selected = currentDestination == Menus.ScreenTimeLimit.route,
                 onClick = { navigateAndClose(Menus.ScreenTimeLimit.route) },
                 colors = drawerItemColors,
                 shape = drawerItemShape
             )
-
             NavigationDrawerItem(
                 icon = {
-                    Icon(
-                        painter = painterResource(R.drawable.calendar_icon),
-                        contentDescription = "Calendar",
-                        tint = if (currentDestination == Menus.Calendar.route) Color.White else Color(
-                            0xFFF4F4F4
-                        )
-                    )
-                },
-                label = { Text("Calendar", style = sidebarButtonText) },
+                Icon(
+                    painter = painterResource(R.drawable.calendar_icon),
+                    contentDescription = "Calendar",
+                    tint = if (currentDestination == Menus.Calendar.route) IconColorActive
+                    else IconColorPrimary
+                )
+            },
+                label = { Text("Calendar", style = sidebarButtonTextStyle) },
                 selected = currentDestination == Menus.Calendar.route,
                 onClick = { navigateAndClose(Menus.Calendar.route) },
                 colors = drawerItemColors,
                 shape = drawerItemShape
             )
-
             NavigationDrawerItem(
                 icon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ai_assistant_icon),
-                        contentDescription = "AI Assistant",
-                        tint = if (currentDestination == Menus.Assistant.route) Color.White else Color(
-                            0xFFF4F4F4
-                        )
-                    )
-                },
-                label = { Text("AI Assistant", style = sidebarButtonText) },
+                Icon(
+                    painter = painterResource(R.drawable.ai_assistant_icon),
+                    contentDescription = "AI Assistant",
+                    tint = if (currentDestination == Menus.Assistant.route) IconColorActive
+                    else IconColorPrimary
+                )
+            },
+                label = { Text("AI Assistant", style = sidebarButtonTextStyle) },
                 selected = currentDestination == Menus.Assistant.route,
                 onClick = { navigateAndClose(Menus.Assistant.route) },
                 colors = drawerItemColors,
@@ -194,7 +191,7 @@ fun NavDrawerContent(
                         .height(84.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFF10B981) // Slightly lighter green
+                        containerColor = CardColorPrimary
                     )
                 ) {
                     Row(
@@ -206,23 +203,22 @@ fun NavDrawerContent(
                         Icon(
                             imageVector = Icons.Default.AccountCircle,
                             contentDescription = "Profile",
-                            tint = Color.White,
+                            tint = IconColorPrimary,
                             modifier = Modifier.size(48.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            text = "Juan",
-                            style = sidebarButtonText.copy(fontSize = 28.sp),
-                            color = Color.White,
+                            text = Build.USER,
+                            style = sidebarButtonTextStyle.copy(fontSize = 28.sp),
+                            color = TextColorPrimary,
                             modifier = Modifier.weight(1f) // Pushes button to the end
                         )
 
                         Box(
                             modifier = Modifier
                                 .size(52.dp)
-                                .background(color = Color.White)
-                                .clickable { /* TODO: Handle button click */ }
-                        )
+                                .background(color = BackgroundColorPrimary)
+                                .clickable { /* TODO: Handle button click */ })
                     }
                 }
                 // Add a spacer for margin at the very bottom
