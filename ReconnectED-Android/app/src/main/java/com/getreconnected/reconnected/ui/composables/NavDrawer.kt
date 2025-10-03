@@ -217,7 +217,8 @@ fun NavDrawerContent(
                             modifier = Modifier
                                 .size(52.dp)
                                 .background(color = BackgroundColorLightPrimary)
-                                .clickable { /* TODO: Handle button click */ })
+                                .clickable { /* TODO: Handle button click */ }
+                        )
                     }
                 }
                 // Add a spacer for margin at the very bottom
