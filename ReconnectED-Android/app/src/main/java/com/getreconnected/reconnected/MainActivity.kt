@@ -4,44 +4,27 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.getreconnected.reconnected.ui.theme.ReconnectEdTheme
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.getreconnected.reconnected.ui.screens.MainScreen
+import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 
+/**
+ * The main activity for the app.
+ */
 class MainActivity : ComponentActivity() {
+    /**
+     * Called when the activity is starting.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
+        // This must be called BEFORE super.onCreate()
+        installSplashScreen()  // FIXME: I can't restore the splash screen :<
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ReconnectEdTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            ReconnectEDTheme {
+                MainScreen()
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ReconnectEdTheme {
-        Greeting("Android")
-    }
-}
