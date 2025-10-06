@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.getreconnected.reconnected", appContext.packageName)
+        assertEquals("com.example.reconnected_a", appContext.packageName)
     }
 }

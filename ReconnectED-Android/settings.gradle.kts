@@ -16,8 +16,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven(url = "https://repo1.maven.org/maven2/")
     }
 }
 
-rootProject.name = "ReconnectEd"
+rootProject.name = "ReconnectED"
 include(":app")
