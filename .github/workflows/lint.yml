@@ -46,3 +46,5 @@ jobs:
                   VALIDATE_GIT_COMMITLINT: false
                   VALIDATE_JSON_PRETTIER: false
                   VALIDATE_JSON: false
+                  VALIDATE_MARKDOWN: false
+                  VALIDATE_MARKDOWN_PRETTIER: false
