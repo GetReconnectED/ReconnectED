@@ -42,7 +42,8 @@ android {
 
 dependencies {
     implementation(libs.androidx.room.runtime)
-     val roomVersion = "2.8.1"
+    implementation(libs.firebase.ui)
+    // val roomVersion = "2.8.1"
 
     implementation(libs.vico.compose.m3)
     implementation(libs.androidx.core.ktx)
