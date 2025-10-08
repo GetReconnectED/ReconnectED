@@ -1,8 +1,7 @@
-// In file: screens/LoginScreen.kt
-
-package com.getreconnected.reconnected.screens
+package com.getreconnected.reconnected.ui.screens
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -23,9 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.getreconnected.reconnected.HomeActivity
+import com.getreconnected.reconnected.MainActivity
 import com.getreconnected.reconnected.R
-import com.getreconnected.reconnected.ui.theme.ReconnectED_ATheme
+import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import kotlinx.coroutines.delay
 
 @Composable
@@ -35,15 +34,17 @@ fun LoginScreen(navController: NavController) {
     var startAnimation by remember { mutableStateOf(false) }
 
     // Animate alpha (fade-in) and scale (zoom-in)
-    val alphaAnim = animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(durationMillis = 1000) // 1 second
-    )
+    val alphaAnim =
+            animateFloatAsState(
+                    targetValue = if (startAnimation) 1f else 0f,
+                    animationSpec = tween(durationMillis = 1000) // 1 second
+            )
 
-    val scaleAnim = animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0.8f,
-        animationSpec = tween(durationMillis = 1000)
-    )
+    val scaleAnim =
+            animateFloatAsState(
+                    targetValue = if (startAnimation) 1f else 0.8f,
+                    animationSpec = tween(durationMillis = 1000)
+            )
 
     // Trigger the animation shortly after the screen is composed
     LaunchedEffect(Unit) {
@@ -52,30 +53,35 @@ fun LoginScreen(navController: NavController) {
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF008F46))
-            .padding(horizontal = 40.dp)
-            .alpha(alphaAnim.value) // Apply the fade-in to the whole screen
-            .scale(scaleAnim.value), // Apply the scale to the whole screen
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            modifier =
+                    Modifier.fillMaxSize()
+                            .background(Color(0xFF008F46))
+                            .padding(horizontal = 40.dp)
+                            .alpha(alphaAnim.value) // Apply the fade-in to the whole screen
+                            .scale(scaleAnim.value), // Apply the scale to the whole screen
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
     ) {
         // ... (The rest of your UI is the same as before)
         Image(
-            painter = painterResource(id = R.drawable.recologo_ca),
-            contentDescription = "App Logo",
-            modifier = Modifier.width(338.dp).height(331.dp)
+                painter = painterResource(id = R.drawable.recologo_ca),
+                contentDescription = "App Logo",
+                modifier = Modifier.width(338.dp).height(331.dp)
         )
         Image(
-            painter = painterResource(id = R.drawable.google_signin_button),
-            contentDescription = "Sign in with Google",
-            modifier = Modifier.width(210.dp).height(49.dp).clip(RoundedCornerShape(20.dp))
-                .clickable {
-                    val loginIntent = Intent(context, HomeActivity::class.java)
-                    loginIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    context.startActivity(loginIntent)
-                }
+                painter = painterResource(id = R.drawable.google_signin_button),
+                contentDescription = "Sign in with Google",
+                modifier =
+                        Modifier.width(210.dp)
+                                .height(49.dp)
+                                .clip(RoundedCornerShape(20.dp))
+                                .clickable {
+                                    val loginIntent = Intent(context, MainActivity::class.java)
+                                    loginIntent.flags =
+                                            Intent.FLAG_ACTIVITY_NEW_TASK or
+                                                    FLAG_ACTIVITY_CLEAR_TASK
+                                    context.startActivity(loginIntent)
+                                }
         )
         Spacer(modifier = Modifier.height(60.dp))
     }
@@ -84,7 +90,5 @@ fun LoginScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    ReconnectED_ATheme {
-        LoginScreen(rememberNavController())
-    }
+    ReconnectEDTheme { LoginScreen(rememberNavController()) }
 }

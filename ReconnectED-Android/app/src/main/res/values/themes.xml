@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.ReconnectED_A" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.ReconnectED" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:navigationBarColor">#fdfdfd</item>
     </style>
-
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="android:windowIsTranslucent">true</item>
         <item name="windowSplashScreenBackground">#008F46</item>
@@ -16,5 +15,4 @@
     </style>
     <style name="Theme.App.Starting.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.App.Starting.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 </resources>

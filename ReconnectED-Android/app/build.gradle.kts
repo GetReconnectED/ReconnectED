@@ -14,8 +14,8 @@ android {
         applicationId = "com.getreconnected.reconnected"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 10
+        versionName = "0.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -39,6 +39,7 @@ android {
     buildFeatures {
         compose = true
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -109,5 +110,9 @@ dependencies {
     // Firebase dependencies
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.firebase.auth)
 
 }
