@@ -15,7 +15,7 @@ updates:
           - "kind > dependencies"
           - "scope > android"
     - package-ecosystem: "bun" # See documentation for possible values
-      directory: "/ReconnectEd-web" # Location of package manifests
+      directory: "/ReconnectED-web" # Location of package manifests
       schedule:
           interval: "daily"
       open-pull-requests-limit: 10
