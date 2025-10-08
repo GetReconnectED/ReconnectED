@@ -1,0 +1,44 @@
+---
+name: Tests
+permissions:
+    contents: read
+    pull-requests: read
+
+on:
+    push:
+        branches:
+            - main
+            - stable
+    pull_request:
+        paths:
+            - "ReconnectED-web/**"
+    workflow_dispatch:
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
+    cancel-in-progress: true
+
+jobs:
+    test-web:
+        name: Test - Web
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ${{ github.workspace }}/ReconnectED-web
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                  persist-credentials: false
+
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2 # zizmor: ignore[unpinned-uses]
+              with:
+                  bun-version-file: "${{ github.workspace }}/ReconnectED-web/bun.lock"
+
+            - name: Install dependencies
+              run: bun install
+
+            - name: Build with Nuxt.js
+              run: bun run build
