@@ -7,6 +7,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.getreconnected.reconnected.ui.navigation.AppNavigation
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 
+
 /** The main activity for the app. */
 class LoginActivity : ComponentActivity() {
     /** Called when the activity is starting. */

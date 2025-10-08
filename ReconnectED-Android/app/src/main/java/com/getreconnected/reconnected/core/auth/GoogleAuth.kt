@@ -1,22 +1,32 @@
 package com.getreconnected.reconnected.core.auth
 
-import androidx.credentials.GetCredentialRequest
-import com.getreconnected.reconnected.R
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import android.content.Intent
+import android.util.Log
+import com.firebase.ui.auth.AuthUI
 
 class GoogleAuth {
-    fun signIn() {
-        // Instantiate a Google sign-in request
-        val googleIdOption = GetGoogleIdOption.Builder()
-            // Your server's client ID, not your Android client ID.
-            .setServerClientId(R.string.default_web_client_id.toString())
-            // Only show accounts previously used to sign in.
-            .setFilterByAuthorizedAccounts(true)
-            .build()
+    /**
+     * Returns an instance of [AuthUI] for Google authentication.
+     */
+    fun getGoogleAuthInstance(): AuthUI {
+        Log.d("GoogleAuth", "getGoogleAuthInstance called")
+        return AuthUI.getInstance()
+    }
 
-        // Create the Credential Manager request
-        val request = GetCredentialRequest.Builder()
-            .addCredentialOption(googleIdOption)
+    /**
+     * Shows the login screen for Google authentication.
+     */
+    fun showLogin(): Intent {
+        Log.d("GoogleAuth", "showLogin called")
+        return this.getGoogleAuthInstance().createSignInIntentBuilder()
+            .setAvailableProviders(listOf(AuthUI.IdpConfig.GoogleBuilder().build()))
+            .setDefaultProvider(AuthUI.IdpConfig.GoogleBuilder().build()).setCredentialManagerEnabled(false)
+            // FIXME: `.setCredentialManagerEnabled(false)` is a temporary fix for the following error:
+            //
+            // A sign-in error occurred.
+            // com.firebase.ui.auth.FirebaseUiException: Invalid FirebaseUser or missing email/password.
+            // at com.firebase.ui.auth.viewmodel.credentialmanager.CredentialManagerHandler.saveCredentials(CredentialManagerHandler.kt:52)
+            // at com.firebase.ui.auth.ui.credentials.CredentialSaveActivity.onCreate(CredentialSaveActivity.kt:62)
             .build()
     }
 }

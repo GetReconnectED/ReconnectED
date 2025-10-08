@@ -16,7 +16,6 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // This must be called BEFORE super.onCreate()
         super.onCreate(savedInstanceState)
         setContent { ReconnectEDTheme { MainScreen(Modifier, viewModel) } }
     }

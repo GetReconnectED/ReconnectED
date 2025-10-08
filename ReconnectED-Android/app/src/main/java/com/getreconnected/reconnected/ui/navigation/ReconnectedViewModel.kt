@@ -17,7 +17,6 @@ class ReconnectedViewModel(
     private val repository: ScreenTimeRepository
 ) : ViewModel() {
 
-    // ---- Your existing menu state ----
     private val _selected = mutableStateOf(Menus.Dashboard.route)
     val selected: State<String> = _selected
 
