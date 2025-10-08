@@ -29,14 +29,16 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
+              with:
+                  persist-credentials: false
 
             - name: Setup Bun
-              uses: oven-sh/setup-bun@v2
+              uses: oven-sh/setup-bun@v2 # zizmor: ignore[unpinned-uses]
               with:
                   bun-version-file: "${{ github.workspace }}/ReconnectED-web/bun.lock"
 
             - name: Install dependencies
               run: bun install
 
-            - name: Build with Next.js
+            - name: Build with Nuxt.js
               run: bun run build
