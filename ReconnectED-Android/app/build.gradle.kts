@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.getreconnected.reconnected"
-        minSdk = 26
+        minSdk = 31
         targetSdk = 36
         versionCode = 10
         versionName = "0.1.0"
@@ -42,7 +42,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.room.runtime)
-    // val roomVersion = "2.8.1"
+     val roomVersion = "2.8.1"
 
     implementation(libs.vico.compose.m3)
     implementation(libs.androidx.core.ktx)
@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.material)
     implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.googleid)
     //implementation(libs.androidx.room.common.jvm)
     //implementation(libs.androidx.room.ktx)
     //implementation(libs.androidx.work.runtime.ktx)~
@@ -75,7 +76,7 @@ dependencies {
 
     // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
     // See Add the KSP plugin to your project
-    //ksp("androidx.room:room-compiler:$roomVersion")
+//    ksp("androidx.room:room-compiler:$roomVersion")
 
     // If this project only uses Java source, use the Java annotationProcessor
     // No additional plugins are necessary
