@@ -24,6 +24,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.getreconnected.reconnected.MainActivity
 import com.getreconnected.reconnected.R
+import com.getreconnected.reconnected.core.auth.GoogleAuth
+import com.getreconnected.reconnected.ui.navigation.Screens
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import kotlinx.coroutines.delay
 
@@ -75,11 +77,17 @@ fun LoginScreen(navController: NavController) {
                                 .height(49.dp)
                                 .clip(RoundedCornerShape(20.dp))
                                 .clickable {
-                                    val loginIntent = Intent(context, MainActivity::class.java)
+                                    /*val loginIntent = Intent(context, MainActivity::class.java)
                                     loginIntent.flags =
                                             Intent.FLAG_ACTIVITY_NEW_TASK or
                                                     FLAG_ACTIVITY_CLEAR_TASK
-                                    context.startActivity(loginIntent)
+                                    context.startActivity(loginIntent)*/
+                                    val googleAuth = GoogleAuth()
+                                    googleAuth.signIn()
+                                    navController.navigate(Screens.Dashboard.route) {
+                                        // Clears the splash screen from back stack
+                                        popUpTo(Screens.Splash.route) { inclusive = true }
+                                    }
                                 }
         )
         Spacer(modifier = Modifier.height(60.dp))
