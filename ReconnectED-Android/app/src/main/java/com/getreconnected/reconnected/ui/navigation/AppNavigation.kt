@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.getreconnected.reconnected.ui.screens.LoginScreen
+import com.getreconnected.reconnected.ui.screens.MainScreen
 import com.getreconnected.reconnected.ui.screens.SplashScreen
 
 @Composable
@@ -20,11 +21,10 @@ fun AppNavigation() {
             })
         }
         composable(Screens.Login.route) {
-            LoginScreen(navController = navController) // We'll create this screen soon
+            LoginScreen(navController = navController)
         }
-
-//        composable(Screens.Dashboard.route){
-//            MainScreen()
-//        }
+        composable(Screens.Dashboard.route){
+            MainScreen()
+        }
     }
 }

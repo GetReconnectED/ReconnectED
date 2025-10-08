@@ -1,5 +1,6 @@
 [versions]
 agp = "8.13.0"
+coreSplashscreenVersion = "1.0.1"
 firebaseBom = "34.3.0"
 kotlin = "2.0.21"
 coreKtx = "1.10.1"
@@ -13,9 +14,18 @@ appcompat = "1.7.1"
 navigationCompose = "2.9.5"
 coreSplashscreen = "1.2.0-rc01"
 firebaseAuth = "24.0.1"
+roomRuntime = "2.8.1"
+vico = "2.2.0"
+ui = "1.10.0-alpha04"
+uiGraphics = "1.10.0-alpha04"
+uiToolingPreview = "1.10.0-alpha04"
+material3 = "1.5.0-alpha04"
+material = "1.14.0-alpha05"
+materialIconsExtended = "1.7.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen-v101 = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreenVersion" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -35,6 +45,14 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomRuntime" }
+vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "uiGraphics" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "uiToolingPreview" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIconsExtended" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

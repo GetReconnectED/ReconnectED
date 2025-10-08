@@ -23,18 +23,18 @@ fun SplashScreen(onTimeout: () -> Unit) {
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF008F46)),
-        contentAlignment = Alignment.Center
+            modifier = Modifier.fillMaxSize().background(Color(0xFF008F46)),
+            contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.recologo_ca),
-            contentDescription = "Companion App Logo",
-            // This modifier makes the logo responsive
-            modifier = Modifier
-                .fillMaxSize(0.75f) // The logo will take up 75% of the screen's width
-                .padding(16.dp)
+                painter = painterResource(id = R.drawable.recologo_ca),
+                contentDescription = "Companion App Logo",
+                // This modifier makes the logo responsive
+                modifier =
+                        Modifier.fillMaxSize(
+                                        0.75f
+                                ) // The logo will take up 75% of the screen's width
+                                .padding(16.dp)
         )
     }
 }
