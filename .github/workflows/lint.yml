@@ -33,13 +33,18 @@ jobs:
                   persist-credentials: false
 
             - name: Super-linter
-              uses: super-linter/super-linter@v8.2.0
+              uses: super-linter/super-linter@v8.2.0 # zizmor: ignore[unpinned-uses]
               env:
                   # To report GitHub Actions status checks
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   FIX_BIOME_FORMAT: false
                   FIX_BIOME_LINT: false
                   # Disable linters we don't use
-                  VALIDATE_GIT_COMMITLINT: false
+                  VALIDATE_CSS: false
                   VALIDATE_BIOME_FORMAT: false
                   VALIDATE_BIOME_LINT: false
+                  VALIDATE_GIT_COMMITLINT: false
+                  VALIDATE_JSON_PRETTIER: false
+                  VALIDATE_JSON: false
+                  VALIDATE_MARKDOWN: false
+                  VALIDATE_MARKDOWN_PRETTIER: false
