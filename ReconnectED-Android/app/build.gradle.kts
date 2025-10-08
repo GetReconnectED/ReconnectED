@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.material)
     implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.googleid)
     //implementation(libs.androidx.room.common.jvm)
     //implementation(libs.androidx.room.ktx)
     //implementation(libs.androidx.work.runtime.ktx)~
