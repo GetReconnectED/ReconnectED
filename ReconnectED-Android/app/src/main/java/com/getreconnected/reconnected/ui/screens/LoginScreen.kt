@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,21 +15,19 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.getreconnected.reconnected.MainActivity
+import androidx.compose.foundation.Image
 import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import kotlinx.coroutines.delay
 
 @Composable
 fun LoginScreen(navController: NavController) {
-    val context = LocalContext.current
-
     var startAnimation by remember { mutableStateOf(false) }
 
     // Animate alpha (fade-in) and scale (zoom-in)
@@ -62,7 +59,6 @@ fun LoginScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
     ) {
-        // ... (The rest of your UI is the same as before)
         Image(
                 painter = painterResource(id = R.drawable.recologo_ca),
                 contentDescription = "App Logo",
@@ -76,11 +72,7 @@ fun LoginScreen(navController: NavController) {
                                 .height(49.dp)
                                 .clip(RoundedCornerShape(20.dp))
                                 .clickable {
-                                    val loginIntent = Intent(context, MainActivity::class.java)
-                                    loginIntent.flags =
-                                            Intent.FLAG_ACTIVITY_NEW_TASK or
-                                                    FLAG_ACTIVITY_CLEAR_TASK
-                                    context.startActivity(loginIntent)
+                                    navController.navigate("dashboard")
                                 }
         )
         Spacer(modifier = Modifier.height(60.dp))

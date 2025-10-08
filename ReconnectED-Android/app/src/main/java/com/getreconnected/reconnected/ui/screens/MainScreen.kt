@@ -13,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -25,15 +26,14 @@ import com.getreconnected.reconnected.ui.composables.menus.Dashboard
 import com.getreconnected.reconnected.ui.composables.menus.ScreenTimeLimit
 import com.getreconnected.reconnected.ui.composables.menus.ScreenTimeTracker
 import com.getreconnected.reconnected.ui.navigation.Menus
-import com.getreconnected.reconnected.ui.navigation.ReconnectedViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun MainScreen(
-        modifier: Modifier = Modifier,
-        viewModel: ReconnectedViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    modifier: Modifier = Modifier,
+    viewModel: com.getreconnected.reconnected.ui.navigation.ReconnectedViewModel = viewModel()
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -73,7 +73,8 @@ fun MainScreen(
             NavHost(navController = navController, startDestination = Menus.Dashboard.route) {
                 composable(Menus.Dashboard.route) { Dashboard(Modifier.padding(padding)) }
                 composable(Menus.ScreenTimeTracker.route) {
-                    ScreenTimeTracker(Modifier.padding(padding), viewModel)
+                    //ScreenTimeTracker(Modifier.padding(padding), viewModel)
+                    ScreenTimeTracker(Modifier.padding(padding))
                 }
                 composable(Menus.ScreenTimeLimit.route) {
                     ScreenTimeLimit(Modifier.padding(padding))

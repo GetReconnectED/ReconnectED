@@ -7,9 +7,9 @@ import androidx.activity.viewModels
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.getreconnected.reconnected.data.ReconnectedViewModelFactory
-import com.getreconnected.reconnected.navigation.ReconnectedViewModel
-import com.getreconnected.reconnected.screens.MainScreen
-import com.getreconnected.reconnected.ui.theme.ReconnectED_ATheme
+import com.getreconnected.reconnected.ui.navigation.ReconnectedViewModel
+import com.getreconnected.reconnected.ui.screens.MainScreen
+import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 
 class HomeActivity : ComponentActivity() {
     private val viewModel: ReconnectedViewModel by viewModels {
@@ -21,10 +21,6 @@ class HomeActivity : ComponentActivity() {
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
-        setContent {
-            ReconnectED_ATheme {
-                MainScreen(Modifier, viewModel)
-            }
-        }
+        setContent { ReconnectEDTheme { MainScreen(Modifier, viewModel) } }
     }
 }

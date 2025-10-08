@@ -17,8 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.getreconnected.reconnected.data.getDaysActive
-import com.getreconnected.reconnected.navigation.ReconnectedViewModel
 import com.getreconnected.reconnected.ui.elements.WeeklyCard
+import com.getreconnected.reconnected.ui.navigation.ReconnectedViewModel
 
 @Composable
 fun ScreenTimeTracker(modifier: Modifier = Modifier, viewModel: ReconnectedViewModel) {
@@ -26,20 +26,22 @@ fun ScreenTimeTracker(modifier: Modifier = Modifier, viewModel: ReconnectedViewM
     val installTime = getDaysActive(context)
     // Run once on entering the screen
 
-
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(Color(0xFFD1FAE5), Color(0xFFDBEAFE))
-                )
-            )
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        WeeklyScreenTimeList(viewModel)
-    }
+            modifier =
+                    Modifier.fillMaxSize()
+                            .background(
+                                    brush =
+                                            Brush.verticalGradient(
+                                                    colors =
+                                                            listOf(
+                                                                    Color(0xFFD1FAE5),
+                                                                    Color(0xFFDBEAFE)
+                                                            )
+                                            )
+                            )
+                            .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) { WeeklyScreenTimeList(viewModel) }
 }
 
 @Composable
@@ -50,11 +52,6 @@ fun WeeklyScreenTimeList(viewModel: ReconnectedViewModel) {
     if (weeks.isEmpty()) {
         Text("No screen time data yet")
     } else {
-        LazyColumn {
-            items(weeks) { week ->
-                WeeklyCard(week, context)
-            }
-        }
+        LazyColumn { items(weeks) { week -> WeeklyCard(week, context) } }
     }
 }
-
