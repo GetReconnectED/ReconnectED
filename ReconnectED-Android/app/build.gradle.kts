@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.googleid)
     implementation(libs.play.services.auth)
+    implementation(libs.firebase.ui.auth)
     //implementation(libs.androidx.room.common.jvm)
     //implementation(libs.androidx.room.ktx)
     //implementation(libs.androidx.work.runtime.ktx)~
