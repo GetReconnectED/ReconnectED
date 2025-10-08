@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.getreconnected.reconnected.LoginActivity
 import com.getreconnected.reconnected.MainActivity
 import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.core.auth.GoogleAuth
