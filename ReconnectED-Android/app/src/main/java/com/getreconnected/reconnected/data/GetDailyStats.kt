@@ -8,8 +8,7 @@ import java.util.concurrent.TimeUnit
 
 fun getDaysActive(context: Context): Long {
     return try {
-        val firstInstallTime = context.packageManager
-            .getPackageInfo(context.packageName, 0).firstInstallTime
+        val firstInstallTime = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
         val currentTime = System.currentTimeMillis()
         val diff = currentTime - firstInstallTime
         TimeUnit.MILLISECONDS.toDays(diff) + 1
@@ -21,8 +20,7 @@ fun getDaysActive(context: Context): Long {
 fun getScreenTimeInMillis(context: Context): Long {
     if (!hasUsageStatsPermission(context)) return 0L
 
-    val usageStatsManager =
-        context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+    val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
 
     // Start of today (midnight)
     val calendar = Calendar.getInstance().apply {
@@ -45,6 +43,7 @@ fun getScreenTimeInMillis(context: Context): Long {
             UsageEvents.Event.ACTIVITY_RESUMED -> {
                 lastResumeTimestamp = event.timeStamp
             }
+
             UsageEvents.Event.ACTIVITY_PAUSED -> {
                 if (lastResumeTimestamp != null) {
                     totalScreenTime += (event.timeStamp - lastResumeTimestamp!!)
