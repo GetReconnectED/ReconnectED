@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.getreconnected.reconnected.ui.composables.elements.StatCard
+import com.getreconnected.reconnected.ui.elements.StatCard
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
 // TODO: WIP

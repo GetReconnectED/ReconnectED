@@ -34,6 +34,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -41,18 +42,22 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.ui.navigation.Menus
 import com.getreconnected.reconnected.ui.navigation.ReconnectedViewModel
+import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun NavDrawerContent(
+fun NavDrawer(
     navController: NavController,
-    modifier: Modifier = Modifier,
     viewModel: ReconnectedViewModel,
     drawerState: DrawerState,
     scope: CoroutineScope,
+    modifier: Modifier = Modifier,
 ) {
+    val drawerItemShape = RectangleShape
+    val currentBackStack by navController.currentBackStackEntryAsState()
+    val currentDestination = currentBackStack?.destination?.route
     val sidebarButtonText =
         TextStyle(
             fontFamily = interDisplayFamily,
@@ -69,11 +74,6 @@ fun NavDrawerContent(
             unselectedIconColor = Color(0xFFF4F4F4),
             unselectedTextColor = Color(0xFFF4F4F4),
         )
-
-    val drawerItemShape = RectangleShape
-
-    val currentBackStack by navController.currentBackStackEntryAsState()
-    val currentDestination = currentBackStack?.destination?.route
 
     fun navigateAndClose(route: String) {
         navController.navigate(route) {
@@ -242,5 +242,14 @@ fun NavDrawerContent(
                 Spacer(modifier = Modifier.height(24.dp))
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+@Suppress("ktlint:standard:function-naming")
+fun NavDrawerContentPreview() {
+    ReconnectEDTheme {
+        NavDrawer()
     }
 }

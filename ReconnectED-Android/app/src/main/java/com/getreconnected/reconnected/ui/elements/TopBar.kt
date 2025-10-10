@@ -14,15 +14,23 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.getreconnected.reconnected.ui.theme.BackgroundColorLightPrimary2
+import com.getreconnected.reconnected.ui.theme.IconColorLightPrimary
+import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
+import com.getreconnected.reconnected.ui.theme.TextColorLightAccent
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
+/**
+ * The top bar of the app.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@Suppress("ktlint:standard:function-naming")
 fun TopBar(
     title: String,
     onOpenDrawer: () -> Unit,
@@ -30,8 +38,8 @@ fun TopBar(
     TopAppBar(
         colors =
             TopAppBarDefaults.topAppBarColors(
-                containerColor = Color(0xFF008F46), // Green background
-                titleContentColor = Color(0xFFF4F4F4), // Off-white title
+                containerColor = BackgroundColorLightPrimary2,
+                titleContentColor = TextColorLightAccent,
             ),
         title = {
             Text(
@@ -49,7 +57,7 @@ fun TopBar(
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "Menu Icon",
-                    tint = Color(0xFFF4F4F4), // Off-white icon
+                    tint = IconColorLightPrimary,
                 )
             }
         },
@@ -63,9 +71,21 @@ fun TopBar(
                             .padding(1.dp)
                             .width(36.dp)
                             .height(36.dp),
-                    tint = Color(0xFFF4F4F4),
+                    tint = IconColorLightPrimary,
                 )
             }
         },
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+@Suppress("ktlint:standard:function-naming")
+fun TopBarPreview() {
+    ReconnectEDTheme {
+        TopBar(
+            title = "Dashboard",
+            onOpenDrawer = {},
+        )
+    }
 }

@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.ui.composables.elements
+package com.getreconnected.reconnected.ui.elements
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
