@@ -18,8 +18,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.getreconnected.reconnected.ReconnectedApp
-import com.getreconnected.reconnected.data.ReconnectedViewModelFactory
 import com.getreconnected.reconnected.ui.composables.NavDrawerContent
 import com.getreconnected.reconnected.ui.composables.elements.TopBar
 import com.getreconnected.reconnected.ui.composables.menus.Assistant
@@ -30,21 +28,19 @@ import com.getreconnected.reconnected.ui.composables.menus.ScreenTimeTracker
 import com.getreconnected.reconnected.ui.navigation.Menus
 import com.getreconnected.reconnected.ui.navigation.ReconnectedViewModel
 import kotlinx.coroutines.launch
-import kotlin.getValue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    viewModel: ReconnectedViewModel = viewModel()
+    viewModel: ReconnectedViewModel = viewModel(),
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route ?: Menus.Dashboard.route
-
 
     val title =
         when (currentRoute) {
@@ -61,7 +57,7 @@ fun MainScreen(
         drawerState = drawerState,
         drawerContent = {
             NavDrawerContent(navController, viewModel, drawerState, scope, modifier)
-        }
+        },
     ) {
         Scaffold(
             topBar = {
@@ -71,14 +67,14 @@ fun MainScreen(
                         scope.launch {
                             drawerState.apply { if (isClosed) open() else close() }
                         }
-                    }
+                    },
                 )
-            }
+            },
         ) { padding ->
             NavHost(navController = navController, startDestination = Menus.Dashboard.route) {
                 composable(Menus.Dashboard.route) { Dashboard(Modifier.padding(padding)) }
                 composable(Menus.ScreenTimeTracker.route) {
-                    //ScreenTimeTracker(Modifier.padding(padding), viewModel)
+                    // ScreenTimeTracker(Modifier.padding(padding), viewModel)
                     ScreenTimeTracker(Modifier.padding(padding))
                 }
                 composable(Menus.ScreenTimeLimit.route) {

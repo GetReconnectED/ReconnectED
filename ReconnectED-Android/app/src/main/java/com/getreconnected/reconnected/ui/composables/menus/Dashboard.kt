@@ -38,58 +38,66 @@ import java.util.Calendar
 @Composable
 fun Dashboard(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.Companion.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFD1FAE5),
-                        Color(0xFFDBEAFE)
-                    )
-                )
-            )
-            .padding(horizontal = 16.dp),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(
+                    brush =
+                        Brush.Companion.verticalGradient(
+                            colors =
+                                listOf(
+                                    Color(0xFFD1FAE5),
+                                    Color(0xFFDBEAFE),
+                                ),
+                        ),
+                ).padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         GreetingTextWithTime(name = "Juan")
 
         ElevatedCard(
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 6.dp
-            ),
-            colors = CardDefaults.cardColors(
-                containerColor = Color(0xFFF4F4F4),
-            ),
-            modifier = Modifier.Companion
-                .fillMaxWidth()
-                .height(125.dp)
+            elevation =
+                CardDefaults.cardElevation(
+                    defaultElevation = 6.dp,
+                ),
+            colors =
+                CardDefaults.cardColors(
+                    containerColor = Color(0xFFF4F4F4),
+                ),
+            modifier =
+                Modifier.Companion
+                    .fillMaxWidth()
+                    .height(125.dp),
         ) {
             Column(
-                modifier = Modifier.Companion
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp),
+                modifier =
+                    Modifier.Companion
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.Companion.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
             ) {
                 Text(
                     text = "Daily Inspiration",
-                    style = TextStyle(
-                        fontFamily = interDisplayFamily,
-                        fontWeight = FontWeight.Companion.Light
-                    ),
-                    color = Color(0xFF020202)
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                            fontWeight = FontWeight.Companion.Light,
+                        ),
+                    color = Color(0xFF020202),
                 )
                 Text(
                     text = "“Digital detox is not about disconnecting, but reconnecting.”",
-                    style = TextStyle(
-                        fontFamily = interDisplayFamily,
-                        fontWeight = FontWeight.Companion.SemiBold,
-                        fontStyle = FontStyle.Companion.Italic,
-                        fontSize = 16.sp
-                    ),
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                            fontWeight = FontWeight.Companion.SemiBold,
+                            fontStyle = FontStyle.Companion.Italic,
+                            fontSize = 16.sp,
+                        ),
                     textAlign = TextAlign.Companion.Center,
                     modifier = Modifier.Companion.padding(vertical = 8.dp),
-                    color = Color(0xFF020202)
+                    color = Color(0xFF020202),
                 )
             }
         }
@@ -97,25 +105,27 @@ fun Dashboard(modifier: Modifier = Modifier) {
         // The StatCards now use the new color parameter
         Row(
             modifier = Modifier.Companion.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             StatCard(
                 title = "Screen Time Today",
                 value = "3h 15m",
                 icon = Icons.Default.DateRange,
                 color = ScreenTimeTextColorLight,
-                modifier = Modifier.Companion
-                    .weight(1f)
-                    //.requiredHeight(100.dp)
+                modifier =
+                    Modifier.Companion
+                        .weight(1f),
+                // .requiredHeight(100.dp)
             )
             StatCard(
                 title = "Days Active",
                 value = "14 days",
                 icon = Icons.Default.CheckCircle,
                 color = DaysActiveTextColorLight,
-                modifier = Modifier.Companion
-                    .weight(1f)
-                    //.requiredHeight(100.dp)
+                modifier =
+                    Modifier.Companion
+                        .weight(1f),
+                // .requiredHeight(100.dp)
             )
         }
     }
@@ -130,21 +140,23 @@ fun GreetingTextWithTime(name: String) {
     val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
     // Determine the time-based greeting word
-    val timeOfDay = when (hour) {
-        in 5..11 -> "morning"
-        in 12..17 -> "afternoon"
-        in 18..23 -> "evening"
-        else -> "night"
-    }
+    val timeOfDay =
+        when (hour) {
+            in 5..11 -> "morning"
+            in 12..17 -> "afternoon"
+            in 18..23 -> "evening"
+            else -> "night"
+        }
 
     Text(
         modifier = Modifier.padding(top = 16.dp),
         text = "Good $timeOfDay, $name!",
-        style = TextStyle(
-            fontFamily = interDisplayFamily,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
-        ),
-        color = TextColorLightPrimary
+        style =
+            TextStyle(
+                fontFamily = interDisplayFamily,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+            ),
+        color = TextColorLightPrimary,
     )
 }

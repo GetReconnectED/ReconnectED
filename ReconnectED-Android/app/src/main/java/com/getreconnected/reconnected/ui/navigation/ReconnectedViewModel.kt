@@ -1,22 +1,21 @@
 package com.getreconnected.reconnected.ui.navigation
 
 import android.content.Context
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.StateFlow
-import androidx.compose.runtime.State
 import androidx.lifecycle.viewModelScope
 import com.getreconnected.reconnected.data.ScreenTimeRepository
 import com.getreconnected.reconnected.data.WeeklyScreenTime
 import com.getreconnected.reconnected.data.saveWeeklyUsage
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ReconnectedViewModel(
-    private val repository: ScreenTimeRepository
+    private val repository: ScreenTimeRepository,
 ) : ViewModel() {
-
     private val _selected = mutableStateOf(Menus.Dashboard.route)
     val selected: State<String> = _selected
 
@@ -29,22 +28,24 @@ class ReconnectedViewModel(
         repository.allWeeks.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
+            initialValue = emptyList(),
         )
 
     fun insertWeek(week: WeeklyScreenTime) {
         viewModelScope.launch {
             repository.insert(week)
         }
-
     }
 
-    fun refreshWeeklyUsage(context: Context, installTime: Long) {
+    fun refreshWeeklyUsage(
+        context: Context,
+        installTime: Long,
+    ) {
         viewModelScope.launch {
             saveWeeklyUsage(
                 context = context,
                 dao = repository.dao,
-                installTime = installTime
+                installTime = installTime,
             )
         }
     }

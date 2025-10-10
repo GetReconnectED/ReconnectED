@@ -22,9 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.getreconnected.reconnected.R
-import com.getreconnected.reconnected.data.*
+import com.getreconnected.reconnected.data.WeeklyScreenTime
 import java.util.concurrent.TimeUnit
-
 
 fun formatTime(millis: Long): String {
     val hours = TimeUnit.MILLISECONDS.toHours(millis)
@@ -33,28 +32,36 @@ fun formatTime(millis: Long): String {
 }
 
 @Composable
-fun DrawableIcon(drawable: Drawable, modifier: Modifier = Modifier) {
+fun DrawableIcon(
+    drawable: Drawable,
+    modifier: Modifier = Modifier,
+) {
     Image(
         bitmap = drawable.toBitmap().asImageBitmap(),
         contentDescription = null,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
 @Composable
-fun WeeklyCard(week: WeeklyScreenTime, context: Context) {
+fun WeeklyCard(
+    week: WeeklyScreenTime,
+    context: Context,
+) {
     val pm = context.packageManager
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+        elevation = CardDefaults.cardElevation(4.dp),
     ) {
         Row(
-            modifier = Modifier
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier =
+                Modifier
+                    .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Column {
                 Text("Week ${week.weekNumber}", fontWeight = FontWeight.Bold)
@@ -62,16 +69,18 @@ fun WeeklyCard(week: WeeklyScreenTime, context: Context) {
             }
             Row {
                 week.topApps.forEach { pkg ->
-                    val icon = try {
-                        pm.getApplicationIcon(pkg)
-                    } catch (e: PackageManager.NameNotFoundException) {
-                        ContextCompat.getDrawable(context, R.drawable.ic_default_app)!!
-                    }
+                    val icon =
+                        try {
+                            pm.getApplicationIcon(pkg)
+                        } catch (e: PackageManager.NameNotFoundException) {
+                            ContextCompat.getDrawable(context, R.drawable.ic_default_app)!!
+                        }
                     DrawableIcon(
                         drawable = icon,
-                        modifier = Modifier
-                            .size(40.dp)
-                            .padding(4.dp)
+                        modifier =
+                            Modifier
+                                .size(40.dp)
+                                .padding(4.dp),
                     )
                 }
             }

@@ -18,9 +18,12 @@ class GoogleAuth {
      */
     fun showLogin(): Intent {
         Log.d("GoogleAuth", "showLogin called")
-        return this.getGoogleAuthInstance().createSignInIntentBuilder()
+        return this
+            .getGoogleAuthInstance()
+            .createSignInIntentBuilder()
             .setAvailableProviders(listOf(AuthUI.IdpConfig.GoogleBuilder().build()))
-            .setDefaultProvider(AuthUI.IdpConfig.GoogleBuilder().build()).setCredentialManagerEnabled(false)
+            .setDefaultProvider(AuthUI.IdpConfig.GoogleBuilder().build())
+            .setCredentialManagerEnabled(false)
             // FIXME: `.setCredentialManagerEnabled(false)` is a temporary fix for the following error:
             //
             // A sign-in error occurred.

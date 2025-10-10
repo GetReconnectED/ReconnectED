@@ -29,39 +29,48 @@ import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    title: String, onOpenDrawer: () -> Unit
+    title: String,
+    onOpenDrawer: () -> Unit,
 ) {
     TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = BackgroundColorLightPrimary2, titleContentColor = TextColorLightAccent
-    ), title = {
-        Text(
-            text = title, style = TextStyle(
-                fontFamily = interDisplayFamily,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Companion.ExtraBold,
+        colors =
+            TopAppBarDefaults.topAppBarColors(
+                containerColor = BackgroundColorLightPrimary2,
+                titleContentColor = TextColorLightAccent,
+            ),
+        title = {
+            Text(
+                text = title,
+                style =
+                    TextStyle(
+                        fontFamily = interDisplayFamily,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Companion.ExtraBold,
+                    ),
             )
-        )
-    }, navigationIcon = {
-        IconButton(onClick = { onOpenDrawer() }) {
-            Icon(
-                imageVector = Icons.Filled.Menu,
-                contentDescription = "Menu Icon",
-                tint = IconColorLightPrimary
-
-            )
-        }
-    }, actions = {
-        IconButton(onClick = { /* Handle profile click */ }) {
-            Icon(
-                imageVector = Icons.Default.AccountCircle,
-                contentDescription = "User Profile",
-                modifier = Modifier.Companion
-                    .padding(1.dp)
-                    .width(36.dp)
-                    .height(36.dp),
-                tint = IconColorLightPrimary
-            )
-        }
-    })
+        },
+        navigationIcon = {
+            IconButton(onClick = { onOpenDrawer() }) {
+                Icon(
+                    imageVector = Icons.Filled.Menu,
+                    contentDescription = "Menu Icon",
+                    tint = IconColorLightPrimary,
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = { /* Handle profile click */ }) {
+                Icon(
+                    imageVector = Icons.Default.AccountCircle,
+                    contentDescription = "User Profile",
+                    modifier =
+                        Modifier.Companion
+                            .padding(1.dp)
+                            .width(36.dp)
+                            .height(36.dp),
+                    tint = IconColorLightPrimary,
+                )
+            }
+        },
+    )
 }

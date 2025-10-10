@@ -42,25 +42,25 @@ import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
-
 @Composable
 fun LoginScreen(navController: NavController) {
     val auth = FirebaseAuth.getInstance()
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = { result ->
-            if (result.resultCode == AppCompatActivity.RESULT_OK) {
-                // Successfully signed in
-                Log.d("LoginScreen", "Google Sign-In successful")
-                navController.navigate(Screens.Dashboard.route) {
-                    popUpTo(Screens.Login.route) { inclusive = true }
+    val launcher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult(),
+            onResult = { result ->
+                if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                    // Successfully signed in
+                    Log.d("LoginScreen", "Google Sign-In successful")
+                    navController.navigate(Screens.Dashboard.route) {
+                        popUpTo(Screens.Login.route) { inclusive = true }
+                    }
+                } else {
+                    // Sign in failed.
+                    Log.e("LoginScreen", "Google Sign-In failed")
                 }
-            } else {
-                // Sign in failed.
-                Log.e("LoginScreen", "Google Sign-In failed")
-            }
-        }
-    )
+            },
+        )
     val googleAuth = GoogleAuth()
 
     if (auth.currentUser != null) {
@@ -74,13 +74,13 @@ fun LoginScreen(navController: NavController) {
     val alphaAnim =
         animateFloatAsState(
             targetValue = if (startAnimation) 1f else 0f,
-            animationSpec = tween(durationMillis = 1000) // 1 second
+            animationSpec = tween(durationMillis = 1000), // 1 second
         )
 
     val scaleAnim =
         animateFloatAsState(
             targetValue = if (startAnimation) 1f else 0.8f,
-            animationSpec = tween(durationMillis = 1000)
+            animationSpec = tween(durationMillis = 1000),
         )
 
     // Trigger the animation shortly after the screen is composed
@@ -98,14 +98,15 @@ fun LoginScreen(navController: NavController) {
                 .alpha(alphaAnim.value) // Apply the fade-in to the whole screen
                 .scale(scaleAnim.value), // Apply the scale to the whole screen
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Image(
             painter = painterResource(id = R.drawable.recologo_ca),
             contentDescription = "App Logo",
-            modifier = Modifier
-                .width(338.dp)
-                .height(331.dp)
+            modifier =
+                Modifier
+                    .width(338.dp)
+                    .height(331.dp),
         )
         Image(
             painter = painterResource(id = R.drawable.google_signin_button),
@@ -118,7 +119,7 @@ fun LoginScreen(navController: NavController) {
                     .clickable {
                         val signInIntent: Intent? = googleAuth.showLogin()
                         launcher.launch(signInIntent)
-                    }
+                    },
         )
         Spacer(modifier = Modifier.height(60.dp))
     }

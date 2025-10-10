@@ -90,243 +90,273 @@ fun Dashboard(modifier: Modifier = Modifier) {
         context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
     }
 
-    val screenTimeValue = when {
-        !hasPermission -> "Tap to permit"
-        else -> formatScreenTime(screenTimeMillis)
-    }
+    val screenTimeValue =
+        when {
+            !hasPermission -> "Tap to permit"
+            else -> formatScreenTime(screenTimeMillis)
+        }
 
     // --- UI Layout ---
     Column(
-        modifier = modifier
-            .verticalScroll(scrollState)
-            .fillMaxSize()
-            .background(
-                brush = Brush.Companion.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFD1FAE5),
-                        Color(0xFFDBEAFE)
-                    )
-                )
-            )
-            .padding(horizontal = 16.dp),
+        modifier =
+            modifier
+                .verticalScroll(scrollState)
+                .fillMaxSize()
+                .background(
+                    brush =
+                        Brush.Companion.verticalGradient(
+                            colors =
+                                listOf(
+                                    Color(0xFFD1FAE5),
+                                    Color(0xFFDBEAFE),
+                                ),
+                        ),
+                ).padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Spacer(
-            modifier = Modifier
+            modifier = Modifier,
         )
         GreetingTextWithTime(name = "Juan")
 
         ElevatedCard(
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 6.dp
-            ),
-            colors = CardDefaults.cardColors(
-                containerColor = Color(0xFFF4F4F4),
-            ),
-            modifier = Modifier.Companion
-                .fillMaxWidth()
-                .height(125.dp)
+            elevation =
+                CardDefaults.cardElevation(
+                    defaultElevation = 6.dp,
+                ),
+            colors =
+                CardDefaults.cardColors(
+                    containerColor = Color(0xFFF4F4F4),
+                ),
+            modifier =
+                Modifier.Companion
+                    .fillMaxWidth()
+                    .height(125.dp),
         ) {
             Column(
-                modifier = Modifier.Companion
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp),
+                modifier =
+                    Modifier.Companion
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.Companion.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
             ) {
                 Text(
                     text = "Daily Inspiration",
-                    style = TextStyle(
-                        fontFamily = interDisplayFamily,
-                        fontWeight = FontWeight.Companion.Light
-                    ),
-                    color = Color(0xFF020202)
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                            fontWeight = FontWeight.Companion.Light,
+                        ),
+                    color = Color(0xFF020202),
                 )
                 Text(
                     text = "“Digital detox is not about disconnecting, but reconnecting.”",
-                    style = TextStyle(
-                        fontFamily = interDisplayFamily,
-                        fontWeight = FontWeight.Companion.SemiBold,
-                        fontStyle = FontStyle.Companion.Italic,
-                        fontSize = 16.sp
-                    ),
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                            fontWeight = FontWeight.Companion.SemiBold,
+                            fontStyle = FontStyle.Companion.Italic,
+                            fontSize = 16.sp,
+                        ),
                     textAlign = TextAlign.Companion.Center,
                     modifier = Modifier.Companion.padding(vertical = 8.dp),
-                    color = Color(0xFF020202)
+                    color = Color(0xFF020202),
                 )
             }
         }
 
         Row(
             modifier = Modifier.Companion.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp) // Corrected typo here
+            horizontalArrangement = Arrangement.spacedBy(16.dp), // Corrected typo here
         ) {
             StatCard(
                 title = "Screen Time Today",
                 value = screenTimeValue,
                 icon = Icons.Default.DateRange,
                 color = Color(0xFF008F46),
-                modifier = Modifier.Companion
-                    .weight(1f)
-                    .height(80.dp)
-                    .clickable {
-                        if (!hasPermission) {
-                            context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-                        }
-                    }
+                modifier =
+                    Modifier.Companion
+                        .weight(1f)
+                        .height(80.dp)
+                        .clickable {
+                            if (!hasPermission) {
+                                context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                            }
+                        },
             )
             StatCard(
                 title = "Days Active",
                 value = "$daysActive days",
                 icon = Icons.Default.CheckCircle,
                 color = Color(0xFF0453AE),
-                modifier = Modifier.Companion
-                    .weight(1f)
-                    .height(80.dp)
+                modifier =
+                    Modifier.Companion
+                        .weight(1f)
+                        .height(80.dp),
             )
         }
         ElevatedCard(
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 6.dp
-            ),
-            colors = CardDefaults.cardColors(
-                containerColor = Color(0xFFF4F4F4),
-            ),
-            modifier = Modifier.Companion
-                .fillMaxWidth()
+            elevation =
+                CardDefaults.cardElevation(
+                    defaultElevation = 6.dp,
+                ),
+            colors =
+                CardDefaults.cardColors(
+                    containerColor = Color(0xFFF4F4F4),
+                ),
+            modifier =
+                Modifier.Companion
+                    .fillMaxWidth(),
         ) {
             Column(
-                modifier = Modifier.Companion
-                    .padding(horizontal = 16.dp),
+                modifier =
+                    Modifier.Companion
+                        .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.Companion.Start,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
             ) {
                 Text(
                     modifier = Modifier.Companion.padding(top = 16.dp),
                     text = "Weekly Average Screen Time",
-                    style = TextStyle(
-                        fontFamily = interDisplayFamily,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Companion.SemiBold
-                    ),
-                    color = Color(0xFF595959)
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Companion.SemiBold,
+                        ),
+                    color = Color(0xFF595959),
                 )
                 Spacer(Modifier.height(16.dp))
                 WeeklyAvgScreenTimeChart()
                 Spacer(Modifier.height(16.dp))
             }
-
-
         }
         Row(
             modifier = Modifier.Companion.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp) // Corrected typo here
+            horizontalArrangement = Arrangement.spacedBy(16.dp), // Corrected typo here
         ) {
             ElevatedCard(
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                ),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFF4F4F4),
-                ),
-                modifier = Modifier.Companion
-                    .weight(1f)
-                    .height(200.dp)
+                elevation =
+                    CardDefaults.cardElevation(
+                        defaultElevation = 6.dp,
+                    ),
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = Color(0xFFF4F4F4),
+                    ),
+                modifier =
+                    Modifier.Companion
+                        .weight(1f)
+                        .height(200.dp),
             ) {
                 Column(
-                    modifier = Modifier.Companion
-                        .fillMaxSize()
-                        .padding(horizontal = 16.dp, vertical = 16.dp),
-                    horizontalAlignment = Alignment.Companion.Start
+                    modifier =
+                        Modifier.Companion
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp, vertical = 16.dp),
+                    horizontalAlignment = Alignment.Companion.Start,
                 ) {
                     Text(
                         text = "AI Assistant",
-                        style = TextStyle(
-                            fontFamily = interDisplayFamily,
-                            fontWeight = FontWeight.Companion.Bold,
-                            fontSize = 16.sp
-                        ),
-                        color = Color(0xFF595959)
+                        style =
+                            TextStyle(
+                                fontFamily = interDisplayFamily,
+                                fontWeight = FontWeight.Companion.Bold,
+                                fontSize = 16.sp,
+                            ),
+                        color = Color(0xFF595959),
                     )
                     Box(
-                        modifier = Modifier.Companion
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                        modifier =
+                            Modifier.Companion
+                                .fillMaxWidth(),
+                        contentAlignment = Alignment.Center,
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.gemini_logo),
                             contentDescription = "Gemini AI Logo",
-                            modifier = Modifier
-                                .height(128.dp)
-                                .width(128.dp)
-                                .padding(16.dp)
+                            modifier =
+                                Modifier
+                                    .height(128.dp)
+                                    .width(128.dp)
+                                    .padding(16.dp),
                         )
                     }
                     Text(
                         text = "Advisor powered by GemIni API",
-                        style = TextStyle(
-                            fontFamily = interDisplayFamily,
-                            fontWeight = FontWeight.Companion.Normal,
-                            fontSize = 12.sp
-                        ),
-                        color = Color(0xFF595959)
+                        style =
+                            TextStyle(
+                                fontFamily = interDisplayFamily,
+                                fontWeight = FontWeight.Companion.Normal,
+                                fontSize = 12.sp,
+                            ),
+                        color = Color(0xFF595959),
                     )
                 }
             }
             ElevatedCard(
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                ),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFF4F4F4),
-                ),
-                modifier = Modifier.Companion
-                    .weight(1f)
-                    .height(200.dp)
+                elevation =
+                    CardDefaults.cardElevation(
+                        defaultElevation = 6.dp,
+                    ),
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = Color(0xFFF4F4F4),
+                    ),
+                modifier =
+                    Modifier.Companion
+                        .weight(1f)
+                        .height(200.dp),
             ) {
                 Column(
-                    modifier = Modifier.Companion
-                        .fillMaxSize()
-                        .padding(horizontal = 16.dp, vertical = 16.dp),
-                    horizontalAlignment = Alignment.Companion.Start
+                    modifier =
+                        Modifier.Companion
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp, vertical = 16.dp),
+                    horizontalAlignment = Alignment.Companion.Start,
                 ) {
                     Text(
                         text = "Limit App Usage",
-                        style = TextStyle(
-                            fontFamily = interDisplayFamily,
-                            fontWeight = FontWeight.Companion.Bold,
-                            fontSize = 16.sp
-                        ),
-                        color = Color(0xFF595959)
+                        style =
+                            TextStyle(
+                                fontFamily = interDisplayFamily,
+                                fontWeight = FontWeight.Companion.Bold,
+                                fontSize = 16.sp,
+                            ),
+                        color = Color(0xFF595959),
                     )
                     Box(
-                        modifier = Modifier.Companion
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                        modifier =
+                            Modifier.Companion
+                                .fillMaxWidth(),
+                        contentAlignment = Alignment.Center,
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.screen_time_limit_green),
                             contentDescription = "Limit App Usage",
-                            modifier = Modifier
-                                .height(128.dp)
-                                .width(128.dp)
-                                .padding(16.dp)
+                            modifier =
+                                Modifier
+                                    .height(128.dp)
+                                    .width(128.dp)
+                                    .padding(16.dp),
                         )
                     }
                     Text(
                         text = "Set time limits to your applications and restrict usage",
-                        style = TextStyle(
-                            fontFamily = interDisplayFamily,
-                            fontWeight = FontWeight.Companion.Normal,
-                            fontSize = 12.sp
-                        ),
-                        color = Color(0xFF595959)
+                        style =
+                            TextStyle(
+                                fontFamily = interDisplayFamily,
+                                fontWeight = FontWeight.Companion.Normal,
+                                fontSize = 12.sp,
+                            ),
+                        color = Color(0xFF595959),
                     )
                 }
             }
         }
         Spacer(
-            modifier = Modifier
+            modifier = Modifier,
         )
     }
 }
@@ -334,32 +364,34 @@ fun Dashboard(modifier: Modifier = Modifier) {
 @Composable
 fun GreetingTextWithTime(name: String) {
     val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-    val timeOfDay = when (hour) {
-        in 5..11 -> "morning"
-        in 12..17 -> "afternoon"
-        in 18..23 -> "evening"
-        else -> "night"
-    }
+    val timeOfDay =
+        when (hour) {
+            in 5..11 -> "morning"
+            in 12..17 -> "afternoon"
+            in 18..23 -> "evening"
+            else -> "night"
+        }
     Text(
         text = "Good $timeOfDay, $name!",
-        style = TextStyle(
-            fontFamily = interDisplayFamily,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Companion.Bold
-        ),
-        color = Color(0xFF020202)
+        style =
+            TextStyle(
+                fontFamily = interDisplayFamily,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Companion.Bold,
+            ),
+        color = Color(0xFF020202),
     )
 }
 
 private val BottomAxisLabelKey = ExtraStore.Key<List<String>>()
 
-private val BottomAxisValueFormatter = CartesianValueFormatter { context, x, _ ->
-    context.model.extraStore[BottomAxisLabelKey][x.toInt()]
-}
+private val BottomAxisValueFormatter =
+    CartesianValueFormatter { context, x, _ ->
+        context.model.extraStore[BottomAxisLabelKey][x.toInt()]
+    }
 
 private val data =
     mapOf("Sun" to 1, "Mon" to 2, "Tue" to 6, "Wed" to 4, "Thu" to 9, "Fri" to 5, "Sat" to 3)
-
 
 @Composable
 private fun WeeklyAvgScreenTimeChart(
@@ -371,30 +403,32 @@ private fun WeeklyAvgScreenTimeChart(
             rememberCartesianChart(
                 rememberColumnCartesianLayer(
                     ColumnCartesianLayer.ColumnProvider.series(
-                        rememberLineComponent(fill = fill(Color(0xff008F46)), thickness = 16.dp)
-                    )
+                        rememberLineComponent(fill = fill(Color(0xff008F46)), thickness = 16.dp),
+                    ),
                 ),
-                startAxis = VerticalAxis.rememberStart(
-                    label = rememberTextComponent(
-                        color = Color(0xFF595959),
-                        textSize = 12.sp,
-                        )
-                ),
+                startAxis =
+                    VerticalAxis.rememberStart(
+                        label =
+                            rememberTextComponent(
+                                color = Color(0xFF595959),
+                                textSize = 12.sp,
+                            ),
+                    ),
                 bottomAxis =
                     HorizontalAxis.rememberBottom(
                         itemPlacer = remember { HorizontalAxis.ItemPlacer.segmented() },
                         valueFormatter = BottomAxisValueFormatter,
-                        label = rememberTextComponent(
-                            color = Color(0xFF595959),
-                            textSize = 12.sp,
-                        )
+                        label =
+                            rememberTextComponent(
+                                color = Color(0xFF595959),
+                                textSize = 12.sp,
+                            ),
                     ),
-                layerPadding = { cartesianLayerPadding(scalableStart = 8.dp, scalableEnd = 8.dp) }
+                layerPadding = { cartesianLayerPadding(scalableStart = 8.dp, scalableEnd = 8.dp) },
             ),
         modelProducer = modelProducer,
         modifier = modifier,
-
-        )
+    )
 }
 
 @Composable

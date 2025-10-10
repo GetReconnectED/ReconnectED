@@ -41,66 +41,72 @@ data class AppUsageInfo(
     val name: String,
     val usageTime: String,
     val icon: ImageVector,
-    val iconBackgroundColor: Color
+    val iconBackgroundColor: Color,
 )
 
 @Composable
 fun ScreenTimeLimit(modifier: Modifier = Modifier) {
-    val appList = listOf(
-        AppUsageInfo(
-            name = "YouTube",
-            usageTime = "2h 39m",
-            icon = Icons.Filled.PlayArrow,
-            iconBackgroundColor = Color(0xFFFF0000)
-        ),
-        AppUsageInfo(
-            name = "Facebook",
-            usageTime = "2h 10m",
-            icon = Icons.Filled.ThumbUp,
-            iconBackgroundColor = Color(0xFF1877F2)
+    val appList =
+        listOf(
+            AppUsageInfo(
+                name = "YouTube",
+                usageTime = "2h 39m",
+                icon = Icons.Filled.PlayArrow,
+                iconBackgroundColor = Color(0xFFFF0000),
+            ),
+            AppUsageInfo(
+                name = "Facebook",
+                usageTime = "2h 10m",
+                icon = Icons.Filled.ThumbUp,
+                iconBackgroundColor = Color(0xFF1877F2),
+            ),
         )
-    )
 
     // The Scaffold and TopAppBar have been removed.
     // This Column is now the main container for your screen's content.
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFD1FAE5),
-                        Color(0xFFDBEAFE)
-                    )
-                )
-            )
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(
+                    brush =
+                        Brush.verticalGradient(
+                            colors =
+                                listOf(
+                                    Color(0xFFD1FAE5),
+                                    Color(0xFFDBEAFE),
+                                ),
+                        ),
+                ).padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         // "Limit your application usage" Text
         Text(
             modifier = Modifier.padding(top = 16.dp),
             text = "Limit your application usage",
-            style = TextStyle(
-                fontFamily = interDisplayFamily,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
+            style =
+                TextStyle(
+                    fontFamily = interDisplayFamily,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+                ),
         )
 
         // The Card containing the list
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f), // Allow card to take remaining space
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+            // Allow card to take remaining space
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(vertical = 8.dp)
+                contentPadding = PaddingValues(vertical = 8.dp),
             ) {
                 items(appList) { app ->
                     AppUsageLimitItem(appInfo = app)
@@ -110,53 +116,56 @@ fun ScreenTimeLimit(modifier: Modifier = Modifier) {
     }
 }
 
-
 @Composable
 fun AppUsageLimitItem(appInfo: AppUsageInfo) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(appInfo.iconBackgroundColor),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(appInfo.iconBackgroundColor),
+            contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = appInfo.icon,
                 contentDescription = "${appInfo.name} logo",
                 tint = Color.White,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp),
             )
         }
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = appInfo.name,
-                style = TextStyle(
-                    fontFamily = interDisplayFamily,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium
-                )
+                style =
+                    TextStyle(
+                        fontFamily = interDisplayFamily,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                    ),
             )
             Text(
                 text = appInfo.usageTime,
-                style = TextStyle(
-                    fontFamily = interDisplayFamily,
-                    fontSize = 14.sp,
-                    color = Color.Gray
-                )
+                style =
+                    TextStyle(
+                        fontFamily = interDisplayFamily,
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                    ),
             )
         }
         IconButton(onClick = { /* Handle settings click */ }) {
             Icon(
                 imageVector = Icons.Filled.Person,
                 contentDescription = "Set Limit",
-                tint = Color.Gray
+                tint = Color.Gray,
             )
         }
     }

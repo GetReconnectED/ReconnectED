@@ -14,19 +14,20 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun Calendar(modifier: Modifier = Modifier.Companion) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.Companion.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFD1FAE5),
-                        Color(0xFFDBEAFE)
-                    )
-                )
-            )
-            .padding(horizontal = 16.dp),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(
+                    brush =
+                        Brush.Companion.verticalGradient(
+                            colors =
+                                listOf(
+                                    Color(0xFFD1FAE5),
+                                    Color(0xFFDBEAFE),
+                                ),
+                        ),
+                ).padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-
     }
 }

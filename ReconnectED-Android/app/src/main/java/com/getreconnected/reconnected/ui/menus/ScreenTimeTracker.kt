@@ -21,26 +21,29 @@ import com.getreconnected.reconnected.ui.elements.WeeklyCard
 import com.getreconnected.reconnected.ui.navigation.ReconnectedViewModel
 
 @Composable
-fun ScreenTimeTracker(modifier: Modifier = Modifier, viewModel: ReconnectedViewModel) {
+fun ScreenTimeTracker(
+    modifier: Modifier = Modifier,
+    viewModel: ReconnectedViewModel,
+) {
     val context = LocalContext.current
-    val installTime = getDaysActive(context)
+    getDaysActive(context)
     // Run once on entering the screen
 
     Column(
-            modifier =
-                    Modifier.fillMaxSize()
-                            .background(
-                                    brush =
-                                            Brush.verticalGradient(
-                                                    colors =
-                                                            listOf(
-                                                                    Color(0xFFD1FAE5),
-                                                                    Color(0xFFDBEAFE)
-                                                            )
-                                            )
-                            )
-                            .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(
+                    brush =
+                        Brush.verticalGradient(
+                            colors =
+                                listOf(
+                                    Color(0xFFD1FAE5),
+                                    Color(0xFFDBEAFE),
+                                ),
+                        ),
+                ).padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) { WeeklyScreenTimeList(viewModel) }
 }
 

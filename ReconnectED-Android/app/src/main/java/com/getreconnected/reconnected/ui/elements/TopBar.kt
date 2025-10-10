@@ -24,40 +24,48 @@ import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    title: String, onOpenDrawer: () -> Unit
+    title: String,
+    onOpenDrawer: () -> Unit,
 ) {
     TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = Color(0xFF008F46), // Green background
-        titleContentColor = Color(0xFFF4F4F4)  // Off-white title
-    ), title = {
-        Text(
-            text = title, style = TextStyle(
-                fontFamily = interDisplayFamily,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Companion.ExtraBold,
+        colors =
+            TopAppBarDefaults.topAppBarColors(
+                containerColor = Color(0xFF008F46), // Green background
+                titleContentColor = Color(0xFFF4F4F4), // Off-white title
+            ),
+        title = {
+            Text(
+                text = title,
+                style =
+                    TextStyle(
+                        fontFamily = interDisplayFamily,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Companion.ExtraBold,
+                    ),
             )
-        )
-    }, navigationIcon = {
-        IconButton(onClick = { onOpenDrawer() }) {
-            Icon(
-                imageVector = Icons.Filled.Menu,
-                contentDescription = "Menu Icon",
-                tint = Color(0xFFF4F4F4) // Off-white icon
-
-            )
-        }
-    }, actions = {
-        IconButton(onClick = { /* Handle profile click */ }) {
-            Icon(
-                imageVector = Icons.Default.AccountCircle,
-                contentDescription = "User Profile",
-                modifier = Modifier.Companion
-                    .padding(1.dp)
-                    .width(36.dp)
-                    .height(36.dp),
-                tint = Color(0xFFF4F4F4)
-            )
-        }
-    })
+        },
+        navigationIcon = {
+            IconButton(onClick = { onOpenDrawer() }) {
+                Icon(
+                    imageVector = Icons.Filled.Menu,
+                    contentDescription = "Menu Icon",
+                    tint = Color(0xFFF4F4F4), // Off-white icon
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = { /* Handle profile click */ }) {
+                Icon(
+                    imageVector = Icons.Default.AccountCircle,
+                    contentDescription = "User Profile",
+                    modifier =
+                        Modifier.Companion
+                            .padding(1.dp)
+                            .width(36.dp)
+                            .height(36.dp),
+                    tint = Color(0xFFF4F4F4),
+                )
+            }
+        },
+    )
 }

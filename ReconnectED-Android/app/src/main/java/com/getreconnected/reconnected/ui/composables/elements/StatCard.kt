@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.ui.theme.CardColorLightPrimary
 import com.getreconnected.reconnected.ui.theme.TextColorLightPrimary
-
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
 /**
@@ -33,38 +32,44 @@ fun StatCard(
     value: String,
     icon: ImageVector,
     color: Color,
-    modifier: Modifier = Modifier.Companion
+    modifier: Modifier = Modifier.Companion,
 ) {
     ElevatedCard(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = CardColorLightPrimary)
+        colors = CardDefaults.cardColors(containerColor = CardColorLightPrimary),
     ) {
         Row(
             modifier = Modifier.Companion.padding(16.dp),
-            verticalAlignment = Alignment.Companion.CenterVertically
+            verticalAlignment = Alignment.Companion.CenterVertically,
         ) {
             Column(
-                modifier = Modifier.Companion.weight(1f)
+                modifier = Modifier.Companion.weight(1f),
             ) {
                 Text(
-                    text = title, style = TextStyle(
-                        fontFamily = interDisplayFamily
-                    ), color = TextColorLightPrimary
+                    text = title,
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                        ),
+                    color = TextColorLightPrimary,
                 )
                 Text(
-                    text = value, style = TextStyle(
-                        fontFamily = interDisplayFamily,
-                        fontWeight = FontWeight.Companion.Bold,
-                        fontSize = 24.sp
-                    ), color = color // Use the color parameter
+                    text = value,
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                            fontWeight = FontWeight.Companion.Bold,
+                            fontSize = 24.sp,
+                        ),
+                    color = color, // Use the color parameter
                 )
             }
             Spacer(modifier = Modifier.Companion.width(8.dp))
             Icon(
                 imageVector = icon,
                 contentDescription = title,
-                tint = color // Use the color parameter
+                tint = color, // Use the color parameter
             )
         }
     }
