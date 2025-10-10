@@ -18,7 +18,7 @@ fun AppNavigation() {
             SplashScreen(onTimeout = {
                 navController.navigate(Screens.Login.name) {
                     // Clears the splash screen from back stack
-                    popUpTo(Screens.Splash) { inclusive = true }
+                    popUpTo(Screens.Splash.name) { inclusive = true }
                 }
             })
         }

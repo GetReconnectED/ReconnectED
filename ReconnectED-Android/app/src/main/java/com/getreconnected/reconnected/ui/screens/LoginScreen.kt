@@ -52,8 +52,8 @@ fun LoginScreen(navController: NavController) {
                 if (result.resultCode == AppCompatActivity.RESULT_OK) {
                     // Successfully signed in
                     Log.d("LoginScreen", "Google Sign-In successful")
-                    navController.navigate(Screens.Dashboard) {
-                        popUpTo(Screens.Login) { inclusive = true }
+                    navController.navigate(Screens.Dashboard.name) {
+                        popUpTo(Screens.Login.name) { inclusive = true }
                     }
                 } else {
                     // Sign in failed.
@@ -65,7 +65,7 @@ fun LoginScreen(navController: NavController) {
 
     if (auth.currentUser != null) {
         // User is already signed in, navigate to the main screen
-        navController.navigate(Screens.Dashboard)
+        navController.navigate(Screens.Dashboard.name)
     }
 
     var startAnimation by remember { mutableStateOf(false) }

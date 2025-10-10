@@ -21,13 +21,13 @@ import androidx.navigation.compose.rememberNavController
 import com.getreconnected.reconnected.core.models.Menus
 import com.getreconnected.reconnected.core.models.getMenuRoute
 import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
-import com.getreconnected.reconnected.ui.menus.ScreenTimeLimit
+import com.getreconnected.reconnected.ui.composables.NavDrawer
+import com.getreconnected.reconnected.ui.composables.elements.TopBar
 import com.getreconnected.reconnected.ui.menus.Assistant
 import com.getreconnected.reconnected.ui.menus.Calendar
 import com.getreconnected.reconnected.ui.menus.Dashboard
-import com.getreconnected.reconnected.ui.composables.NavDrawer
+import com.getreconnected.reconnected.ui.menus.ScreenTimeLimit
 import com.getreconnected.reconnected.ui.menus.ScreenTimeTracker
-import com.getreconnected.reconnected.ui.composables.elements.TopBar
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import kotlinx.coroutines.launch
 
@@ -74,17 +74,17 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 )
             },
         ) { padding ->
-            NavHost(navController = navController, startDestination = Menus.Dashboard.title) {
-                composable(Menus.Dashboard.title) { Dashboard(viewModel, Modifier.padding(padding)) }
-                composable(Menus.ScreenTimeTracker.title) {
+            NavHost(navController = navController, startDestination = Menus.Dashboard.name) {
+                composable(Menus.Dashboard.name) { Dashboard(viewModel, Modifier.padding(padding)) }
+                composable(Menus.ScreenTimeTracker.name) {
                     // ScreenTimeTracker(Modifier.padding(padding), viewModel)
                     ScreenTimeTracker(Modifier.padding(padding))
                 }
-                composable(Menus.ScreenTimeLimit.title) {
+                composable(Menus.ScreenTimeLimit.name) {
                     ScreenTimeLimit(Modifier.padding(padding))
                 }
-                composable(Menus.Calendar.title) { Calendar(Modifier.padding(padding)) }
-                composable(Menus.Assistant.title) { Assistant(Modifier.padding(padding)) }
+                composable(Menus.Calendar.name) { Calendar(Modifier.padding(padding)) }
+                composable(Menus.Assistant.name) { Assistant(Modifier.padding(padding)) }
             }
         }
     }

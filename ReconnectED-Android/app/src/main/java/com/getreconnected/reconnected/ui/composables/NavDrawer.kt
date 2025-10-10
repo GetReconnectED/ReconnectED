@@ -80,7 +80,7 @@ fun NavDrawer(
 
     fun navigateAndClose(route: String) {
         navController.navigate(route) {
-            popUpTo(Menus.Dashboard) { inclusive = false }
+            popUpTo(Menus.Dashboard.name) { inclusive = false }
             launchSingleTop = true
         }
         viewModel.setSelectedRoute(getMenuRoute(route))
@@ -112,8 +112,8 @@ fun NavDrawer(
                     )
                 },
                 label = { Text("Dashboard", style = sidebarButtonText) },
-                selected = currentDestination == Menus.Dashboard.title,
-                onClick = { navigateAndClose(Menus.Dashboard.title) },
+                selected = currentDestination == Menus.Dashboard.name,
+                onClick = { navigateAndClose(Menus.Dashboard.name) },
                 shape = drawerItemShape,
             )
 
@@ -125,8 +125,8 @@ fun NavDrawer(
                     )
                 },
                 label = { Text("Screen Time Tracker", style = sidebarButtonText) },
-                selected = currentDestination == Menus.ScreenTimeTracker.title,
-                onClick = { navigateAndClose(Menus.ScreenTimeTracker.title) },
+                selected = currentDestination == Menus.ScreenTimeTracker.name,
+                onClick = { navigateAndClose(Menus.ScreenTimeTracker.name) },
                 shape = drawerItemShape,
             )
 
@@ -138,8 +138,8 @@ fun NavDrawer(
                     )
                 },
                 label = { Text("Screen Time Limit", style = sidebarButtonText) },
-                selected = currentDestination == Menus.ScreenTimeLimit.title,
-                onClick = { navigateAndClose(Menus.ScreenTimeLimit.title) },
+                selected = currentDestination == Menus.ScreenTimeLimit.name,
+                onClick = { navigateAndClose(Menus.ScreenTimeLimit.name) },
                 shape = drawerItemShape,
             )
 
@@ -151,8 +151,8 @@ fun NavDrawer(
                     )
                 },
                 label = { Text("Calendar", style = sidebarButtonText) },
-                selected = currentDestination == Menus.Calendar.title,
-                onClick = { navigateAndClose(Menus.Calendar.title) },
+                selected = currentDestination == Menus.Calendar.name,
+                onClick = { navigateAndClose(Menus.Calendar.name) },
                 shape = drawerItemShape,
             )
 
@@ -164,8 +164,8 @@ fun NavDrawer(
                     )
                 },
                 label = { Text("AI Assistant", style = sidebarButtonText) },
-                selected = currentDestination == Menus.Assistant.title,
-                onClick = { navigateAndClose(Menus.Assistant.title) },
+                selected = currentDestination == Menus.Assistant.name,
+                onClick = { navigateAndClose(Menus.Assistant.name) },
                 shape = drawerItemShape,
             )
             // This spacer pushes the profile section to the bottom
