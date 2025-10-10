@@ -2,23 +2,27 @@ package com.getreconnected.reconnected.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val TextColorLightPrimary = Color(0xFF020202)
-val TextColorLightAccent = Color(0xFFF4F4F4)
-val TextColorLightSelected = Color(0xFF5BB56E)
-val TextColorDarkPrimary = Color(0xFFF4F4F4)
+object LightThemeColors {
+    val primary = Color(0xFF008F46)
+    val secondary = Color(0xFF5BB56E)
+    val tertiary = Color(0xFF10B981)
+    val textPrimary = Color(0xFF1A1A1A)
+    val textSecondary = Color(0xFF262626)
+    val backgroundBase = Color(0xFFEFF1F5)
+    val backgroundMantle = Color(0xFFE6E9EF)
+    val backgroundCrust = Color(0xFFDCE0E8)
+}
 
-val IconColorLightPrimary = Color(0xFFF4F4F4)
-val IconColorLightActive = Color.White
-
-val ContainerColorLightPrimary = Color.Transparent
-val ContainerColorLightSelected = Color(0xFF5BB56E)
-val ContainerColorDarkPrimary = Color.Transparent
-val ContainerColorDarkSelected = Color(0xFF5BB56E)
-
-val DrawerContainerLightColor = Color(0xFF008F46)
-
-val CardColorLightPrimary = Color(0xFFF4F4F4)
-val CardColorLightAccent = Color(0xFF10B981) // Slightly lighter green
+object DarkThemeColors {
+    val primary = Color(0xFF008F46)
+    val secondary = Color(0xFF5BB56E)
+    val tertiary = Color(0xFF10B981)
+    val textPrimary = Color(0xFFF1F1F1)
+    val textSecondary = Color(0xFFE6E6E6)
+    val backgroundBase = Color(0xFF1A1C2A)
+    val backgroundMantle = Color(0xFF1F2132)
+    val backgroundCrust = Color(0xFF24273B)
+}
 
 val ScreenTimeTextColorLight = Color(0xFF008F46)
 val DaysActiveTextColorLight = Color(0xFF0453AE)

@@ -8,21 +8,15 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.getreconnected.reconnected.legacy.ui.theme.Typography
 
-private val DarkColorScheme =
-    darkColorScheme(
-        primary = BackgroundColorDarkPrimary,
-        secondary = ContainerColorDarkSelected,
-        tertiary = TextColorDarkPrimary,
-    )
-
-private val LightColorScheme =
+private val lightColorScheme =
     lightColorScheme(
-        primary = BackgroundColorLightPrimary,
-        secondary = ContainerColorLightPrimary,
-        tertiary = TextColorLightAccent,
+        primary = LightThemeColors.primary,
+        secondary = LightThemeColors.secondary,
+        tertiary = LightThemeColors.tertiary,
+        background = LightThemeColors.backgroundBase,
         /* Other default colors to override
-        background = Color(0xFFFFFBFE),
         surface = Color(0xFFFFFBFE),
         onPrimary = Color.White,
         onSecondary = Color.White,
@@ -32,11 +26,19 @@ private val LightColorScheme =
          */
     )
 
+private val darkColorScheme =
+    darkColorScheme(
+        primary = DarkThemeColors.primary,
+        secondary = DarkThemeColors.secondary,
+        tertiary = DarkThemeColors.tertiary,
+        background = DarkThemeColors.backgroundBase,
+    )
+
 @Composable
+@Suppress("ktlint:standard:function-naming")
 fun ReconnectEDTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = true, // Dynamic color is available on Android 12+
     content: @Composable () -> Unit,
 ) {
     val colorScheme =
@@ -51,8 +53,8 @@ fun ReconnectEDTheme(
                 }
             }
 
-            darkTheme -> DarkColorScheme
-            else -> LightColorScheme
+            darkTheme -> darkColorScheme
+            else -> lightColorScheme
         }
 
     MaterialTheme(colorScheme = colorScheme, typography = Typography, content = content)
