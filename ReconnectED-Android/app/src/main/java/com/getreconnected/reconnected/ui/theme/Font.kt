@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.legacy.ui.theme
+package com.getreconnected.reconnected.ui.theme
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -35,5 +35,5 @@ val sidebarButtonTextStyle =
         fontFamily = interDisplayFamily,
         fontSize = 24.sp,
         fontWeight = FontWeight.Bold,
-        color = TextColorLightAccent,
+        color = LightThemeColors.textPrimary,
     )
