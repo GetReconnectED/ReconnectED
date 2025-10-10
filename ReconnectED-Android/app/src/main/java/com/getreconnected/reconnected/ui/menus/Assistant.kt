@@ -36,8 +36,7 @@ fun Assistant(modifier: Modifier = Modifier.Companion) {
             .background(
                 brush = Brush.Companion.verticalGradient(
                     colors = listOf(
-                        Color(0xFFD1FAE5),
-                        Color(0xFFDBEAFE)
+                        Color(0xFFD1FAE5), Color(0xFFDBEAFE)
                     )
                 )
             )
@@ -45,24 +44,17 @@ fun Assistant(modifier: Modifier = Modifier.Companion) {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
-            modifier = Modifier.Companion.padding(top = 16.dp),
-            text = "AI Assistant",
-            style = TextStyle(
-                fontFamily = interDisplayFamily,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Companion.Bold
-            ),
-            color = Color(0xFF020202)
+            modifier = Modifier.Companion.padding(top = 16.dp), text = "AI Assistant", style = TextStyle(
+                fontFamily = interDisplayFamily, fontSize = 24.sp, fontWeight = FontWeight.Companion.Bold
+            ), color = Color(0xFF020202)
         )
 
         ElevatedCard(
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 6.dp
-            ),
-            colors = CardDefaults.cardColors(
+            ), colors = CardDefaults.cardColors(
                 containerColor = Color(0xFFF4F4F4),
-            ),
-            modifier = Modifier.Companion
+            ), modifier = Modifier.Companion
                 .fillMaxWidth()
                 .height(125.dp)
         ) {
@@ -74,12 +66,9 @@ fun Assistant(modifier: Modifier = Modifier.Companion) {
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Daily Inspiration",
-                    style = TextStyle(
-                        fontFamily = interDisplayFamily,
-                        fontWeight = FontWeight.Companion.Light
-                    ),
-                    color = Color(0xFF020202)
+                    text = "Daily Inspiration", style = TextStyle(
+                        fontFamily = interDisplayFamily, fontWeight = FontWeight.Companion.Light
+                    ), color = Color(0xFF020202)
                 )
                 Text(
                     text = "“Digital detox is not about disconnecting, but reconnecting.”",
@@ -98,16 +87,14 @@ fun Assistant(modifier: Modifier = Modifier.Companion) {
 
         // The StatCards now use the new color parameter
         Row(
-            modifier = Modifier.Companion.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.Companion.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             StatCard(
                 title = "Screen Time Today",
                 value = "3h 15m",
                 icon = Icons.Default.DateRange,
                 color = Color(0xFF008F46), // Green color
-                modifier = Modifier.Companion
-                    .weight(1f)
+                modifier = Modifier.Companion.weight(1f)
 //                        .requiredHeight(100.dp)
             )
             StatCard(
@@ -115,8 +102,7 @@ fun Assistant(modifier: Modifier = Modifier.Companion) {
                 value = "14 days",
                 icon = Icons.Default.CheckCircle,
                 color = Color(0xFF0453AE), // Blue color
-                modifier = Modifier.Companion
-                    .weight(1f)
+                modifier = Modifier.Companion.weight(1f)
 //                        .requiredHeight(100.dp)
             )
         }

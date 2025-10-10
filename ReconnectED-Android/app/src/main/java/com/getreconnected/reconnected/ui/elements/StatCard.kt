@@ -27,12 +27,8 @@ import com.getreconnected.reconnected.ui.theme.interDisplayFamily
  */
 @Composable
 fun StatCard(
-    title: String,
-    value: String,
-    icon: ImageVector,
-    color: Color, // The new color parameter
-    modifier: Modifier = Modifier.Companion,
-    valueFontSize: TextUnit = 24.sp
+    title: String, value: String, icon: ImageVector, color: Color, // The new color parameter
+    modifier: Modifier = Modifier.Companion, valueFontSize: TextUnit = 24.sp
 ) {
     ElevatedCard(
         modifier = modifier,
@@ -42,36 +38,27 @@ fun StatCard(
         )
     ) {
         Row(
-            modifier = Modifier.Companion.padding(16.dp),
-            verticalAlignment = Alignment.Companion.CenterVertically
+            modifier = Modifier.Companion.padding(16.dp), verticalAlignment = Alignment.Companion.CenterVertically
         ) {
             Column(
                 modifier = Modifier.Companion.weight(1f)
             ) {
                 Text(
-                    text = title,
-                    style = TextStyle(
-                        fontFamily = interDisplayFamily,
-                        fontWeight = FontWeight.Companion.Normal,
-                        fontSize = 14.sp
-                    ),
-                    color = Color(0xFF020202)
+                    text = title, style = TextStyle(
+                        fontFamily = interDisplayFamily, fontWeight = FontWeight.Companion.Normal, fontSize = 14.sp
+                    ), color = Color(0xFF020202)
                 )
                 Text(
-                    text = value,
-                    style = TextStyle(
+                    text = value, style = TextStyle(
                         fontFamily = interDisplayFamily,
                         fontWeight = FontWeight.Companion.Bold,
                         fontSize = valueFontSize,
-                    ),
-                    color = color // Use the color parameter
+                    ), color = color // Use the color parameter
                 )
             }
             Spacer(modifier = Modifier.Companion.width(8.dp))
             Icon(
-                imageVector = icon,
-                contentDescription = title,
-                tint = color // Use the color parameter
+                imageVector = icon, contentDescription = title, tint = color // Use the color parameter
             )
         }
     }
