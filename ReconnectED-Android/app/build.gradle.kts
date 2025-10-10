@@ -111,4 +111,5 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.splashscreen)
+    debugImplementation(libs.androidx.ui.tooling)
 }
