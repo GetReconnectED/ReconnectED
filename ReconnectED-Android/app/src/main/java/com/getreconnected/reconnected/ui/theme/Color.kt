@@ -2,6 +2,9 @@ package com.getreconnected.reconnected.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+/**
+ * The light theme colors.
+ */
 object LightThemeColors {
     val primary = Color(0xFF008F46)
     val secondary = Color(0xFF5BB56E)
@@ -13,6 +16,9 @@ object LightThemeColors {
     val backgroundCrust = Color(0xFFDCE0E8)
 }
 
+/**
+ * The dark theme colors.
+ */
 object DarkThemeColors {
     val primary = Color(0xFF008F46)
     val secondary = Color(0xFF5BB56E)
@@ -23,10 +29,3 @@ object DarkThemeColors {
     val backgroundMantle = Color(0xFF1F2132)
     val backgroundCrust = Color(0xFF24273B)
 }
-
-val ScreenTimeTextColorLight = Color(0xFF008F46)
-val DaysActiveTextColorLight = Color(0xFF0453AE)
-
-val BackgroundColorLightPrimary = Color.White
-val BackgroundColorLightPrimary2 = Color(0xFF008F46)
-val BackgroundColorDarkPrimary = Color(0xFF1F2226)

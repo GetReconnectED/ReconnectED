@@ -34,6 +34,13 @@ private val darkColorScheme =
         background = DarkThemeColors.backgroundBase,
     )
 
+/**
+ * The main theme for the app.
+ *
+ * @param darkTheme Whether the app is in dark theme mode.
+ * @param dynamicColor Whether the app should use dynamic colors.
+ * @param content The content of the app.
+ */
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun ReconnectEDTheme(
@@ -45,14 +52,12 @@ fun ReconnectEDTheme(
         when {
             // dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             dynamicColor -> {
-                val context = LocalContext.current
                 if (darkTheme) {
-                    dynamicDarkColorScheme(context)
+                    dynamicDarkColorScheme(LocalContext.current)
                 } else {
-                    dynamicLightColorScheme(context)
+                    dynamicLightColorScheme(LocalContext.current)
                 }
             }
-
             darkTheme -> darkColorScheme
             else -> lightColorScheme
         }
