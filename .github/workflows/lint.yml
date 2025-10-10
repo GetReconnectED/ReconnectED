@@ -1,50 +1,50 @@
 ---
 name: Codebase Style
 permissions:
-    contents: read
-    pull-requests: read
+  contents: read
+  pull-requests: read
 
 on:
-    push:
-        branches:
-            - main
-            - stable
-    pull_request:
-    workflow_dispatch:
+  push:
+    branches:
+      - main
+      - stable
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-    build:
-        name: Lint
-        runs-on: ubuntu-latest
+  build:
+    name: Lint
+    runs-on: ubuntu-latest
 
-        permissions:
-            contents: read
-            packages: read
-            # To report GitHub Actions status checks
-            statuses: write
+    permissions:
+      contents: read
+      packages: read
+      # To report GitHub Actions status checks
+      statuses: write
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v5
-              with:
-                  # super-linter needs the full git history to get the
-                  # list of files that changed across commits
-                  fetch-depth: 0
-                  persist-credentials: false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
+          persist-credentials: false
 
-            - name: Super-linter
-              uses: super-linter/super-linter@v8.2.0 # zizmor: ignore[unpinned-uses]
-              env:
-                  # To report GitHub Actions status checks
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  FIX_BIOME_FORMAT: false
-                  FIX_BIOME_LINT: false
-                  # Disable linters we don't use
-                  VALIDATE_CSS: false
-                  VALIDATE_BIOME_FORMAT: false
-                  VALIDATE_BIOME_LINT: false
-                  VALIDATE_GIT_COMMITLINT: false
-                  VALIDATE_JSON_PRETTIER: false
-                  VALIDATE_JSON: false
-                  VALIDATE_MARKDOWN: false
-                  VALIDATE_MARKDOWN_PRETTIER: false
+      - name: Super-linter
+        uses: super-linter/super-linter@v8.2.0 # zizmor: ignore[unpinned-uses]
+        env:
+          # To report GitHub Actions status checks
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FIX_BIOME_FORMAT: false
+          FIX_BIOME_LINT: false
+          # Disable linters we don't use
+          VALIDATE_CSS: false
+          VALIDATE_BIOME_FORMAT: false
+          VALIDATE_BIOME_LINT: false
+          VALIDATE_GIT_COMMITLINT: false
+          VALIDATE_JSON_PRETTIER: false
+          VALIDATE_JSON: false
+          VALIDATE_MARKDOWN: false
+          VALIDATE_MARKDOWN_PRETTIER: false
