@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.legacy.ui.elements
+package com.getreconnected.reconnected.ui.composables.elements
 
 import android.content.Context
 import android.content.pm.PackageManager

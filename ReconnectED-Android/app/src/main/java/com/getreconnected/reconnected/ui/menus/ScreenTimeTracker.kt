@@ -1,10 +1,9 @@
-package com.getreconnected.reconnected.ui.composables
+package com.getreconnected.reconnected.ui.menus
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -18,9 +17,10 @@ import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 // TODO: WIP
 
 @Composable
-fun Assistant(modifier: Modifier = Modifier) {
+@Suppress("ktlint:standard:function-naming")
+fun ScreenTimeTracker(modifier: Modifier = Modifier) {
     Text(
-        text = "Assistant WIP",
+        text = "Screen Time Tracker WIP",
         style =
             TextStyle(
                 fontFamily = interDisplayFamily,
@@ -30,15 +30,14 @@ fun Assistant(modifier: Modifier = Modifier) {
             ),
         textAlign = TextAlign.Companion.Center,
         modifier = Modifier.Companion.padding(vertical = 8.dp),
-        color = Color(0xFF020202),
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 @Suppress("ktlint:standard:function-naming")
-fun AssistantPreview() {
+fun ScreenTimeTrackerPreview() {
     ReconnectEDTheme {
-        Assistant()
+        ScreenTimeTracker()
     }
 }

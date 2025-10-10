@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.ui.composables
+package com.getreconnected.reconnected.ui.menus
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

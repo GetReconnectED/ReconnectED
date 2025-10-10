@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.getreconnected.reconnected.ui.screens.MainScreen
+import com.getreconnected.reconnected.ui.AppNavigation
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 
 /**
@@ -15,6 +15,6 @@ class MainActivity : ComponentActivity() {
         installSplashScreen() // This must be called BEFORE super.onCreate()
 
         super.onCreate(savedInstanceState)
-        setContent { ReconnectEDTheme { MainScreen() } }
+        setContent { ReconnectEDTheme { AppNavigation() } }
     }
 }

@@ -21,13 +21,13 @@ import androidx.navigation.compose.rememberNavController
 import com.getreconnected.reconnected.core.models.Menus
 import com.getreconnected.reconnected.core.models.getMenuRoute
 import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
-import com.getreconnected.reconnected.legacy.ui.composables.menus.Assistant
-import com.getreconnected.reconnected.legacy.ui.composables.menus.Calendar
-import com.getreconnected.reconnected.legacy.ui.composables.menus.ScreenTimeLimit
-import com.getreconnected.reconnected.legacy.ui.composables.menus.ScreenTimeTracker
-import com.getreconnected.reconnected.ui.composables.elements.TopBar
-import com.getreconnected.reconnected.ui.composables.Dashboard
+import com.getreconnected.reconnected.ui.menus.ScreenTimeLimit
+import com.getreconnected.reconnected.ui.menus.Assistant
+import com.getreconnected.reconnected.ui.menus.Calendar
+import com.getreconnected.reconnected.ui.menus.Dashboard
 import com.getreconnected.reconnected.ui.composables.NavDrawer
+import com.getreconnected.reconnected.ui.menus.ScreenTimeTracker
+import com.getreconnected.reconnected.ui.composables.elements.TopBar
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import kotlinx.coroutines.launch
 

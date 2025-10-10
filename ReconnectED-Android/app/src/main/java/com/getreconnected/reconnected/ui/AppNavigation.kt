@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.legacy.ui.navigation
+package com.getreconnected.reconnected.ui
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
@@ -13,7 +13,7 @@ import com.getreconnected.reconnected.ui.screens.SplashScreen
 @Suppress("ktlint:standard:function-naming")
 fun AppNavigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screens.Splash) {
+    NavHost(navController = navController, startDestination = Screens.Splash.name) {
         composable(Screens.Splash.name) {
             SplashScreen(onTimeout = {
                 navController.navigate(Screens.Login.name) {
