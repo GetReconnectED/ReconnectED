@@ -106,13 +106,13 @@ fun NavDrawerContent(
             }
             NavigationDrawerItem(
                 icon = {
-                Icon(
-                    painter = painterResource(R.drawable.dashboard_icon),
-                    contentDescription = "Dashboard",
-                    tint = if (currentDestination == Menus.Dashboard.route) IconColorLightActive
-                    else IconColorLightPrimary
-                )
-            },
+                    Icon(
+                        painter = painterResource(R.drawable.dashboard_icon),
+                        contentDescription = "Dashboard",
+                        tint = if (currentDestination == Menus.Dashboard.route) IconColorLightActive
+                        else IconColorLightPrimary
+                    )
+                },
                 label = { Text("Dashboard", style = sidebarButtonTextStyle) },
                 selected = currentDestination == Menus.Dashboard.route,
                 onClick = { navigateAndClose(Menus.Dashboard.route) },
@@ -121,13 +121,13 @@ fun NavDrawerContent(
             )
             NavigationDrawerItem(
                 icon = {
-                Icon(
-                    painter = painterResource(R.drawable.screen_time_tracker_icon),
-                    contentDescription = "Screen Time Tracker",
-                    tint = if (currentDestination == Menus.ScreenTimeTracker.route) IconColorLightActive
-                    else IconColorLightPrimary
-                )
-            },
+                    Icon(
+                        painter = painterResource(R.drawable.screen_time_tracker_icon),
+                        contentDescription = "Screen Time Tracker",
+                        tint = if (currentDestination == Menus.ScreenTimeTracker.route) IconColorLightActive
+                        else IconColorLightPrimary
+                    )
+                },
                 label = { Text("Screen Time Tracker", style = sidebarButtonTextStyle) },
                 selected = currentDestination == Menus.ScreenTimeTracker.route,
                 onClick = { navigateAndClose(Menus.ScreenTimeTracker.route) },
@@ -136,13 +136,13 @@ fun NavDrawerContent(
             )
             NavigationDrawerItem(
                 icon = {
-                Icon(
-                    painter = painterResource(R.drawable.screen_time_limit_icon),
-                    contentDescription = "Screen Time Limit",
-                    tint = if (currentDestination == Menus.ScreenTimeLimit.route) IconColorLightActive
-                    else IconColorLightPrimary
-                )
-            },
+                    Icon(
+                        painter = painterResource(R.drawable.screen_time_limit_icon),
+                        contentDescription = "Screen Time Limit",
+                        tint = if (currentDestination == Menus.ScreenTimeLimit.route) IconColorLightActive
+                        else IconColorLightPrimary
+                    )
+                },
                 label = { Text("Screen Time Limit", style = sidebarButtonTextStyle) },
                 selected = currentDestination == Menus.ScreenTimeLimit.route,
                 onClick = { navigateAndClose(Menus.ScreenTimeLimit.route) },
@@ -151,13 +151,13 @@ fun NavDrawerContent(
             )
             NavigationDrawerItem(
                 icon = {
-                Icon(
-                    painter = painterResource(R.drawable.calendar_icon),
-                    contentDescription = "Calendar",
-                    tint = if (currentDestination == Menus.Calendar.route) IconColorLightActive
-                    else IconColorLightPrimary
-                )
-            },
+                    Icon(
+                        painter = painterResource(R.drawable.calendar_icon),
+                        contentDescription = "Calendar",
+                        tint = if (currentDestination == Menus.Calendar.route) IconColorLightActive
+                        else IconColorLightPrimary
+                    )
+                },
                 label = { Text("Calendar", style = sidebarButtonTextStyle) },
                 selected = currentDestination == Menus.Calendar.route,
                 onClick = { navigateAndClose(Menus.Calendar.route) },
@@ -166,13 +166,13 @@ fun NavDrawerContent(
             )
             NavigationDrawerItem(
                 icon = {
-                Icon(
-                    painter = painterResource(R.drawable.ai_assistant_icon),
-                    contentDescription = "AI Assistant",
-                    tint = if (currentDestination == Menus.Assistant.route) IconColorLightActive
-                    else IconColorLightPrimary
-                )
-            },
+                    Icon(
+                        painter = painterResource(R.drawable.ai_assistant_icon),
+                        contentDescription = "AI Assistant",
+                        tint = if (currentDestination == Menus.Assistant.route) IconColorLightActive
+                        else IconColorLightPrimary
+                    )
+                },
                 label = { Text("AI Assistant", style = sidebarButtonTextStyle) },
                 selected = currentDestination == Menus.Assistant.route,
                 onClick = { navigateAndClose(Menus.Assistant.route) },

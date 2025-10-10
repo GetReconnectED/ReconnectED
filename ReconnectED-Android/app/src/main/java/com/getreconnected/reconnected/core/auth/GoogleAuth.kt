@@ -25,7 +25,8 @@ class GoogleAuth {
             //
             // A sign-in error occurred.
             // com.firebase.ui.auth.FirebaseUiException: Invalid FirebaseUser or missing email/password.
-            // at com.firebase.ui.auth.viewmodel.credentialmanager.CredentialManagerHandler.saveCredentials(CredentialManagerHandler.kt:52)
+            // at com.firebase.ui.auth.viewmodel.credentialmanager.CredentialManagerHandler
+            //     .saveCredentials(CredentialManagerHandler.kt:52)
             // at com.firebase.ui.auth.ui.credentials.CredentialSaveActivity.onCreate(CredentialSaveActivity.kt:62)
             .build()
     }
