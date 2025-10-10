@@ -1,7 +1,6 @@
 package com.getreconnected.reconnected.ui.composables
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,10 +20,8 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -45,11 +42,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.getreconnected.reconnected.R
-import com.getreconnected.reconnected.ui.models.Menus
-import com.getreconnected.reconnected.ui.models.getMenuRoute
+import com.getreconnected.reconnected.core.models.Menus
+import com.getreconnected.reconnected.core.models.getMenuRoute
+import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
-import com.getreconnected.reconnected.ui.viewModels.UIRouteViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -86,7 +83,7 @@ fun NavDrawer(
             popUpTo(Menus.Dashboard) { inclusive = false }
             launchSingleTop = true
         }
-        viewModel.setSelected(getMenuRoute(route))
+        viewModel.setSelectedRoute(getMenuRoute(route))
         scope.launch { drawerState.close() }
     }
 
@@ -98,7 +95,10 @@ fun NavDrawer(
                 Image(
                     painter = painterResource(id = R.drawable.recologo_ca),
                     contentDescription = "Companion App Logo",
-                    modifier = Modifier.width(237.dp).height(232.dp),
+                    modifier =
+                        Modifier
+                            .width(237.dp)
+                            .height(232.dp),
                     contentScale = ContentScale.Fit,
                     alignment = Alignment.Center,
                 )
@@ -174,11 +174,17 @@ fun NavDrawer(
             // --- PROFILE SECTION ---
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
                 ElevatedCard(
-                    modifier = Modifier.width(302.dp).height(84.dp),
+                    modifier =
+                        Modifier
+                            .width(302.dp)
+                            .height(84.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(

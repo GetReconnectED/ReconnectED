@@ -18,17 +18,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.getreconnected.reconnected.core.models.Menus
+import com.getreconnected.reconnected.core.models.getMenuRoute
+import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
 import com.getreconnected.reconnected.legacy.ui.composables.menus.Assistant
 import com.getreconnected.reconnected.legacy.ui.composables.menus.Calendar
-import com.getreconnected.reconnected.legacy.ui.composables.menus.Dashboard
 import com.getreconnected.reconnected.legacy.ui.composables.menus.ScreenTimeLimit
 import com.getreconnected.reconnected.legacy.ui.composables.menus.ScreenTimeTracker
-import com.getreconnected.reconnected.legacy.ui.elements.TopBar
+import com.getreconnected.reconnected.ui.composables.elements.TopBar
+import com.getreconnected.reconnected.ui.composables.Dashboard
 import com.getreconnected.reconnected.ui.composables.NavDrawer
-import com.getreconnected.reconnected.ui.models.Menus
-import com.getreconnected.reconnected.ui.models.getMenuRoute
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
-import com.getreconnected.reconnected.ui.viewModels.UIRouteViewModel
 import kotlinx.coroutines.launch
 
 /**
@@ -75,7 +75,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
             },
         ) { padding ->
             NavHost(navController = navController, startDestination = Menus.Dashboard.title) {
-                composable(Menus.Dashboard.title) { Dashboard(Modifier.padding(padding)) }
+                composable(Menus.Dashboard.title) { Dashboard(viewModel, Modifier.padding(padding)) }
                 composable(Menus.ScreenTimeTracker.title) {
                     // ScreenTimeTracker(Modifier.padding(padding), viewModel)
                     ScreenTimeTracker(Modifier.padding(padding))

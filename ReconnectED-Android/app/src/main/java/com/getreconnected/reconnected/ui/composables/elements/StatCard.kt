@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.legacy.ui.elements
+package com.getreconnected.reconnected.ui.composables.elements
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,14 +21,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.getreconnected.reconnected.ui.theme.CardColorLightPrimary
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
-import com.getreconnected.reconnected.ui.theme.TextColorLightPrimary
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
 /**
  * A reusable composable for the stat cards on the dashboard.
- * It now accepts a color parameter to customize its appearance.
+ *
+ * @param title The title of the stat card.
+ * @param value The value of the stat card.
+ * @param icon The icon of the stat card.
+ * @param color The color of the stat card.
+ * @param modifier The modifier to apply to the stat card.
  */
 @Composable
 @Suppress("ktlint:standard:function-naming")
@@ -42,7 +45,6 @@ fun StatCard(
     ElevatedCard(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = CardColorLightPrimary),
     ) {
         Row(
             modifier = Modifier.Companion.padding(16.dp),
@@ -57,7 +59,6 @@ fun StatCard(
                         TextStyle(
                             fontFamily = interDisplayFamily,
                         ),
-                    color = TextColorLightPrimary,
                 )
                 Text(
                     text = value,

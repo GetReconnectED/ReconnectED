@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.legacy.core.auth
+package com.getreconnected.reconnected.core.auth
 
 import android.content.Intent
 import android.util.Log

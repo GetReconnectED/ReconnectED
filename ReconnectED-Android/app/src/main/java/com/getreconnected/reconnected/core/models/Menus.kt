@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.ui.models
+package com.getreconnected.reconnected.core.models
 
 /**
  * The available menus for the app.

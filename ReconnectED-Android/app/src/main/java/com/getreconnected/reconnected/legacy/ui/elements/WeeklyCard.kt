@@ -17,21 +17,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.getreconnected.reconnected.R
+import com.getreconnected.reconnected.core.formatTime
 import com.getreconnected.reconnected.legacy.data.WeeklyScreenTime
-import java.util.concurrent.TimeUnit
 
-fun formatTime(millis: Long): String {
-    val hours = TimeUnit.MILLISECONDS.toHours(millis)
-    val minutes = TimeUnit.MILLISECONDS.toMinutes(millis) % 60
-    return "${hours}h ${minutes}m"
-}
-
+/**
+ * A composable that displays an icon for a given drawable.
+ *
+ * @param drawable The drawable to display.
+ * @param modifier The modifier to apply to the icon.
+ */
 @Composable
+@Suppress("ktlint:standard:function-naming")
 fun DrawableIcon(
     drawable: Drawable,
     modifier: Modifier = Modifier,
@@ -43,7 +46,14 @@ fun DrawableIcon(
     )
 }
 
+/**
+ * A composable that displays a card for a given weekly screen time.
+ *
+ * @param week The weekly screen time to display.
+ * @param context The context to use for getting the application icon.
+ */
 @Composable
+@Suppress("ktlint:standard:function-naming")
 fun WeeklyCard(
     week: WeeklyScreenTime,
     context: Context,
@@ -86,4 +96,19 @@ fun WeeklyCard(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+@Suppress("ktlint:standard:function-naming")
+fun WeeklyCardPreview() {
+    val week =
+        WeeklyScreenTime(
+            weekNumber = 1,
+            totalTimeMillis = 3600000,
+            topApps = listOf("com.example.app1", "com.example.app2", "com.example.app3"),
+        )
+    val context = LocalContext.current
+
+    WeeklyCard(week, context)
 }

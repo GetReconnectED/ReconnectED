@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.legacy.ui.screens
+package com.getreconnected.reconnected.ui.screens
 
 import android.content.Intent
 import android.util.Log
@@ -36,8 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.getreconnected.reconnected.R
-import com.getreconnected.reconnected.legacy.core.auth.GoogleAuth
-import com.getreconnected.reconnected.ui.navigation.Screens
+import com.getreconnected.reconnected.core.auth.GoogleAuth
+import com.getreconnected.reconnected.core.models.Screens
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
@@ -52,8 +52,8 @@ fun LoginScreen(navController: NavController) {
                 if (result.resultCode == AppCompatActivity.RESULT_OK) {
                     // Successfully signed in
                     Log.d("LoginScreen", "Google Sign-In successful")
-                    navController.navigate(Screens.Dashboard.route) {
-                        popUpTo(Screens.Login.route) { inclusive = true }
+                    navController.navigate(Screens.Dashboard) {
+                        popUpTo(Screens.Login) { inclusive = true }
                     }
                 } else {
                     // Sign in failed.
@@ -65,7 +65,7 @@ fun LoginScreen(navController: NavController) {
 
     if (auth.currentUser != null) {
         // User is already signed in, navigate to the main screen
-        navController.navigate(Screens.Dashboard.route)
+        navController.navigate(Screens.Dashboard)
     }
 
     var startAnimation by remember { mutableStateOf(false) }
@@ -127,6 +127,7 @@ fun LoginScreen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
+@Suppress("ktlint:standard:function-naming")
 fun LoginScreenPreview() {
     ReconnectEDTheme { LoginScreen(rememberNavController()) }
 }
