@@ -29,7 +29,7 @@ import com.getreconnected.reconnected.ui.elements.StatCard
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
 @Composable
-fun Assistant(modifier: Modifier = Modifier.Companion) {
+fun Assistant(modifier: Modifier = Modifier) {
     Column(
         modifier =
             modifier

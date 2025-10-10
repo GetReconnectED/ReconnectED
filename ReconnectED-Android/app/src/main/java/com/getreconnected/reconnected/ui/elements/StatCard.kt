@@ -31,7 +31,7 @@ fun StatCard(
     value: String,
     icon: ImageVector,
     color: Color, // The new color parameter
-    modifier: Modifier = Modifier.Companion,
+    modifier: Modifier = Modifier,
     valueFontSize: TextUnit = 24.sp,
 ) {
     ElevatedCard(

@@ -48,7 +48,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun NavDrawerContent(
     navController: NavController,
-    modifier: Modifier = Modifier.Companion,
+    modifier: Modifier = Modifier,
     viewModel: ReconnectedViewModel,
     drawerState: DrawerState,
     scope: CoroutineScope,

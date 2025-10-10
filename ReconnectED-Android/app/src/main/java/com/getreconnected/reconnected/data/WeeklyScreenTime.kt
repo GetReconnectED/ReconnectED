@@ -8,5 +8,5 @@ data class WeeklyScreenTime(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val weekNumber: Int,
     val totalTimeMillis: Long,
-    val topApps: List<String>
+    val topApps: List<String>,
 )

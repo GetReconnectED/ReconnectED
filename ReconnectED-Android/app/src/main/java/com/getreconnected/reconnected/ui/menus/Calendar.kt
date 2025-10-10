@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Calendar(modifier: Modifier = Modifier.Companion) {
+fun Calendar(modifier: Modifier = Modifier) {
     Column(
         modifier =
             modifier

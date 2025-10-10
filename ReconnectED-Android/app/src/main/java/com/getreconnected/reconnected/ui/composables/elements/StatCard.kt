@@ -32,7 +32,7 @@ fun StatCard(
     value: String,
     icon: ImageVector,
     color: Color,
-    modifier: Modifier = Modifier.Companion,
+    modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
         modifier = modifier,
