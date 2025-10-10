@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -16,9 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.ui.theme.CardColorLightPrimary
+import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import com.getreconnected.reconnected.ui.theme.TextColorLightPrimary
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
@@ -27,6 +31,7 @@ import com.getreconnected.reconnected.ui.theme.interDisplayFamily
  * It now accepts a color parameter to customize its appearance.
  */
 @Composable
+@Suppress("ktlint:standard:function-naming")
 fun StatCard(
     title: String,
     value: String,
@@ -72,5 +77,19 @@ fun StatCard(
                 tint = color, // Use the color parameter
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+@Suppress("ktlint:standard:function-naming")
+fun StatCardPreview() {
+    ReconnectEDTheme {
+        StatCard(
+            "Screen Time Today",
+            "3h 15m",
+            Icons.Default.CheckCircle,
+            Color.Blue,
+        )
     }
 }
