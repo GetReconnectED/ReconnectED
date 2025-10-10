@@ -29,11 +29,3 @@ val interDisplayFamily =
         Font(R.font.interdisplay_thin, FontWeight.Thin),
         Font(R.font.interdisplay_thinitalic, FontWeight.Thin, FontStyle.Italic),
     )
-
-val sidebarButtonTextStyle =
-    TextStyle(
-        fontFamily = interDisplayFamily,
-        fontSize = 24.sp,
-        fontWeight = FontWeight.Bold,
-        color = LightThemeColors.textPrimary,
-    )

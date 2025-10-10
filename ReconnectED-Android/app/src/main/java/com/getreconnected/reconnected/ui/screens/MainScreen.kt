@@ -1,0 +1,100 @@
+package com.getreconnected.reconnected.ui.screens
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.getreconnected.reconnected.legacy.ui.composables.menus.Assistant
+import com.getreconnected.reconnected.legacy.ui.composables.menus.Calendar
+import com.getreconnected.reconnected.legacy.ui.composables.menus.Dashboard
+import com.getreconnected.reconnected.legacy.ui.composables.menus.ScreenTimeLimit
+import com.getreconnected.reconnected.legacy.ui.composables.menus.ScreenTimeTracker
+import com.getreconnected.reconnected.legacy.ui.elements.TopBar
+import com.getreconnected.reconnected.ui.composables.NavDrawer
+import com.getreconnected.reconnected.ui.models.Menus
+import com.getreconnected.reconnected.ui.models.getMenuRoute
+import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
+import com.getreconnected.reconnected.ui.viewModels.UIRouteViewModel
+import kotlinx.coroutines.launch
+
+/**
+ * The main screen for the app.
+ *
+ * @param modifier The modifier to apply to the main screen.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+@Suppress("ktlint:standard:function-naming")
+fun MainScreen(modifier: Modifier = Modifier) {
+    val scope = rememberCoroutineScope()
+    val navController = rememberNavController()
+    val viewModel: UIRouteViewModel = viewModel() // Initialize the view model for UI routes
+
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed) // Initialize the drawer state
+    val backStackEntry by navController.currentBackStackEntryAsState() // Get the current back stack entry
+    val currentRouteString = backStackEntry?.destination?.route ?: Menus.Dashboard.title
+
+    // Get the screen title based on the current route
+    var currentMenu = getMenuRoute(currentRouteString)
+    if (currentMenu == Menus.Unknown) {
+        currentMenu = Menus.Dashboard
+    }
+
+    ModalNavigationDrawer(
+        modifier = Modifier.background(MaterialTheme.colorScheme.primary),
+        drawerState = drawerState,
+        drawerContent = {
+            NavDrawer(navController, viewModel, drawerState, scope, modifier)
+        },
+    ) {
+        Scaffold(
+            topBar = {
+                TopBar(
+                    title = currentMenu.title,
+                    onOpenDrawer = {
+                        scope.launch {
+                            drawerState.apply { if (isClosed) open() else close() }
+                        }
+                    },
+                )
+            },
+        ) { padding ->
+            NavHost(navController = navController, startDestination = Menus.Dashboard.title) {
+                composable(Menus.Dashboard.title) { Dashboard(Modifier.padding(padding)) }
+                composable(Menus.ScreenTimeTracker.title) {
+                    // ScreenTimeTracker(Modifier.padding(padding), viewModel)
+                    ScreenTimeTracker(Modifier.padding(padding))
+                }
+                composable(Menus.ScreenTimeLimit.title) {
+                    ScreenTimeLimit(Modifier.padding(padding))
+                }
+                composable(Menus.Calendar.title) { Calendar(Modifier.padding(padding)) }
+                composable(Menus.Assistant.title) { Assistant(Modifier.padding(padding)) }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+@Suppress("ktlint:standard:function-naming")
+fun MainScreenPreview() {
+    ReconnectEDTheme {
+        MainScreen()
+    }
+}

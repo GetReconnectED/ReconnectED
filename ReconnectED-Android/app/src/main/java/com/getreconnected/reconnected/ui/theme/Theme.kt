@@ -7,30 +7,35 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val lightColorScheme =
     lightColorScheme(
-        primary = LightThemeColors.primary,
-        secondary = LightThemeColors.secondary,
-        tertiary = LightThemeColors.tertiary,
-        background = LightThemeColors.backgroundBase,
-        /* Other default colors to override
-        surface = Color(0xFFFFFBFE),
-        onPrimary = Color.White,
-        onSecondary = Color.White,
-        onTertiary = Color.White,
-        onBackground = Color(0xFF1C1B1F),
-        onSurface = Color(0xFF1C1B1F),
-         */
+        primary = Color(0xFF10B981), // buttons and links
+        secondary = Color(0xFF5BB56E), // complement the primary color, including toggles
+        tertiary = Color(0xFF008F46), // accent elements or less prominent controls
+        background = Color(0xFF1A1A1A), // background color for screens, surfaces, and cards
+        surface = Color(0xFF262626), // surfaces like cards, sheets, and dialogs
+        onPrimary = Color(0xFFEFF1F5), // text and icons placed on top of the primary color
+        onSecondary = Color(0xFFE6E9EF), // used on the secondary color
+        onTertiary = Color(0xFFDCE0E8), // used on the tertiary color
+        onBackground = Color.Red, // text and icons placed on the background color
+        onSurface = Color.Blue, // text and icons on surfaces
     )
 
 private val darkColorScheme =
     darkColorScheme(
-        primary = DarkThemeColors.primary,
-        secondary = DarkThemeColors.secondary,
-        tertiary = DarkThemeColors.tertiary,
-        background = DarkThemeColors.backgroundBase,
+        primary = Color(0xFF10B981), // buttons and links
+        secondary = Color(0xFF5BB56E), // complement the primary color, including toggles
+        tertiary = Color(0xFF008F46), // accent elements or less prominent controls
+        background = Color(0xFF1A1A1A), // background color for screens, surfaces, and cards
+        surface = Color(0xFF262626), // surfaces like cards, sheets, and dialogs
+        onPrimary = Color(0xFFEFF1F5), // text and icons placed on top of the primary color
+        onSecondary = Color(0xFFE6E9EF), // used on the secondary color
+        onTertiary = Color(0xFFDCE0E8), // used on the tertiary color
+        onBackground = Color.Red, // text and icons placed on the background color
+        onSurface = Color.Blue, // text and icons on surfaces
     )
 
 /**
