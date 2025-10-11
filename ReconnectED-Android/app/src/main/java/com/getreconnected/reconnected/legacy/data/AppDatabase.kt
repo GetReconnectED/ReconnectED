@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.data
+package com.getreconnected.reconnected.legacy.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

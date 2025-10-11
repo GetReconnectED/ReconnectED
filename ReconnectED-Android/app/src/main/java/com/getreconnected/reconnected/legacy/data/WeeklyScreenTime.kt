@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.data
+package com.getreconnected.reconnected.legacy.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -8,5 +8,5 @@ data class WeeklyScreenTime(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val weekNumber: Int,
     val totalTimeMillis: Long,
-    val topApps: List<String>
+    val topApps: List<String>,
 )

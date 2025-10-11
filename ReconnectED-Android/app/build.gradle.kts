@@ -42,7 +42,8 @@ android {
 
 dependencies {
     implementation(libs.androidx.room.runtime)
-     val roomVersion = "2.8.1"
+    implementation(libs.firebase.ui)
+    // val roomVersion = "2.8.1"
 
     implementation(libs.vico.compose.m3)
     implementation(libs.androidx.core.ktx)
@@ -63,6 +64,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.googleid)
+    implementation(libs.play.services.auth)
+    implementation(libs.firebase.ui.auth)
     //implementation(libs.androidx.room.common.jvm)
     //implementation(libs.androidx.room.ktx)
     //implementation(libs.androidx.work.runtime.ktx)~
@@ -108,4 +111,5 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.splashscreen)
+    debugImplementation(libs.androidx.ui.tooling)
 }

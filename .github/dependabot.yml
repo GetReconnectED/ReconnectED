@@ -5,21 +5,21 @@
 
 version: 2
 updates:
-    - package-ecosystem: "gradle" # See documentation for possible values
-      directory: "/ReconnectED-Android" # Location of package manifests
-      schedule:
-          interval: "daily"
-      open-pull-requests-limit: 10
-      labels:
-          - "tag > bot"
-          - "kind > dependencies"
-          - "scope > android"
-    - package-ecosystem: "bun" # See documentation for possible values
-      directory: "/ReconnectED-web" # Location of package manifests
-      schedule:
-          interval: "daily"
-      open-pull-requests-limit: 10
-      labels:
-          - "tag > bot"
-          - "kind > dependencies"
-          - "scope > web"
+  - package-ecosystem: "gradle" # See documentation for possible values
+    directory: "/ReconnectED-Android" # Location of package manifests
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    labels:
+      - "tag > bot"
+      - "kind > dependencies"
+      - "scope > android"
+  - package-ecosystem: "bun" # See documentation for possible values
+    directory: "/ReconnectED-web" # Location of package manifests
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    labels:
+      - "tag > bot"
+      - "kind > dependencies"
+      - "scope > web"

@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.data
+package com.getreconnected.reconnected.legacy.data
 
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
@@ -6,31 +6,29 @@ import android.content.Context
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
-fun getDaysActive(context: Context): Long {
-    return try {
-        val firstInstallTime = context.packageManager
-            .getPackageInfo(context.packageName, 0).firstInstallTime
+fun getDaysActive(context: Context): Long =
+    try {
+        val firstInstallTime = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
         val currentTime = System.currentTimeMillis()
         val diff = currentTime - firstInstallTime
         TimeUnit.MILLISECONDS.toDays(diff) + 1
     } catch (e: Exception) {
         1L
     }
-}
 
 fun getScreenTimeInMillis(context: Context): Long {
     if (!hasUsageStatsPermission(context)) return 0L
 
-    val usageStatsManager =
-        context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+    val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
 
     // Start of today (midnight)
-    val calendar = Calendar.getInstance().apply {
-        set(Calendar.HOUR_OF_DAY, 0)
-        set(Calendar.MINUTE, 0)
-        set(Calendar.SECOND, 0)
-        set(Calendar.MILLISECOND, 0)
-    }
+    val calendar =
+        Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
     val startTime = calendar.timeInMillis
     val endTime = System.currentTimeMillis()
 
@@ -45,6 +43,7 @@ fun getScreenTimeInMillis(context: Context): Long {
             UsageEvents.Event.ACTIVITY_RESUMED -> {
                 lastResumeTimestamp = event.timeStamp
             }
+
             UsageEvents.Event.ACTIVITY_PAUSED -> {
                 if (lastResumeTimestamp != null) {
                     totalScreenTime += (event.timeStamp - lastResumeTimestamp!!)
@@ -61,7 +60,6 @@ fun getScreenTimeInMillis(context: Context): Long {
 
     return totalScreenTime
 }
-
 
 // Formats the millis into h/m
 fun formatScreenTime(millis: Long): String {

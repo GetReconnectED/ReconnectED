@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.data
+package com.getreconnected.reconnected.legacy.data
 
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
@@ -16,12 +16,15 @@ fun getWeeklyUsageStats(context: Context): List<UsageStats> {
     return usageStatsManager.queryUsageStats(
         UsageStatsManager.INTERVAL_DAILY,
         startTime,
-        endTime
+        endTime,
     ) ?: emptyList()
 }
 
-fun getAppInfo(context: Context, packageName: String): Pair<String, Drawable>? {
-    return try {
+fun getAppInfo(
+    context: Context,
+    packageName: String,
+): Pair<String, Drawable>? =
+    try {
         val pm = context.packageManager
         val appInfo = pm.getApplicationInfo(packageName, 0)
         val name = pm.getApplicationLabel(appInfo).toString()
@@ -30,20 +33,25 @@ fun getAppInfo(context: Context, packageName: String): Pair<String, Drawable>? {
     } catch (e: Exception) {
         null
     }
-}
 
 fun getWeekNumber(installTime: Long): Int {
     val diff = System.currentTimeMillis() - installTime
     return (diff / TimeUnit.DAYS.toMillis(7)).toInt() + 1
 }
 
-suspend fun saveWeeklyUsage(context: Context, dao: WeeklyScreenTimeDao, installTime: Long) {
+suspend fun saveWeeklyUsage(
+    context: Context,
+    dao: WeeklyScreenTimeDao,
+    installTime: Long,
+) {
     val stats = getWeeklyUsageStats(context)
     val totalTime = stats.sumOf { it.totalTimeInForeground }
 
-    val topApps = stats.sortedByDescending { it.totalTimeInForeground }
-        .take(5)
-        .map { it.packageName }
+    val topApps =
+        stats
+            .sortedByDescending { it.totalTimeInForeground }
+            .take(5)
+            .map { it.packageName }
 
     val weekNumber = getWeekNumber(installTime)
 
@@ -51,9 +59,7 @@ suspend fun saveWeeklyUsage(context: Context, dao: WeeklyScreenTimeDao, installT
         WeeklyScreenTime(
             weekNumber = weekNumber,
             totalTimeMillis = totalTime,
-            topApps = topApps
-        )
+            topApps = topApps,
+        ),
     )
 }
-
-
