@@ -58,6 +58,8 @@ fun LoginScreen(navController: NavController) {
                 } else {
                     // Sign in failed.
                     Log.e("LoginScreen", "Google Sign-In failed")
+                    Log.d("LoginScreen", "Result Code: ${result.resultCode}") // always 0
+                    Log.d("LoginScreen", "Activity Result: ${result.data}") // Intent {xflg=0x4 (has extras) }
                 }
             },
         )
@@ -96,17 +98,17 @@ fun LoginScreen(navController: NavController) {
                 .background(Color(0xFF008F46))
                 .padding(horizontal = 40.dp)
                 .alpha(alphaAnim.value) // Apply the fade-in to the whole screen
-                .scale(scaleAnim.value), // Apply the scale to the whole screen
+                .scale(scaleAnim.value),
+        // Apply the scale to the whole screen
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
         Image(
             painter = painterResource(id = R.drawable.recologo_ca),
             contentDescription = "App Logo",
-            modifier =
-                Modifier
-                    .width(338.dp)
-                    .height(331.dp),
+            modifier = Modifier
+                .width(338.dp)
+                .height(331.dp),
         )
         Image(
             painter = painterResource(id = R.drawable.google_signin_button),
