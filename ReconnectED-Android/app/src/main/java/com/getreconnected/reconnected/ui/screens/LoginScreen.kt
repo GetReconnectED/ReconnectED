@@ -4,7 +4,6 @@ import android.content.Intent
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -49,7 +48,7 @@ fun LoginScreen(navController: NavController) {
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.StartActivityForResult(),
             onResult = { result ->
-                if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                if (result.resultCode == 0) {
                     // Successfully signed in
                     Log.d("LoginScreen", "Google Sign-In successful")
                     navController.navigate(Screens.Dashboard.name) {
@@ -106,9 +105,10 @@ fun LoginScreen(navController: NavController) {
         Image(
             painter = painterResource(id = R.drawable.recologo_ca),
             contentDescription = "App Logo",
-            modifier = Modifier
-                .width(338.dp)
-                .height(331.dp),
+            modifier =
+                Modifier
+                    .width(338.dp)
+                    .height(331.dp),
         )
         Image(
             painter = painterResource(id = R.drawable.google_signin_button),
