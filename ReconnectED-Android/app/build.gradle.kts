@@ -57,14 +57,12 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.googleid)
     implementation(libs.play.services.auth)
-    implementation(libs.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     // Room
-    implementation(libs.room.runtime)
     implementation(libs.androidx.room.runtime)
     // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
     // See Add the KSP plugin to your project
