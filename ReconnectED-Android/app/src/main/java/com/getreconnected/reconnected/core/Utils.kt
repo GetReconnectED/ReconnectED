@@ -1,10 +1,12 @@
 package com.getreconnected.reconnected.core
+
 import java.util.concurrent.TimeUnit
 
 /**
  * Formats the given time in milliseconds to a human-readable string.
  *
  * @param millis The time in milliseconds to format.
+ * @return A string representing the formatted time in the format "<HH>h <MM>m".
  */
 fun formatTime(millis: Long): String {
     val hours = TimeUnit.MILLISECONDS.toHours(millis)

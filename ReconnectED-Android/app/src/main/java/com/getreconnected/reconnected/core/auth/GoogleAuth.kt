@@ -10,6 +10,8 @@ import com.firebase.ui.auth.AuthUI
 class GoogleAuth {
     /**
      * Returns an instance of [AuthUI] for Google authentication.
+     *
+     * @return An instance of [AuthUI].
      */
     fun getGoogleAuthInstance(): AuthUI {
         Log.d("GoogleAuth", "getGoogleAuthInstance called")
@@ -18,6 +20,8 @@ class GoogleAuth {
 
     /**
      * Shows the login screen for Google authentication.
+     *
+     * @return An [Intent] to start the login activity.
      */
     fun showLogin(): Intent {
         Log.d("GoogleAuth", "showLogin called")
