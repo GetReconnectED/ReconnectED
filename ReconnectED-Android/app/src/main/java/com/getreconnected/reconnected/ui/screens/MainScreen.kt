@@ -37,7 +37,6 @@ import kotlinx.coroutines.launch
  * @param modifier The modifier to apply to the main screen.
  */
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun MainScreen(modifier: Modifier = Modifier) {
@@ -50,10 +49,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val currentRouteString = backStackEntry?.destination?.route ?: Menus.Dashboard.title
 
     // Get the screen title based on the current route
-    var currentMenu = getMenuRoute(currentRouteString)
-    if (currentMenu == Menus.Unknown) {
-        currentMenu = Menus.Dashboard
-    }
+    val currentMenu = getMenuRoute(currentRouteString)
 
     ModalNavigationDrawer(
         modifier = Modifier.background(MaterialTheme.colorScheme.primary),
