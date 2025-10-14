@@ -4,6 +4,9 @@ import android.content.Intent
 import android.util.Log
 import com.firebase.ui.auth.AuthUI
 
+/**
+ * A class responsible for managing Google authentication using Firebase AuthUI.
+ */
 class GoogleAuth {
     /**
      * Returns an instance of [AuthUI] for Google authentication.
@@ -23,7 +26,7 @@ class GoogleAuth {
             .createSignInIntentBuilder()
             .setAvailableProviders(listOf(AuthUI.IdpConfig.GoogleBuilder().build()))
             .setDefaultProvider(AuthUI.IdpConfig.GoogleBuilder().build())
-            .setCredentialManagerEnabled(false)
+//            .setCredentialManagerEnabled(false)
             // FIXME: `.setCredentialManagerEnabled(false)` is a temporary fix for the following error:
             //
             // A sign-in error occurred.
