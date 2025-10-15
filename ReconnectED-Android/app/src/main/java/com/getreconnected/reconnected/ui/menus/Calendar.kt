@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 
 @Composable
+@Suppress("ktlint:standard:function-naming")
 fun Calendar(modifier: Modifier = Modifier) {
     Column(
         modifier =
