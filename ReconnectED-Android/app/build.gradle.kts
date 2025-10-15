@@ -70,5 +70,6 @@ dependencies {
     implementation(libs.vico.compose.m3)
     implementation(platform(libs.androidx.compose.bom))
     implementation(platform(libs.firebase.bom))
+    ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
 }
