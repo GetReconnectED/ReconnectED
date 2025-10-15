@@ -13,6 +13,7 @@ enum class Screens {
  * Converts a screen name to a screen.
  *
  * @param name The name of the screen string to convert.
+ * @return The corresponding screen.
  */
 fun getScreenName(name: String): Screens =
-    Screens.entries.find { it.name == name } ?: throw IllegalArgumentException("Invalid route: $name")
+    Screens.entries.find { it.name == name } ?: throw IllegalArgumentException("Invalid screen route: $name")

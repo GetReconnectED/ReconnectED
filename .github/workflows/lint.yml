@@ -44,6 +44,7 @@ jobs:
           VALIDATE_BIOME_FORMAT: false
           VALIDATE_BIOME_LINT: false
           VALIDATE_GIT_COMMITLINT: false
+          VALIDATE_JSCPD: false
           VALIDATE_JSON_PRETTIER: false
           VALIDATE_JSON: false
           VALIDATE_MARKDOWN: false
