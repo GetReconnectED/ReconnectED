@@ -21,6 +21,7 @@ material3 = "1.5.0-alpha04"
 materialIconsExtended = "1.7.8"
 navigationCompose = "2.9.5"
 playServicesAuth = "21.4.0"
+roomCompiler = "2.8.2"
 roomRuntime = "2.8.2"
 ui = "1.10.0-alpha04"
 uiGraphics = "1.10.0-alpha04"
@@ -48,6 +49,7 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomRuntime" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "uiGraphics" }

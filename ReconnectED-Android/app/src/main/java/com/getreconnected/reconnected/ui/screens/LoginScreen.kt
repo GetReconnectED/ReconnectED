@@ -43,6 +43,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 @Composable
+@Suppress("ktlint:standard:function-naming")
 fun LoginScreen(navController: NavController) {
     val auth = FirebaseAuth.getInstance()
     val launcher =
