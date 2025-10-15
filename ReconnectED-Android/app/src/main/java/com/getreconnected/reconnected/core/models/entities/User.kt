@@ -25,12 +25,13 @@ import androidx.room.Query
 @Entity
 data class User(
     @PrimaryKey val uid: String,
-    val firstName: String?,
-    val lastName: String?,
+    val firstName: String? = null,
+    val lastName: String? = null,
     val email: String,
     val created: Int,
     val lastSignIn: Int,
-    @Ignore val avatar: Bitmap? = null,
+    // FIXME: Add avatar support
+    // @Ignore val avatar: Bitmap? = null,
 )
 
 /**
