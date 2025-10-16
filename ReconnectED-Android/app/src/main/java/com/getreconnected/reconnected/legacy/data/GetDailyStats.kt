@@ -3,6 +3,7 @@ package com.getreconnected.reconnected.legacy.data
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
+import com.getreconnected.reconnected.core.util.hasUsageStatsPermission
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
