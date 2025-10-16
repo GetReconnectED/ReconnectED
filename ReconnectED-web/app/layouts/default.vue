@@ -1,10 +1,10 @@
 <template>
     <UApp>
         <NuxtRouteAnnouncer />
-        <Header />
+        <AppHeader />
         <main>
             <slot />
         </main>
-        <Footer />
+        <AppFooter />
     </UApp>
 </template>
