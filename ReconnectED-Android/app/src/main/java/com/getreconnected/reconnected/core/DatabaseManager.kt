@@ -37,6 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
 class DatabaseManager private constructor() {
     companion object {
         @Volatile
+        @Suppress("ktlint:standard:property-naming")
         private var INSTANCE: AppDatabase? = null
 
         /**
