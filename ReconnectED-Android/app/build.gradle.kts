@@ -107,4 +107,5 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.splashscreen)
+    implementation("com.kizitonwose.calendar:compose:2.9.0")
 }
