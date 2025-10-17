@@ -12,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -35,10 +36,12 @@ import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.core.models.Menus
 import com.getreconnected.reconnected.core.models.getMenuRoute
 import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
+import com.getreconnected.reconnected.ui.theme.LocalReconnectEDColors
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import androidx.compose.ui.graphics.Color
 
 @Composable
 @Suppress("ktlint:standard:function-naming")
@@ -59,6 +62,7 @@ fun NavDrawer(
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onPrimary
         )
+    val selectedGreen = LocalReconnectEDColors.current.selectedGreen
 
     fun navigateAndClose(route: String) {
         navController.navigate(route) {
@@ -71,7 +75,7 @@ fun NavDrawer(
 
     ModalDrawerSheet(
         modifier = Modifier.fillMaxHeight(),
-        drawerContainerColor = MaterialTheme.colorScheme.primary // Strong green bg
+        drawerContainerColor = MaterialTheme.colorScheme.primary // Sidebar background green
     ) {
         Column {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
@@ -98,6 +102,14 @@ fun NavDrawer(
                 selected = currentDestination == Menus.Dashboard.name,
                 onClick = { navigateAndClose(Menus.Dashboard.name) },
                 shape = drawerItemShape,
+                colors = NavigationDrawerItemDefaults.colors(
+                    selectedContainerColor = selectedGreen,
+                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedContainerColor = Color.Transparent,
+                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                )
             )
 
             NavigationDrawerItem(
@@ -112,6 +124,14 @@ fun NavDrawer(
                 selected = currentDestination == Menus.ScreenTimeTracker.name,
                 onClick = { navigateAndClose(Menus.ScreenTimeTracker.name) },
                 shape = drawerItemShape,
+                colors = NavigationDrawerItemDefaults.colors(
+                    selectedContainerColor = selectedGreen,
+                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedContainerColor = Color.Transparent,
+                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                )
             )
 
             NavigationDrawerItem(
@@ -126,6 +146,14 @@ fun NavDrawer(
                 selected = currentDestination == Menus.ScreenTimeLimit.name,
                 onClick = { navigateAndClose(Menus.ScreenTimeLimit.name) },
                 shape = drawerItemShape,
+                colors = NavigationDrawerItemDefaults.colors(
+                    selectedContainerColor = selectedGreen,
+                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedContainerColor = Color.Transparent,
+                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                )
             )
 
             NavigationDrawerItem(
@@ -140,6 +168,14 @@ fun NavDrawer(
                 selected = currentDestination == Menus.Calendar.name,
                 onClick = { navigateAndClose(Menus.Calendar.name) },
                 shape = drawerItemShape,
+                colors = NavigationDrawerItemDefaults.colors(
+                    selectedContainerColor = selectedGreen,
+                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedContainerColor = Color.Transparent,
+                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                )
             )
 
             NavigationDrawerItem(
@@ -154,6 +190,14 @@ fun NavDrawer(
                 selected = currentDestination == Menus.Assistant.name,
                 onClick = { navigateAndClose(Menus.Assistant.name) },
                 shape = drawerItemShape,
+                colors = NavigationDrawerItemDefaults.colors(
+                    selectedContainerColor = selectedGreen,
+                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedContainerColor = Color.Transparent,
+                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                )
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -163,9 +207,7 @@ fun NavDrawer(
                         .width(302.dp)
                         .height(84.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.secondary // dark green or accent
-                    )
+                    colors = CardDefaults.cardColors(containerColor = selectedGreen), // Profile box
                 ) {
                     Row(
                         modifier = Modifier
