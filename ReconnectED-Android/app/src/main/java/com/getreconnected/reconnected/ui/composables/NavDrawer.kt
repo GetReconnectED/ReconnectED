@@ -187,8 +187,8 @@ fun NavDrawer(
                     )
                 },
                 label = { Text("AI Assistant", style = sidebarButtonText) },
-                selected = currentDestination == Menus.Assistant.name,
-                onClick = { navigateAndClose(Menus.Assistant.name) },
+                selected = currentDestination == Menus.AIAssistant.name,
+                onClick = { navigateAndClose(Menus.AIAssistant.name) },
                 shape = drawerItemShape,
                 colors = NavigationDrawerItemDefaults.colors(
                     selectedContainerColor = selectedGreen,

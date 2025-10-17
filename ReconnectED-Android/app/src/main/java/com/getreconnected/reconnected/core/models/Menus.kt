@@ -12,7 +12,7 @@ enum class Menus(
     ScreenTimeTracker("Screen Time Tracker"),
     ScreenTimeLimit("Screen Time Limit"),
     Calendar("Calendar"),
-    Assistant("AI Assistant"),
+    AIAssistant("AI Assistant"),
 }
 
 /**
