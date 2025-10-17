@@ -2,24 +2,14 @@ package com.getreconnected.reconnected.ui.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerState
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
@@ -50,15 +40,6 @@ import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-/**
- * The navigation drawer content for the app.
- *
- * @param navController The navigation controller for the app.
- * @param viewModel The view model for UI routes.
- * @param drawerState The drawer state for the nav drawer.
- * @param scope The coroutine scope for the app.
- * @param modifier The modifier for the app.
- */
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun NavDrawer(
@@ -76,6 +57,7 @@ fun NavDrawer(
             fontFamily = interDisplayFamily,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onPrimary
         )
 
     fun navigateAndClose(route: String) {
@@ -89,16 +71,16 @@ fun NavDrawer(
 
     ModalDrawerSheet(
         modifier = Modifier.fillMaxHeight(),
+        drawerContainerColor = MaterialTheme.colorScheme.primary // Strong green bg
     ) {
         Column {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
                 Image(
                     painter = painterResource(id = R.drawable.recologo_ca),
                     contentDescription = "Companion App Logo",
-                    modifier =
-                        Modifier
-                            .width(237.dp)
-                            .height(232.dp),
+                    modifier = Modifier
+                        .width(237.dp)
+                        .height(232.dp),
                     contentScale = ContentScale.Fit,
                     alignment = Alignment.Center,
                 )
@@ -109,6 +91,7 @@ fun NavDrawer(
                     Icon(
                         painter = painterResource(R.drawable.dashboard_icon),
                         contentDescription = "Dashboard",
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 label = { Text("Dashboard", style = sidebarButtonText) },
@@ -122,6 +105,7 @@ fun NavDrawer(
                     Icon(
                         painter = painterResource(R.drawable.screen_time_tracker_icon),
                         contentDescription = "Screen Time Tracker",
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 label = { Text("Screen Time Tracker", style = sidebarButtonText) },
@@ -135,6 +119,7 @@ fun NavDrawer(
                     Icon(
                         painter = painterResource(R.drawable.screen_time_limit_icon),
                         contentDescription = "Screen Time Limit",
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 label = { Text("Screen Time Limit", style = sidebarButtonText) },
@@ -148,6 +133,7 @@ fun NavDrawer(
                     Icon(
                         painter = painterResource(R.drawable.calendar_icon),
                         contentDescription = "Calendar",
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 label = { Text("Calendar", style = sidebarButtonText) },
@@ -161,6 +147,7 @@ fun NavDrawer(
                     Icon(
                         painter = painterResource(R.drawable.ai_assistant_icon),
                         contentDescription = "AI Assistant",
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 label = { Text("AI Assistant", style = sidebarButtonText) },
@@ -168,46 +155,45 @@ fun NavDrawer(
                 onClick = { navigateAndClose(Menus.Assistant.name) },
                 shape = drawerItemShape,
             )
-            // This spacer pushes the profile section to the bottom
-            Spacer(modifier = Modifier.weight(1f))
 
-            // --- PROFILE SECTION ---
+            Spacer(modifier = Modifier.weight(1f))
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
                 ElevatedCard(
-                    modifier =
-                        Modifier
-                            .width(302.dp)
-                            .height(84.dp),
+                    modifier = Modifier
+                        .width(302.dp)
+                        .height(84.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.secondary // dark green or accent
+                    )
                 ) {
                     Row(
-                        modifier =
-                            Modifier
-                                .fillMaxSize()
-                                .padding(horizontal = 16.dp),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
                             imageVector = Icons.Default.AccountCircle,
                             contentDescription = "Profile",
                             modifier = Modifier.size(48.dp),
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             text = "Juan",
                             style = sidebarButtonText.copy(fontSize = 28.sp),
-                            modifier = Modifier.weight(1f), // Pushes button to the end
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.weight(1f),
                         )
 
                         Box(
-                            modifier =
-                                Modifier
-                                    .size(52.dp)
-                                    .clickable { /* TODO: Handle button click */ },
+                            modifier = Modifier
+                                .size(52.dp)
+                                .clickable { /* TODO: Handle button click */ },
                         )
                     }
                 }
-                // Add a spacer for margin at the very bottom
                 Spacer(modifier = Modifier.height(24.dp))
             }
         }
@@ -221,7 +207,7 @@ fun NavDrawerContentPreview() {
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
     val viewModel: UIRouteViewModel = viewModel()
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val drawerState = rememberDrawerState(initialValue = androidx.compose.material3.DrawerValue.Closed)
 
     ReconnectEDTheme {
         NavDrawer(navController, viewModel, drawerState, scope)
