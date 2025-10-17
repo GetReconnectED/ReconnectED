@@ -34,15 +34,18 @@ import kotlinx.coroutines.launch
 /**
  * The main screen for the app.
  *
+ * @param viewModel The view model for the app.
  * @param modifier The modifier to apply to the main screen.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Suppress("ktlint:standard:function-naming")
-fun MainScreen(modifier: Modifier = Modifier) {
+fun MainScreen(
+    viewModel: UIRouteViewModel,
+    modifier: Modifier = Modifier,
+) {
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
-    val viewModel: UIRouteViewModel = viewModel() // Initialize the view model for UI routes
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed) // Initialize the drawer state
     val backStackEntry by navController.currentBackStackEntryAsState() // Get the current back stack entry
@@ -90,7 +93,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun MainScreenPreview() {
+    val viewModel: UIRouteViewModel = viewModel()
     ReconnectEDTheme {
-        MainScreen()
+        MainScreen(viewModel = viewModel)
     }
 }

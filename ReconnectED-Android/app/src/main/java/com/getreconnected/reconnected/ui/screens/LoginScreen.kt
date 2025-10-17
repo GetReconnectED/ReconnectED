@@ -33,40 +33,56 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.core.auth.GoogleAuth
 import com.getreconnected.reconnected.core.models.Screens
+import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 @Composable
 @Suppress("ktlint:standard:function-naming")
-fun LoginScreen(navController: NavController) {
-    val auth = FirebaseAuth.getInstance()
-    val launcher =
+fun LoginScreen(
+    viewModel: UIRouteViewModel,
+    navController: NavController,
+) {
+    val firebaseAuth = FirebaseAuth.getInstance()
+    val signInLauncher =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.StartActivityForResult(),
             onResult = { result ->
+                Log.d("LoginScreen", "Result Code: ${result.resultCode}") // always 0
                 if (result.resultCode == AppCompatActivity.RESULT_OK) {
                     // Successfully signed in
-                    Log.d("LoginScreen", "Google Sign-In successful")
-                    navController.navigate(Screens.Dashboard.name) {
-                        popUpTo(Screens.Login.name) { inclusive = true }
+                    Log.d("LoginScreen", "Google Sign-In successful. Trying to get user data...")
+                    if (firebaseAuth.currentUser == null) {
+                        Log.e("LoginScreen", "User is null")
+                        Log.e("LoginScreen", "Getting user data failed.")
+                    } else {
+                        Log.d("LoginScreen", "User data retrieved successfully.")
+                        viewModel.setActiveUser(firebaseAuth.currentUser?.displayName ?: "User")
+                        Log.d("LoginScreen", "User ID: ${firebaseAuth.currentUser?.uid}")
+                        Log.d("LoginScreen", "User email: ${firebaseAuth.currentUser?.email}")
+                        Log.d("LoginScreen", "User name: ${firebaseAuth.currentUser?.displayName}")
+                        Log.d("LoginScreen", "Navigating to Dashboard...")
+                        navController.navigate(Screens.Dashboard.name) {
+                            popUpTo(Screens.Login.name) { inclusive = true }
+                        }
                     }
                 } else {
                     // Sign in failed.
                     Log.e("LoginScreen", "Google Sign-In failed")
-                    Log.d("LoginScreen", "Result Code: ${result.resultCode}") // always 0
-                    Log.d("LoginScreen", "Activity Result: ${result.data}") // Intent {xflg=0x4 (has extras) }
                 }
             },
         )
     val googleAuth = GoogleAuth()
 
-    if (auth.currentUser != null) {
+    if (firebaseAuth.currentUser != null) {
+        viewModel.setActiveUser(firebaseAuth.currentUser?.displayName ?: "User")
         // User is already signed in, navigate to the main screen
         navController.navigate(Screens.Dashboard.name)
     }
@@ -115,7 +131,7 @@ fun LoginScreen(navController: NavController) {
             modifier =
                 Modifier.width(210.dp).height(49.dp).clip(RoundedCornerShape(20.dp)).clickable {
                     val signInIntent: Intent? = googleAuth.showLogin()
-                    launcher.launch(signInIntent)
+                    signInLauncher.launch(signInIntent)
                 },
         )
         Spacer(modifier = Modifier.height(60.dp))
@@ -126,5 +142,6 @@ fun LoginScreen(navController: NavController) {
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun LoginScreenPreview() {
-    ReconnectEDTheme { LoginScreen(rememberNavController()) }
+    val viewModel: UIRouteViewModel = viewModel()
+    ReconnectEDTheme { LoginScreen(viewModel = viewModel, navController = rememberNavController()) }
 }
