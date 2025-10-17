@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -46,20 +47,7 @@ data class AppUsageInfo(
 
 @Composable
 fun ScreenTimeLimit(modifier: Modifier = Modifier) {
-    val appList = listOf(
-        AppUsageInfo(
-            name = "YouTube",
-            usageTime = "2h 39m",
-            icon = Icons.Filled.PlayArrow,
-            iconBackgroundColor = Color(0xFFFF0000)
-        ),
-        AppUsageInfo(
-            name = "Facebook",
-            usageTime = "2h 10m",
-            icon = Icons.Filled.ThumbUp,
-            iconBackgroundColor = Color(0xFF1877F2)
-        )
-    )
+
 
     // The Scaffold and TopAppBar have been removed.
     // This Column is now the main container for your screen's content.
@@ -88,8 +76,28 @@ fun ScreenTimeLimit(modifier: Modifier = Modifier) {
                 color = Color.Black
             )
         )
+        AppUsageContainer()
+    }
+}
 
-        // The Card containing the list
+@Composable
+fun AppUsageContainer() {
+    val appList = listOf(
+        AppUsageInfo(
+            name = "YouTube",
+            usageTime = "2h 39m",
+            icon = Icons.Filled.PlayArrow,
+            iconBackgroundColor = Color(0xFFFF0000)
+        ),
+        AppUsageInfo(
+            name = "Facebook",
+            usageTime = "2h 10m",
+            icon = Icons.Filled.ThumbUp,
+            iconBackgroundColor = Color(0xFF1877F2)
+        )
+    )
+    // The Card containing the list
+    Column(){
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -108,8 +116,8 @@ fun ScreenTimeLimit(modifier: Modifier = Modifier) {
             }
         }
     }
-}
 
+}
 
 @Composable
 fun AppUsageLimitItem(appInfo: AppUsageInfo) {

@@ -72,8 +72,9 @@ fun Calendar(modifier: Modifier = Modifier.Companion) {
             modifier = Modifier.fillMaxWidth()
         ) {
             ScreenTimeCalendar()
-        }
 
+        }
+        AppUsageContainer()
 
     }
 }
