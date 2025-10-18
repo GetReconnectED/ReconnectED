@@ -38,10 +38,10 @@ private val darkColorScheme = darkColorScheme(
     onSecondary = OnPrimary,
     tertiary = AppGreen,
     onTertiary = OnPrimary,
-    background = Color(0xFF1A1A1A),
-    onBackground = CardSurface,
-    surface = DarkCardSurface,
-    onSurface = CardSurface,
+    background = Color.White,
+    onBackground = OnSurface,
+    surface = CardSurface,
+    onSurface = OnSurface,
 )
 
 // Custom colors for gradient and sidebar selection

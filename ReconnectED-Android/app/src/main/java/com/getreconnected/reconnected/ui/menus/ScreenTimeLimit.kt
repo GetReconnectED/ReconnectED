@@ -23,6 +23,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,10 +32,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily // Make sure this import is correct
 
 // Data class to hold app information
@@ -87,7 +90,7 @@ fun AppUsageContainer() {
             name = "YouTube",
             usageTime = "2h 39m",
             icon = Icons.Filled.PlayArrow,
-            iconBackgroundColor = Color(0xFFFF0000)
+            iconBackgroundColor = Color(0xFFFF0000),
         ),
         AppUsageInfo(
             name = "Facebook",
@@ -147,22 +150,23 @@ fun AppUsageLimitItem(appInfo: AppUsageInfo) {
                 text = appInfo.name,
                 style = TextStyle(
                     fontFamily = interDisplayFamily,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
             )
             Text(
                 text = appInfo.usageTime,
                 style = TextStyle(
                     fontFamily = interDisplayFamily,
-                    fontSize = 14.sp,
+                    fontSize = 16.sp,
                     color = Color.Gray
                 )
             )
         }
         IconButton(onClick = { /* Handle settings click */ }) {
             Icon(
-                imageVector = Icons.Filled.Person,
+                painter = painterResource(
+                    R.drawable.screen_time_limit_icon),
                 contentDescription = "Set Limit",
                 tint = Color.Gray
             )

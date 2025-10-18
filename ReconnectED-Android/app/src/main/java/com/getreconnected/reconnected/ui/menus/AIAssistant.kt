@@ -54,7 +54,7 @@ fun AIAssistant(modifier: Modifier = Modifier.Companion) {
                     modifier = Modifier
                         .weight(1f)
                         .height(50.dp),
-                    placeholder = { Text("Type a message...") },
+                    placeholder = { Text("Type a message...") }
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
