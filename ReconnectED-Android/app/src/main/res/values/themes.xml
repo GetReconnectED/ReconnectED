@@ -2,17 +2,18 @@
 <resources>
     <style name="Theme.ReconnectED" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:navigationBarColor">#fdfdfd</item>
+        <item name="android:forceDarkAllowed">false</item>
     </style>
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="android:windowIsTranslucent">true</item>
         <item name="windowSplashScreenBackground">#008F46</item>
         <item name="android:navigationBarColor">#fdfdfd</item>
         <item name="postSplashScreenTheme">@style/Theme.ReconnectED</item>
+        <item name="android:forceDarkAllowed">false</item>
     </style>
     <style name="Theme.App.Starting.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="Theme.App.Starting.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.App.Starting.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

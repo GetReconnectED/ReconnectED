@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.vico.compose.m3)
     implementation(platform(libs.androidx.compose.bom))
     implementation(platform(libs.firebase.bom))
+    implementation("com.kizitonwose.calendar:compose:2.9.0")
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
 }

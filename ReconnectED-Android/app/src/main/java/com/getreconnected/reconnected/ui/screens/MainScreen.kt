@@ -23,7 +23,7 @@ import com.getreconnected.reconnected.core.models.getMenuRoute
 import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
 import com.getreconnected.reconnected.ui.composables.NavDrawer
 import com.getreconnected.reconnected.ui.composables.elements.TopBar
-import com.getreconnected.reconnected.ui.menus.Assistant
+import com.getreconnected.reconnected.ui.menus.AIAssistant
 import com.getreconnected.reconnected.ui.menus.Calendar
 import com.getreconnected.reconnected.ui.menus.Dashboard
 import com.getreconnected.reconnected.ui.menus.ScreenTimeLimit
@@ -74,7 +74,7 @@ fun MainScreen(
             },
         ) { padding ->
             NavHost(navController = navController, startDestination = Menus.Dashboard.name) {
-                composable(Menus.Dashboard.name) { Dashboard(viewModel, Modifier.padding(padding)) }
+                composable(Menus.Dashboard.name) { Dashboard(navController, viewModel, Modifier.padding(padding)) }
                 composable(Menus.ScreenTimeTracker.name) {
                     // ScreenTimeTracker(Modifier.padding(padding), viewModel)
                     ScreenTimeTracker(Modifier.padding(padding))
@@ -83,7 +83,7 @@ fun MainScreen(
                     ScreenTimeLimit(Modifier.padding(padding))
                 }
                 composable(Menus.Calendar.name) { Calendar(Modifier.padding(padding)) }
-                composable(Menus.Assistant.name) { Assistant(Modifier.padding(padding)) }
+                composable(Menus.AIAssistant.name) { AIAssistant(Modifier.padding(padding)) }
             }
         }
     }
