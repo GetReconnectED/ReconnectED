@@ -74,7 +74,7 @@ fun MainScreen(
             },
         ) { padding ->
             NavHost(navController = navController, startDestination = Menus.Dashboard.name) {
-                composable(Menus.Dashboard.name) { Dashboard(viewModel, Modifier.padding(padding)) }
+                composable(Menus.Dashboard.name) { Dashboard(navController, viewModel, Modifier.padding(padding)) }
                 composable(Menus.ScreenTimeTracker.name) {
                     // ScreenTimeTracker(Modifier.padding(padding), viewModel)
                     ScreenTimeTracker(Modifier.padding(padding))

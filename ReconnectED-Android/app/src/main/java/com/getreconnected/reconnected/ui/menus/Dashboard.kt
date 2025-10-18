@@ -2,14 +2,24 @@ package com.getreconnected.reconnected.ui.menus
 
 import android.content.Intent
 import android.provider.Settings
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -30,7 +41,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.getreconnected.reconnected.R
+import com.getreconnected.reconnected.core.models.Menus
+import com.getreconnected.reconnected.core.models.getMenuRoute
 import com.getreconnected.reconnected.core.util.hasUsageStatsPermission
 import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
 import com.getreconnected.reconnected.legacy.data.formatScreenTime
@@ -56,11 +70,12 @@ import com.patrykandpatrick.vico.core.cartesian.data.columnSeries
 import com.patrykandpatrick.vico.core.cartesian.layer.ColumnCartesianLayer
 import com.patrykandpatrick.vico.core.common.data.ExtraStore
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Calendar
-import androidx.compose.foundation.Image
 
 @Composable
 fun Dashboard(
+    navController: NavController,
     viewModel: UIRouteViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -89,6 +104,14 @@ fun Dashboard(
     val screenTimeValue = when {
         !hasPermission -> "Tap to permit"
         else -> formatScreenTime(screenTimeMillis)
+    }
+
+    fun navigateTo(route: String) {
+        navController.navigate(route) {
+            popUpTo(Menus.Dashboard.name) { inclusive = false }
+            launchSingleTop = true
+        }
+        viewModel.setSelectedRoute(getMenuRoute(route))
     }
 
     Column(
@@ -142,17 +165,18 @@ fun Dashboard(
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             StatCard(
                 title = "Screen Time Today",
                 value = screenTimeValue,
-                icon = Icons.Default.DateRange,
-                color = MaterialTheme.colorScheme.primary, // primary green
+                icon = painterResource(R.drawable.daily_screen_time),
+                color = Color(0xFF008F46), // dark green
                 modifier = Modifier
                     .weight(1f)
-                    .height(80.dp)
+                    .fillMaxWidth()
+                    .fillMaxHeight()
                     .clickable {
                         if (!hasPermission) {
                             context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
@@ -162,11 +186,12 @@ fun Dashboard(
             StatCard(
                 title = "Days Active",
                 value = "$daysActive days",
-                icon = Icons.Default.CheckCircle,
-                color = MaterialTheme.colorScheme.secondary, // dark green
+                icon = painterResource(R.drawable.days_active),
+                color = Color(0xFF0453AE), // dark green
                 modifier = Modifier
                     .weight(1f)
-                    .height(80.dp)
+                    .fillMaxWidth()
+                    .fillMaxHeight()
             )
         }
 
@@ -198,7 +223,7 @@ fun Dashboard(
             }
         }
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             ElevatedCard(
@@ -208,7 +233,10 @@ fun Dashboard(
                 ),
                 modifier = Modifier
                     .weight(1f)
-                    .height(200.dp)
+                    .fillMaxHeight()
+                    .clickable{
+                        navigateTo(Menus.AIAssistant.name)
+                    }
             ) {
                 Column(
                     modifier = Modifier
@@ -256,7 +284,10 @@ fun Dashboard(
                 ),
                 modifier = Modifier
                     .weight(1f)
-                    .height(200.dp)
+                    .fillMaxHeight()
+                    .clickable{
+                        navigateTo(Menus.ScreenTimeLimit.name)
+                    }
             ) {
                 Column(
                     modifier = Modifier

@@ -3,6 +3,7 @@ package com.getreconnected.reconnected.ui.composables.elements
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,7 +32,7 @@ import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 fun StatCard(
     title: String,
     value: String,
-    icon: ImageVector,
+    icon: Painter,
     color: Color = MaterialTheme.colorScheme.primary, // Default: theme green
     modifier: Modifier = Modifier,
 ) {
@@ -40,14 +42,14 @@ fun StatCard(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(16.dp).fillMaxHeight(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
                     style = TextStyle(fontFamily = interDisplayFamily),
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
                 Text(
                     text = value,
@@ -61,7 +63,7 @@ fun StatCard(
             }
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
-                imageVector = icon,
+                painter = icon,
                 contentDescription = title,
                 tint = color,
             )
@@ -69,15 +71,15 @@ fun StatCard(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-@Suppress("ktlint:standard:function-naming")
-fun StatCardPreview() {
-    ReconnectEDTheme {
-        StatCard(
-            "Screen Time Today",
-            "3h 15m",
-            Icons.Default.CheckCircle
-        )
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//@Suppress("ktlint:standard:function-naming")
+//fun StatCardPreview() {
+//    ReconnectEDTheme {
+//        StatCard(
+//            "Screen Time Today",
+//            "3h 15m",
+//            Icons.Default.CheckCircle
+//        )
+//    }
+//}
