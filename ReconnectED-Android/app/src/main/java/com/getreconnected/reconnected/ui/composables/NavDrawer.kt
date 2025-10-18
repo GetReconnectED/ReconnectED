@@ -223,8 +223,8 @@ fun NavDrawer(
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            text = "Juan",
-                            style = sidebarButtonText.copy(fontSize = 28.sp),
+                            text = viewModel.activeUser.value,
+                            style = sidebarButtonText.copy(fontSize = 20.sp),
                             color = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.weight(1f),
                         )
