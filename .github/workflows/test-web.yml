@@ -44,8 +44,8 @@ jobs:
           # Used to upload bundle to Codecov for bundle analysis
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      # - name: Run Tests
-      #   run: bun run test
+      - name: Run Tests
+        run: bun run test:ci
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}

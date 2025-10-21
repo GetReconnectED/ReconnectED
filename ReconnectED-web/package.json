@@ -10,7 +10,8 @@
         "postinstall": "nuxt prepare",
         "lint": "eslint --ext .js,.ts,.vue .",
         "test": "vitest --run --coverage --typecheck",
-        "test:watch": "vitest --watch"
+        "test:ci": "vitest --run --coverage --typecheck --outputFile test-results.xml --reporter junit",
+        "test:watch": "vitest --run --coverage --typecheck --watch"
     },
     "dependencies": {
         "@nuxt/eslint": "1.9.0",
