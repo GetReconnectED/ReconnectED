@@ -23,7 +23,7 @@ import com.getreconnected.reconnected.core.models.getMenuRoute
 import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
 import com.getreconnected.reconnected.ui.composables.NavDrawer
 import com.getreconnected.reconnected.ui.composables.elements.TopBar
-import com.getreconnected.reconnected.ui.menus.Assistant
+import com.getreconnected.reconnected.ui.menus.AIAssistant
 import com.getreconnected.reconnected.ui.menus.Calendar
 import com.getreconnected.reconnected.ui.menus.Dashboard
 import com.getreconnected.reconnected.ui.menus.ScreenTimeLimit
@@ -34,15 +34,18 @@ import kotlinx.coroutines.launch
 /**
  * The main screen for the app.
  *
+ * @param viewModel The view model for the app.
  * @param modifier The modifier to apply to the main screen.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Suppress("ktlint:standard:function-naming")
-fun MainScreen(modifier: Modifier = Modifier) {
+fun MainScreen(
+    viewModel: UIRouteViewModel,
+    modifier: Modifier = Modifier,
+) {
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
-    val viewModel: UIRouteViewModel = viewModel() // Initialize the view model for UI routes
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed) // Initialize the drawer state
     val backStackEntry by navController.currentBackStackEntryAsState() // Get the current back stack entry
@@ -71,7 +74,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
             },
         ) { padding ->
             NavHost(navController = navController, startDestination = Menus.Dashboard.name) {
-                composable(Menus.Dashboard.name) { Dashboard(viewModel, Modifier.padding(padding)) }
+                composable(Menus.Dashboard.name) { Dashboard(navController, viewModel, Modifier.padding(padding)) }
                 composable(Menus.ScreenTimeTracker.name) {
                     // ScreenTimeTracker(Modifier.padding(padding), viewModel)
                     ScreenTimeTracker(Modifier.padding(padding))
@@ -80,7 +83,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     ScreenTimeLimit(Modifier.padding(padding))
                 }
                 composable(Menus.Calendar.name) { Calendar(Modifier.padding(padding)) }
-                composable(Menus.Assistant.name) { Assistant(Modifier.padding(padding)) }
+                composable(Menus.AIAssistant.name) { AIAssistant(Modifier.padding(padding)) }
             }
         }
     }
@@ -90,7 +93,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun MainScreenPreview() {
+    val viewModel: UIRouteViewModel = viewModel()
     ReconnectEDTheme {
-        MainScreen()
+        MainScreen(viewModel = viewModel)
     }
 }

@@ -1,77 +1,155 @@
 package com.getreconnected.reconnected.ui.menus
 
-import android.annotation.SuppressLint
+import android.content.Intent
+import android.provider.Settings
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.getreconnected.reconnected.R
+import com.getreconnected.reconnected.core.models.Menus
+import com.getreconnected.reconnected.core.models.getMenuRoute
+import com.getreconnected.reconnected.core.util.hasUsageStatsPermission
 import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
+import com.getreconnected.reconnected.legacy.data.formatScreenTime
+import com.getreconnected.reconnected.legacy.data.getDaysActive
+import com.getreconnected.reconnected.legacy.data.getScreenTimeInMillis
 import com.getreconnected.reconnected.ui.composables.elements.StatCard
-import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
+import com.getreconnected.reconnected.ui.theme.LocalReconnectEDColors
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
+import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
+import com.patrykandpatrick.vico.compose.cartesian.cartesianLayerPadding
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberColumnCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
+import com.patrykandpatrick.vico.compose.common.component.rememberLineComponent
+import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
+import com.patrykandpatrick.vico.compose.common.fill
+import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
+import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
+import com.patrykandpatrick.vico.core.cartesian.data.columnSeries
+import com.patrykandpatrick.vico.core.cartesian.layer.ColumnCartesianLayer
+import com.patrykandpatrick.vico.core.common.data.ExtraStore
+import kotlinx.coroutines.delay
 import java.util.Calendar
 
 /**
- * The content of the dashboard screen.
+ * Composable for rendering the Dashboard screen interface. The Dashboard includes
+ * components for displaying user statistics such as screen time, days active, as well as
+ * navigation options for additional features like AI Assistant and App Usage Limits.
  *
- * @param viewModel The view model for UI routes.
- * @param modifier The modifier to apply to the dashboard content.
+ * @param navController Used to handle navigation actions within the app.
+ * @param viewModel The view model providing state and business logic for the Dashboard screen.
+ * @param modifier The modifier to be applied to the Dashboard layout.
  */
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun Dashboard(
+    navController: NavController,
     viewModel: UIRouteViewModel,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+    val daysActive = getDaysActive(context)
+    val hasPermission = hasUsageStatsPermission(context)
+    val scrollState = rememberScrollState()
+    val gradientStart = LocalReconnectEDColors.current.gradientStart
+    val gradientEnd = LocalReconnectEDColors.current.gradientEnd
+
+    val screenTimeMillis by produceState(initialValue = -1L, key1 = hasPermission) {
+        if (hasPermission) {
+            while (true) {
+                value = getScreenTimeInMillis(context)
+                delay(60_000)
+            }
+        } else {
+            value = -1L
+        }
+    }
+
+    if (!hasPermission) {
+        context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+    }
+
+    val screenTimeValue =
+        when {
+            !hasPermission -> "Tap to permit"
+            else -> formatScreenTime(screenTimeMillis)
+        }
+
+    fun navigateTo(route: String) {
+        navController.navigate(route) {
+            popUpTo(Menus.Dashboard.name) { inclusive = false }
+            launchSingleTop = true
+        }
+        viewModel.setSelectedRoute(getMenuRoute(route))
+    }
+
     Column(
         modifier =
             modifier
+                .verticalScroll(scrollState)
                 .fillMaxSize()
                 .background(
                     brush =
-                        Brush.Companion.verticalGradient(
-                            colors =
-                                listOf(
-                                    Color(0xFFD1FAE5),
-                                    Color(0xFFDBEAFE),
-                                ),
+                        Brush.verticalGradient(
+                            colors = listOf(gradientStart, gradientEnd),
                         ),
                 ).padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        Spacer(modifier = Modifier)
         GreetingTextWithTime(name = viewModel.activeUser.value)
+
         ElevatedCard(
-            elevation =
-                CardDefaults.cardElevation(
-                    defaultElevation = 6.dp,
+            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+            colors =
+                CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
                 ),
-            modifier = Modifier.Companion.fillMaxWidth().height(125.dp),
+            modifier = Modifier.fillMaxWidth().height(125.dp),
         ) {
             Column(
-                modifier = Modifier.Companion.fillMaxSize().padding(horizontal = 16.dp),
-                horizontalAlignment = Alignment.Companion.CenterHorizontally,
+                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(
@@ -79,7 +157,8 @@ fun Dashboard(
                     style =
                         TextStyle(
                             fontFamily = interDisplayFamily,
-                            fontWeight = FontWeight.Companion.Light,
+                            fontWeight = FontWeight.Light,
+                            color = MaterialTheme.colorScheme.onSurface,
                         ),
                 )
                 Text(
@@ -87,54 +166,185 @@ fun Dashboard(
                     style =
                         TextStyle(
                             fontFamily = interDisplayFamily,
-                            fontWeight = FontWeight.Companion.SemiBold,
-                            fontStyle = FontStyle.Companion.Italic,
+                            fontWeight = FontWeight.SemiBold,
+                            fontStyle = FontStyle.Italic,
                             fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurface,
                         ),
-                    textAlign = TextAlign.Companion.Center,
-                    modifier = Modifier.Companion.padding(vertical = 8.dp),
-                    color = Color(0xFF020202),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(vertical = 8.dp),
                 )
             }
         }
 
-        // The StatCards now use the new color parameter
         Row(
-            modifier = Modifier.Companion.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             StatCard(
                 title = "Screen Time Today",
-                value = "3h 15m",
-                icon = Icons.Default.DateRange,
-                color = Color.Green,
-                modifier = Modifier.Companion.weight(1f),
-                // .requiredHeight(100.dp)
+                value = screenTimeValue,
+                icon = painterResource(R.drawable.daily_screen_time),
+                color = Color(0xFF008F46), // dark green
+                modifier =
+                    Modifier.weight(1f).fillMaxWidth().fillMaxHeight().clickable {
+                        if (!hasPermission) {
+                            context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                        }
+                    },
             )
             StatCard(
                 title = "Days Active",
-                value = "14 days",
-                icon = Icons.Default.CheckCircle,
-                color = Color.Blue,
-                modifier = Modifier.Companion.weight(1f),
-                // .requiredHeight(100.dp)
+                value = "$daysActive days",
+                icon = painterResource(R.drawable.days_active),
+                color = Color(0xFF0453AE), // dark green
+                modifier = Modifier.weight(1f).fillMaxWidth().fillMaxHeight(),
             )
         }
+
+        ElevatedCard(
+            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+            colors =
+                CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ),
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Column(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    modifier = Modifier.padding(top = 16.dp),
+                    text = "Weekly Average Screen Time",
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        ),
+                )
+                Spacer(Modifier.height(16.dp))
+                WeeklyAvgScreenTimeChart()
+                Spacer(Modifier.height(16.dp))
+            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            ElevatedCard(
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                modifier =
+                    Modifier.weight(1f).fillMaxHeight().clickable {
+                        navigateTo(Menus.AIAssistant.name)
+                    },
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 16.dp),
+                    horizontalAlignment = Alignment.Start,
+                ) {
+                    Text(
+                        text = "AI Assistant",
+                        style =
+                            TextStyle(
+                                fontFamily = interDisplayFamily,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            ),
+                    )
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.gemini_logo),
+                            contentDescription = "Gemini AI Logo",
+                            modifier = Modifier.height(128.dp).width(128.dp).padding(16.dp),
+                        )
+                    }
+                    Text(
+                        text = "Advisor powered by GemIni API",
+                        style =
+                            TextStyle(
+                                fontFamily = interDisplayFamily,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            ),
+                    )
+                }
+            }
+            ElevatedCard(
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                modifier =
+                    Modifier.weight(1f).fillMaxHeight().clickable {
+                        navigateTo(Menus.ScreenTimeLimit.name)
+                    },
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 16.dp),
+                    horizontalAlignment = Alignment.Start,
+                ) {
+                    Text(
+                        text = "Limit App Usage",
+                        style =
+                            TextStyle(
+                                fontFamily = interDisplayFamily,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            ),
+                    )
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.screen_time_limit_green),
+                            contentDescription = "Limit App Usage",
+                            modifier = Modifier.height(128.dp).width(128.dp).padding(16.dp),
+                        )
+                    }
+                    Text(
+                        text = "Set time limits to your applications and restrict usage",
+                        style =
+                            TextStyle(
+                                fontFamily = interDisplayFamily,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            ),
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier)
     }
 }
 
 /**
- * Displays a personalized greeting based on the current time.
+ * Displays a greeting text based on the time of day and the provided name.
+ * The greeting adapts to different times of the day (morning, afternoon, evening, night)
+ * and incorporates the user's name into the message.
  *
- * @param name The name of the user.
+ * @param name The name of the user to be included in the greeting text.
  */
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun GreetingTextWithTime(name: String) {
-    // Get the current hour of the day
     val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-
-    // Determine the time-based greeting word
     val timeOfDay =
         when (hour) {
             in 5..11 -> "morning"
@@ -142,26 +352,89 @@ fun GreetingTextWithTime(name: String) {
             in 18..23 -> "evening"
             else -> "night"
         }
-
     Text(
-        modifier = Modifier.padding(top = 16.dp),
         text = "Good $timeOfDay, $name!",
         style =
             TextStyle(
                 fontFamily = interDisplayFamily,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
             ),
     )
 }
 
-@Preview(showBackground = true)
+private val BottomAxisLabelKey = ExtraStore.Key<List<String>>()
+private val BottomAxisValueFormatter =
+    CartesianValueFormatter { context, x, _ ->
+        context.model.extraStore[BottomAxisLabelKey][x.toInt()]
+    }
+
+private val data = mapOf("Sun" to 1, "Mon" to 2, "Tue" to 6, "Wed" to 4, "Thu" to 9, "Fri" to 5, "Sat" to 3)
+
+/**
+ * A composable that renders a bar chart representing the average screen time for a week.
+ *
+ * @param modelProducer A producer for the Cartesian chart model, which provides the data and updates for the chart.
+ * @param modifier Modifier to customize the layout and styling of the chart's container.
+ */
 @Composable
 @Suppress("ktlint:standard:function-naming")
-@SuppressLint("ViewModelConstructorInComposable")
-fun DashboardPreview() {
-    val viewModel = UIRouteViewModel()
-    ReconnectEDTheme {
-        Dashboard(viewModel)
+private fun WeeklyAvgScreenTimeChart(
+    modelProducer: CartesianChartModelProducer,
+    modifier: Modifier = Modifier,
+) {
+    CartesianChartHost(
+        chart =
+            rememberCartesianChart(
+                rememberColumnCartesianLayer(
+                    ColumnCartesianLayer.ColumnProvider.series(
+                        rememberLineComponent(
+                            fill = fill(MaterialTheme.colorScheme.primary),
+                            thickness = 16.dp,
+                        ),
+                    ),
+                ),
+                startAxis =
+                    VerticalAxis.rememberStart(
+                        label =
+                            rememberTextComponent(
+                                color = MaterialTheme.colorScheme.onSurface,
+                                textSize = 12.sp,
+                            ),
+                    ),
+                bottomAxis =
+                    HorizontalAxis.rememberBottom(
+                        itemPlacer = remember { HorizontalAxis.ItemPlacer.segmented() },
+                        valueFormatter = BottomAxisValueFormatter,
+                        label =
+                            rememberTextComponent(
+                                color = MaterialTheme.colorScheme.onSurface,
+                                textSize = 12.sp,
+                            ),
+                    ),
+                layerPadding = { cartesianLayerPadding(scalableStart = 8.dp, scalableEnd = 8.dp) },
+            ),
+        modelProducer = modelProducer,
+        modifier = modifier,
+    )
+}
+
+/**
+ * A composable function that displays a bar chart representing the average screen time per day
+ * over a week. It dynamically updates its data by leveraging a chart model producer.
+ *
+ * @param modifier Modifier to customize the layout and styling of the chart's container.
+ */
+@Composable
+@Suppress("ktlint:standard:function-naming")
+fun WeeklyAvgScreenTimeChart(modifier: Modifier = Modifier) {
+    val modelProducer = remember { CartesianChartModelProducer() }
+    LaunchedEffect(Unit) {
+        modelProducer.runTransaction {
+            columnSeries { series(data.values) }
+            extras { it[BottomAxisLabelKey] = data.keys.toList() }
+        }
     }
+    WeeklyAvgScreenTimeChart(modelProducer, modifier)
 }

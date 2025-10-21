@@ -30,7 +30,7 @@ class GoogleAuth {
             .createSignInIntentBuilder()
             .setAvailableProviders(listOf(AuthUI.IdpConfig.GoogleBuilder().build()))
             .setDefaultProvider(AuthUI.IdpConfig.GoogleBuilder().build())
-//            .setCredentialManagerEnabled(false)
+            // .setCredentialManagerEnabled(false)
             // FIXME: `.setCredentialManagerEnabled(false)` is a temporary fix for the following error:
             //
             // A sign-in error occurred.

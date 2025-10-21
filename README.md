@@ -5,7 +5,7 @@
     <h1>ReconnectED</h1>
 </div>
 
-<p align="center"><i>Minimize the overconsumption of internet.</i></p>
+<p align="center"><i>Minimize the overconsumption of the internet.</i></p>
 
 ReconnectED is a digital detox planner that helps reduce screen time. It includes a daily planner to set screen time goals, and goal-setting sections.
 
