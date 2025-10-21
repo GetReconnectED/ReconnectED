@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,19 +27,28 @@ import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
+/**
+ * A reusable composable for the stat cards on the dashboard.
+ *
+ * @param title The title of the stat card.
+ * @param value The value of the stat card.
+ * @param icon The icon of the stat card.
+ * @param modifier The modifier to apply to the stat card.
+ * @param color The color of the stat card.
+ */
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun StatCard(
     title: String,
     value: String,
     icon: Painter,
-    color: Color = MaterialTheme.colorScheme.primary, // Default: theme green
     modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.primary, // Default: theme green
 ) {
     ElevatedCard(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
     ) {
         Row(
             modifier = Modifier.padding(16.dp).fillMaxHeight(),
@@ -53,11 +62,12 @@ fun StatCard(
                 )
                 Text(
                     text = value,
-                    style = TextStyle(
-                        fontFamily = interDisplayFamily,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp,
-                    ),
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp,
+                        ),
                     color = color,
                 )
             }
@@ -71,15 +81,15 @@ fun StatCard(
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//@Suppress("ktlint:standard:function-naming")
-//fun StatCardPreview() {
-//    ReconnectEDTheme {
-//        StatCard(
-//            "Screen Time Today",
-//            "3h 15m",
-//            Icons.Default.CheckCircle
-//        )
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+@Suppress("ktlint:standard:function-naming")
+fun StatCardPreview() {
+    ReconnectEDTheme {
+        StatCard(
+            "Screen Time Today",
+            "3h 15m",
+            icon = rememberVectorPainter(Icons.Default.CheckCircle),
+        )
+    }
+}

@@ -47,39 +47,52 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import java.time.format.TextStyle as JavaTextStyle
 
-
+/**
+ * Composable that displays a calendar view with enhanced theming and styling,
+ * along with a container showcasing application usage details.
+ *
+ * @param modifier Modifier to be applied to the root layout of the calendar, allowing
+ * customization of size, padding, background, or other styling properties.
+ */
 @Composable
-fun Calendar(modifier: Modifier = Modifier.Companion) {
+@Suppress("ktlint:standard:function-naming")
+fun Calendar(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.Companion.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFD1FAE5),
-                        Color(0xFFDBEAFE)
-                    )
-                )
-            )
-            .padding(horizontal = 16.dp, vertical = 16.dp),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(
+                    brush =
+                        Brush.Companion.verticalGradient(
+                            colors =
+                                listOf(
+                                    Color(0xFFD1FAE5),
+                                    Color(0xFFDBEAFE),
+                                ),
+                        ),
+                ).padding(horizontal = 16.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         ElevatedCard(
             elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-            ),
-            modifier = Modifier.fillMaxWidth()
+            colors =
+                CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ),
+            modifier = Modifier.fillMaxWidth(),
         ) {
             ScreenTimeCalendar()
-
         }
         AppUsageContainer()
-
     }
 }
 
+/**
+ * A composable that displays a screen time calendar with the ability to navigate between months
+ * and view the days of the selected month. It also highlights today's date for better visibility.
+ */
 @Composable
+@Suppress("ktlint:standard:function-naming")
 fun ScreenTimeCalendar() {
     val currentMonth = remember { YearMonth.now() }
     var displayedMonth by remember { mutableStateOf(currentMonth) }
@@ -89,12 +102,13 @@ fun ScreenTimeCalendar() {
     val today = LocalDate.now()
     val daysOfWeek = daysOfWeek()
 
-    val state = rememberCalendarState(
-        startMonth = startMonth,
-        endMonth = endMonth,
-        firstVisibleMonth = displayedMonth,
-        firstDayOfWeek = daysOfWeek.first()
-    )
+    val state =
+        rememberCalendarState(
+            startMonth = startMonth,
+            endMonth = endMonth,
+            firstVisibleMonth = displayedMonth,
+            firstDayOfWeek = daysOfWeek.first(),
+        )
 
     val coroutineScope = rememberCoroutineScope()
     val monthFormatter = remember { DateTimeFormatter.ofPattern("MMMM yyyy") }
@@ -105,16 +119,13 @@ fun ScreenTimeCalendar() {
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+        modifier = Modifier.fillMaxWidth().padding(16.dp),
     ) {
-
         // === Header (month + arrows) ===
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(onClick = {
                 coroutineScope.launch {
@@ -122,17 +133,18 @@ fun ScreenTimeCalendar() {
                     state.animateScrollToMonth(displayedMonth)
                 }
             }) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Previous month", )
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Previous month")
             }
 
             Text(
                 text = displayedMonth.format(monthFormatter),
-                style = TextStyle(
-                    fontFamily = interDisplayFamily,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Companion.Bold,
-                    color = Color(0xFF020202)
-                )
+                style =
+                    TextStyle(
+                        fontFamily = interDisplayFamily,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Companion.Bold,
+                        color = Color(0xFF020202),
+                    ),
             )
 
             IconButton(onClick = {
@@ -152,16 +164,15 @@ fun ScreenTimeCalendar() {
             for (dayOfWeek in daysOfWeek) {
                 Text(
                     text = dayOfWeek.getDisplayName(JavaTextStyle.SHORT, Locale.getDefault()),
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(vertical = 4.dp),
+                    modifier = Modifier.weight(1f).padding(vertical = 4.dp),
                     textAlign = TextAlign.Center,
-                    style = TextStyle(
-                        fontFamily = interDisplayFamily,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Companion.Medium,
-                        color = Color(0xFF595959)
-                    )
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Companion.Medium,
+                            color = Color(0xFF595959),
+                        ),
                 )
             }
         }
@@ -173,36 +184,46 @@ fun ScreenTimeCalendar() {
             state = state,
             dayContent = { day ->
                 DayCell(day.date, today)
-            }
+            },
         )
     }
 }
 
-
+/**
+ * A composable that represents a single day cell in a calendar view.
+ *
+ * @param date The specific date to be displayed in the cell.
+ * @param today The current date, used to determine if the cell represents today.
+ */
 @Composable
-fun DayCell(date: LocalDate, today: LocalDate) {
+@Suppress("ktlint:standard:function-naming")
+fun DayCell(
+    date: LocalDate,
+    today: LocalDate,
+) {
     val isToday = date == today
     Box(
-        modifier = Modifier
-            .aspectRatio(1f)
-            .padding(2.dp),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.aspectRatio(1f).padding(2.dp),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = date.dayOfMonth.toString(),
-            style = if (isToday) TextStyle(
-                fontFamily = interDisplayFamily,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Companion.Normal,
-                color = Color(0xFF020202)
-            )
-            else
-                TextStyle(
-                    fontFamily = interDisplayFamily,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Companion.Normal,
-                    color = Color(0xAA595959)
-                )
+            style =
+                if (isToday) {
+                    TextStyle(
+                        fontFamily = interDisplayFamily,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Companion.Normal,
+                        color = Color(0xFF020202),
+                    )
+                } else {
+                    TextStyle(
+                        fontFamily = interDisplayFamily,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Companion.Normal,
+                        color = Color(0xAA595959),
+                    )
+                },
         )
     }
 }

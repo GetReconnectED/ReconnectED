@@ -23,6 +23,12 @@ import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
+/**
+ * The top bar of the app.
+ *
+ * @param title The title of the top bar.
+ * @param onOpenDrawer The function to open the drawer.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Suppress("ktlint:standard:function-naming")
@@ -31,18 +37,20 @@ fun TopBar(
     onOpenDrawer: () -> Unit,
 ) {
     TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,        // Green top bar
-            titleContentColor = MaterialTheme.colorScheme.onPrimary    // White text
-        ),
+        colors =
+            TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary, // Green top bar
+                titleContentColor = MaterialTheme.colorScheme.onPrimary, // White text
+            ),
         title = {
             Text(
                 text = title,
-                style = TextStyle(
-                    fontFamily = interDisplayFamily,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                ),
+                style =
+                    TextStyle(
+                        fontFamily = interDisplayFamily,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                    ),
             )
         },
         navigationIcon = {
@@ -50,7 +58,7 @@ fun TopBar(
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "Menu Icon",
-                    tint = MaterialTheme.colorScheme.onPrimary           // White icon
+                    tint = MaterialTheme.colorScheme.onPrimary, // White icon
                 )
             }
         },
@@ -59,11 +67,8 @@ fun TopBar(
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
                     contentDescription = "User Profile",
-                    modifier = Modifier
-                        .padding(1.dp)
-                        .width(36.dp)
-                        .height(36.dp),
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    modifier = Modifier.padding(1.dp).width(36.dp).height(36.dp),
+                    tint = MaterialTheme.colorScheme.onPrimary,
                 )
             }
         },

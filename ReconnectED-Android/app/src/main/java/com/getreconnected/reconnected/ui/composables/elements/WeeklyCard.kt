@@ -27,6 +27,12 @@ import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.core.formatTime
 import com.getreconnected.reconnected.legacy.data.WeeklyScreenTime
 
+/**
+ * A composable that displays an icon for a given drawable.
+ *
+ * @param drawable The drawable to display.
+ * @param modifier The modifier to apply to the icon.
+ */
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun DrawableIcon(
@@ -40,6 +46,12 @@ fun DrawableIcon(
     )
 }
 
+/**
+ * A composable that displays a card for a given weekly screen time.
+ *
+ * @param week The weekly screen time to display.
+ * @param context The context to use for getting the application icon.
+ */
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun WeeklyCard(
@@ -49,11 +61,9 @@ fun WeeklyCard(
     val pm = context.packageManager
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
+        modifier = Modifier.fillMaxWidth().padding(8.dp),
         elevation = CardDefaults.cardElevation(4.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -63,11 +73,11 @@ fun WeeklyCard(
                 Text(
                     "Week ${week.weekNumber}",
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
                 Text(
                     formatTime(week.totalTimeMillis),
-                    color = MaterialTheme.colorScheme.primary   // Green stat value
+                    color = MaterialTheme.colorScheme.primary, // Green stat value
                 )
             }
             Row {
@@ -80,9 +90,7 @@ fun WeeklyCard(
                         }
                     DrawableIcon(
                         drawable = icon,
-                        modifier = Modifier
-                            .size(40.dp)
-                            .padding(4.dp),
+                        modifier = Modifier.size(40.dp).padding(4.dp),
                     )
                 }
             }
