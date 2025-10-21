@@ -43,7 +43,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Restore Gradle Wrapper
-        run: gradle wrapper
+        run: gradle wrapper --no-daemon
 
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
