@@ -8,7 +8,9 @@
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare",
-        "lint": "eslint --ext .js,.ts,.vue ."
+        "lint": "eslint --ext .js,.ts,.vue .",
+        "test": "vitest",
+        "test:watch": "vitest --watch"
     },
     "dependencies": {
         "@nuxt/eslint": "1.9.0",
@@ -18,5 +20,12 @@
         "typescript": "^5.6.3",
         "vue": "^3.5.22",
         "vue-router": "^4.6.3"
+    },
+    "devDependencies": {
+        "@nuxt/test-utils": "^3.19.2",
+        "@vue/test-utils": "^2.4.6",
+        "happy-dom": "^20.0.7",
+        "playwright-core": "^1.56.1",
+        "vitest": "^3.2.4"
     }
 }
