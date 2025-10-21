@@ -49,4 +49,4 @@ jobs:
           VALIDATE_JSON: false
           VALIDATE_MARKDOWN: false
           VALIDATE_MARKDOWN_PRETTIER: false
-          TYPESCRIPT_ES_CONFIG_FILE: ReconnectED-web/eslint.config.mjs
+          TYPESCRIPT_ES_CONFIG_FILE: /github/workspace/ReconnectED-web/eslint.config.mjs
