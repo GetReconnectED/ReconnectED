@@ -42,5 +42,8 @@ jobs:
       - name: Grant Execute Permission For gradlew
         run: chmod +x gradlew
 
+      - name: Restore Gradle Wrapper
+        run: gradle wrapper
+
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
