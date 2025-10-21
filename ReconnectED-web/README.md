@@ -1,75 +1,30 @@
-# Nuxt Minimal Starter
+# ReconnectED
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+<div align="center">
+    <img src="https://github.com/GetReconnectED/ReconnectED/raw/main/Assets/logo.png" alt="ReconnectED logo" width="128" />
+    <h1>ReconnectED</h1>
+</div>
 
-## Setup
+<p align="center"><i>Minimize the overconsumption of the internet.</i></p>
 
-Make sure to install dependencies:
+ReconnectED is a digital detox planner that helps reduce screen time. It includes a daily planner to set screen time goals, and goal-setting sections.
 
-```bash
-# npm
-npm install
+Assisted by its smart AI Companion App, it provides prompts and support to stay on track.
 
-# pnpm
-pnpm install
+In today's Digital Age, constant content consumption fuels screen dependency and information overload, affecting well-being and productivity. Rising digital demand harms the environment, while device production depletes natural resources. Let's stay mindful of our digital habits and find inspiration in a balanced, healthier lifestyle.
 
-# yarn
-yarn install
+This repository contains the source code for both the Android and Web applications of ReconnectED.
 
-# bun
-bun install
-```
+## Development Environment Setup
 
-## Development Server
+### Web Development Environment Setup
 
-Start the development server on `http://localhost:3000`:
+1. Install Bun.
+2. Navigate to the `ReconnectED-Web` directory.
+3. Run `bun install` to install dependencies.
+4. Get the Firebase configuration from the Firebase console and place it in the `ReconnectED-Web/` directory.
+5. Run `bun run dev` to start the development server.
 
-```bash
-# npm
-npm run dev
+### License
 
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+See [LICENSE](./LICENSE) for details.
