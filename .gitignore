@@ -1,3 +1,5 @@
+coverage/
+
 # Gradle files
 .gradle/
 build/
