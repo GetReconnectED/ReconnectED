@@ -13,17 +13,23 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +41,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.R
+import com.getreconnected.reconnected.core.auth.GoogleAuth
+import com.getreconnected.reconnected.core.chatbot.ChatManager
+import com.getreconnected.reconnected.core.models.Chat
+import kotlinx.coroutines.launch
 
 /**
  * A composable function representing an AI-powered assistant chat interface.
@@ -46,24 +56,92 @@ import com.getreconnected.reconnected.R
 @Suppress("ktlint:standard:function-naming")
 fun AIAssistant(modifier: Modifier = Modifier) {
     var inputText by remember { mutableStateOf("") }
+    var chatHistory by remember { mutableStateOf(listOf<Chat>()) }
+    var isLoading by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
+    val chat = ChatManager.startChat("Bananas")
+
+    // Auto-scroll to bottom when new messages are added
+    LaunchedEffect(chatHistory.size) {
+        if (chatHistory.isNotEmpty()) {
+            listState.animateScrollToItem(chatHistory.size - 1)
+        }
+    }
+
+    val sendMessage = {
+        if (inputText.isNotBlank() && !isLoading) {
+            val userMessage =
+                Chat(
+                    prompt = inputText,
+                    bitmap = null,
+                    isFromUser = true,
+                )
+
+            chatHistory = chatHistory + userMessage
+            val currentInput = inputText
+            inputText = ""
+            isLoading = true
+
+            coroutineScope.launch {
+                try {
+                    val aiResponse = chat.sendMessage(currentInput)
+                    // Convert the AI response to a Chat object
+                    val processedAiResponse =
+                        Chat(
+                            prompt = aiResponse.text ?: "",
+                            bitmap = null,
+                            isFromUser = false,
+                        )
+                    chatHistory = (chatHistory + processedAiResponse)
+                } catch (e: Exception) {
+                    val errorMessage =
+                        Chat(
+                            prompt = "Sorry, I encountered an error: ${e.message}",
+                            bitmap = null,
+                            isFromUser = false,
+                        )
+                    chatHistory = chatHistory + errorMessage
+                } finally {
+                    isLoading = false
+                }
+            }
+        }
+    }
+
     Scaffold(
         bottomBar = {
             Row(
-                modifier = Modifier.background(Color.White).padding(16.dp),
+                modifier =
+                    Modifier
+                        .background(Color.White)
+                        .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 TextField(
                     value = inputText,
                     onValueChange = { inputText = it },
-                    modifier = Modifier.weight(1f).height(50.dp),
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .height(50.dp),
                     placeholder = { Text("Type a message...") },
+                    enabled = !isLoading,
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
-                    onClick = { /* send message logic */ },
+                    onClick = sendMessage,
                     modifier = Modifier.height(50.dp),
+                    enabled = inputText.isNotBlank() && !isLoading,
                 ) {
-                    Text("Send")
+                    if (isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(16.dp),
+                            color = Color.White,
+                        )
+                    } else {
+                        Text("Send")
+                    }
                 }
             }
         },
@@ -81,10 +159,14 @@ fun AIAssistant(modifier: Modifier = Modifier) {
                                         Color(0xFFDBEAFE),
                                     ),
                             ),
-                    ).padding(horizontal = 16.dp),
+                    ).padding(padding)
+                    .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            ChatroomScreen()
+            ChatroomScreen(
+                chatHistory = chatHistory,
+                listState = listState,
+            )
         }
     }
 }
@@ -94,17 +176,44 @@ fun AIAssistant(modifier: Modifier = Modifier) {
  */
 @Composable
 @Suppress("ktlint:standard:function-naming")
-fun ChatroomScreen() {
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-    ) {
-        ChatBubble(
-            avatarRes = R.drawable.gemini_logo,
-            name = "Gemini AI",
-            message = "How can I help you?",
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        UserBubble(message = "Give me a summary of what is my most used application")
+fun ChatroomScreen(
+    chatHistory: List<Chat>,
+    listState: androidx.compose.foundation.lazy.LazyListState,
+) {
+    if (chatHistory.isEmpty()) {
+        // Show welcome message when no chat history
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            ChatBubble(
+                avatarRes = R.drawable.gemini_logo,
+                name = "Gemini AI",
+                message = "How can I help you today?",
+            )
+        }
+    } else {
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding =
+                androidx.compose.foundation.layout
+                    .PaddingValues(vertical = 16.dp),
+        ) {
+            items(chatHistory) { chat ->
+                if (chat.isFromUser) {
+                    UserBubble(message = chat.prompt)
+                } else {
+                    ChatBubble(
+                        avatarRes = R.drawable.gemini_logo,
+                        name = "Gemini AI",
+                        message = chat.prompt,
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -122,15 +231,19 @@ fun ChatBubble(
     name: String,
     message: String,
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        verticalAlignment = Alignment.Top,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
         Image(
             painterResource(id = avatarRes),
             contentDescription = "Avatar",
             modifier = Modifier.size(40.dp).clip(CircleShape),
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Column {
+        Column(modifier = Modifier.weight(1f)) {
             Text(text = name, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            Spacer(modifier = Modifier.height(4.dp))
             Surface(
                 shape = MaterialTheme.shapes.medium,
                 color = Color.White,
@@ -155,11 +268,15 @@ fun ChatBubble(
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun UserBubble(message: String) {
-    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.CenterEnd,
+    ) {
         Surface(
             shape = MaterialTheme.shapes.medium,
             color = Color(0xFF6FD1B4),
             shadowElevation = 1.dp,
+            modifier = Modifier.fillMaxWidth(0.8f), // Limit width to 80% of screen
         ) {
             Text(
                 text = message,
