@@ -45,5 +45,20 @@ jobs:
       - name: Restore Gradle Wrapper
         run: gradle wrapper --no-daemon
 
+      - name: Write Google Services File
+        if: secrets.GOOGLE_SERVICES != ''
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES }}" > app/google-services.json
+          if [ ! -f app/google-services.json ]; then
+            echo "Failed to create google-services.json"
+            exit 1
+          fi
+        shell: bash
+
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
+
+      - name: Cleanup Secrets
+        if: always()
+        run: |
+          rm -f app/google-services.json
