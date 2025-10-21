@@ -63,9 +63,9 @@ val LocalReconnectEDColors =
     }
 
 @Composable
+@Suppress("ktlint:standard:function-naming")
 fun ReconnectEDTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     val colorScheme = if (darkTheme) darkColorScheme else lightColorScheme
