@@ -7,6 +7,11 @@
 
 <p align="center"><i>Minimize the overconsumption of the internet.</i></p>
 
+![Lint - Android](https://img.shields.io/github/actions/workflow/status/GetReconnectED/ReconnectED/lint-android.yml?label=Lint%20-%20Android)
+![Lint - Web](https://img.shields.io/github/actions/workflow/status/GetReconnectED/ReconnectED/lint-web.yml?label=Lint%20-%20Web)
+![Test - Android](https://img.shields.io/github/actions/workflow/status/GetReconnectED/ReconnectED/test-android.yml?label=Test%20-%20Android)
+![Test - Web](https://img.shields.io/github/actions/workflow/status/GetReconnectED/ReconnectED/test-web.yml?label=Test%20-%20Web)
+
 ReconnectED is a digital detox planner that helps reduce screen time. It includes a daily planner to set screen time goals, and goal-setting sections.
 
 Assisted by its smart AI Companion App, it provides prompts and support to stay on track.
