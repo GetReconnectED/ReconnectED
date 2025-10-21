@@ -24,14 +24,6 @@ This repository contains the source code for both the Android and Web applicatio
 3. Get the Firebase configuration file from the Firebase console and place it in the `ReconnectED-Android/app` directory.
 4. Set the SHA-1 certificate fingerprint in the Firebase console.
 
-### Web Development Environment Setup
-
-1. Install Bun.
-2. Navigate to the `ReconnectED-Web` directory.
-3. Run `bun install` to install dependencies.
-4. Get the Firebase configuration from the Firebase console and place it in the `ReconnectED-Web/` directory.
-5. Run `bun run dev` to start the development server.
-
 ### License
 
 See [LICENSE](./LICENSE) for details.
