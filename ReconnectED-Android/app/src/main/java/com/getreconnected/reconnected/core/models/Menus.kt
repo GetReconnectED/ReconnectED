@@ -12,7 +12,7 @@ enum class Menus(
     ScreenTimeTracker("Screen Time Tracker"),
     ScreenTimeLimit("Screen Time Limit"),
     Calendar("Calendar"),
-    Assistant("AI Assistant"),
+    AIAssistant("AI Assistant"),
 }
 
 /**
@@ -22,4 +22,4 @@ enum class Menus(
  * @return The corresponding menu.
  */
 fun getMenuRoute(route: String): Menus =
-    Menus.entries.find { it.title == route } ?: throw IllegalArgumentException("Invalid menu route: $route")
+    Menus.entries.find { it.name == route } ?: throw IllegalArgumentException("Invalid menu route: $route")
