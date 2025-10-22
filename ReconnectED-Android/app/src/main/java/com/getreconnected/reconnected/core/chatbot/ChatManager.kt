@@ -1,5 +1,6 @@
 package com.getreconnected.reconnected.core.chatbot
 
+import com.getreconnected.reconnected.core.Chatbot
 import com.getreconnected.reconnected.core.models.Chat
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ai
@@ -10,19 +11,19 @@ object ChatManager {
     val model =
         Firebase
             .ai(backend = GenerativeBackend.googleAI())
-            .generativeModel("gemini-2.5-flash")
+            .generativeModel(Chatbot.MODEL)
 
     /**
      * Initiates a chat session with a predefined conversation starter.
      *
      * @param name The name of the user starting the chat. This will be included in the initial message.
      */
-    fun startChat(name: String) =
+    fun startChat(name: String?) =
         model.startChat(
             history =
                 listOf(
-                    content(role = "user") { text("Hello, I am $name.") },
-                    content(role = "model") { text("Hi! How can I help you get reconnected today?") },
+                    content(role = "user") { text(generateInitialPrompt(name)) },
+                    content(role = "model") { text(Chatbot.INITIAL_RESPONSE) },
                 ),
         )
 
@@ -47,5 +48,31 @@ object ChatManager {
                 isFromUser = false,
             )
         }
+    }
+
+    /**
+     * Generates an initial chatbot prompt customized with the user's information.
+     *
+     * @param name The name of the user to be included in the generated prompt.
+     * @return A string containing the initial chatbot prompt with user-specific details and screen time breakdown.
+     */
+    fun generateInitialPrompt(name: String?): String {
+        // TODO: Integrate the data aggregation system to get this information
+        val daysSinceStarted = 8
+        val screenTimeTotal = 380.42
+        return Chatbot.INITIAL_PROMPT +
+            """
+            |
+            |The user has this information:
+            |- Name: ${name ?: "Unable to retrieve name"}
+            |- Days since started: $daysSinceStarted
+            |
+            |Currently, the user's screen time is $screenTimeTotal minutes. This is a breakdown of the total screen time:
+            |- "Facebook": 137 minutes
+            |- "Instagram": 121.71 minutes
+            |- "Call of Duty: Mobile": 61.14
+            |- "Chrome": 40.57 minutes
+            |- "YouTube": 20 minutes
+            """.trimMargin()
     }
 }

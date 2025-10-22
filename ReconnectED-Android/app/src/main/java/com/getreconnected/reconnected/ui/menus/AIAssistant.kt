@@ -44,6 +44,8 @@ import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.core.auth.GoogleAuth
 import com.getreconnected.reconnected.core.chatbot.ChatManager
 import com.getreconnected.reconnected.core.models.Chat
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 
 /**
@@ -60,7 +62,11 @@ fun AIAssistant(modifier: Modifier = Modifier) {
     var isLoading by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
-    val chat = ChatManager.startChat("Bananas")
+    val googleAuth = GoogleAuth()
+    val chat =
+        ChatManager.startChat(
+            googleAuth.currentUser?.displayName,
+        )
 
     // Auto-scroll to bottom when new messages are added
     LaunchedEffect(chatHistory.size) {

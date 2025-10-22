@@ -3,11 +3,15 @@ package com.getreconnected.reconnected.core.auth
 import android.content.Intent
 import android.util.Log
 import com.firebase.ui.auth.AuthUI
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 /**
  * A class responsible for managing Google authentication using Firebase AuthUI.
  */
 class GoogleAuth {
+    val currentUser get() = Firebase.auth.currentUser
+
     /**
      * Returns an instance of [AuthUI] for Google authentication.
      *
