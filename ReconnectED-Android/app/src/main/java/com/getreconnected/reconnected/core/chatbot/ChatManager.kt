@@ -3,29 +3,38 @@ package com.getreconnected.reconnected.core.chatbot
 import com.getreconnected.reconnected.core.Chatbot
 import com.getreconnected.reconnected.core.models.Chat
 import com.google.firebase.Firebase
+import com.google.firebase.ai.GenerativeModel
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.content
 
 object ChatManager {
-    val model =
-        Firebase
-            .ai(backend = GenerativeBackend.googleAI())
-            .generativeModel(Chatbot.MODEL)
+    var model: GenerativeModel? = null
 
     /**
      * Initiates a chat session with a predefined conversation starter.
      *
      * @param name The name of the user starting the chat. This will be included in the initial message.
      */
-    fun startChat(name: String?) =
-        model.startChat(
+    fun startChat(name: String?): com.google.firebase.ai.Chat {
+        model =
+            Firebase
+                .ai(backend = GenerativeBackend.googleAI())
+                .generativeModel(
+                    modelName = Chatbot.MODEL,
+                    systemInstruction = content { text(generateInitialPrompt(name)) },
+                )
+        if (model == null) {
+            throw Exception("Model is null")
+        }
+
+        return model!!.startChat(
             history =
                 listOf(
-                    content(role = "user") { text(generateInitialPrompt(name)) },
                     content(role = "model") { text(Chatbot.INITIAL_RESPONSE) },
                 ),
         )
+    }
 
     /**
      * Generates a response by sending the given prompt to a generative model.
@@ -35,7 +44,10 @@ object ChatManager {
      */
     suspend fun getResponse(prompt: String): Chat {
         try {
-            val response = model.generateContent(prompt)
+            if (model == null) {
+                throw Exception("Model is null")
+            }
+            val response = model!!.generateContent(prompt)
             return Chat(
                 prompt = response.text ?: "error",
                 bitmap = null,
