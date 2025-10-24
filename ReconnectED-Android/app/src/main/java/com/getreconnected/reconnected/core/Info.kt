@@ -39,6 +39,9 @@ data object Chatbot {
         |Finally, at the bottom of the navigation drawer, is you, ReconnectED's AI Assistant.
         |
         |At the bottom part of the navigation drawer is the user's avatar and display name from Google.
+        |
+        |If a question is not related to digital detoxing or is beyond the scope of ReconnectED, the response should be,
+        |"That is beyond my knowledge."
         """.trimMargin()
     const val INITIAL_RESPONSE = "Hi! How can I help you get reconnected today?"
     const val CHAT_MAX_LENGTH = 150
