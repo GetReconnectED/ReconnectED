@@ -41,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.R
+import com.getreconnected.reconnected.core.Chatbot
 import com.getreconnected.reconnected.core.auth.GoogleAuth
 import com.getreconnected.reconnected.core.chatbot.ChatManager
 import com.getreconnected.reconnected.core.models.Chat
@@ -58,8 +59,11 @@ import kotlinx.coroutines.launch
 @Suppress("ktlint:standard:function-naming")
 fun AIAssistant(modifier: Modifier = Modifier) {
     var inputText by remember { mutableStateOf("") }
-    var chatHistory by remember { mutableStateOf(listOf<Chat>()) }
+    var chatHistory by remember {
+        mutableStateOf(listOf(Chat(Chatbot.INITIAL_RESPONSE, null, false)))
+    }
     var isLoading by remember { mutableStateOf(false) }
+    var isValidInput by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
     val googleAuth = GoogleAuth()
@@ -126,19 +130,24 @@ fun AIAssistant(modifier: Modifier = Modifier) {
             ) {
                 TextField(
                     value = inputText,
-                    onValueChange = { inputText = it },
+                    onValueChange = {
+                        inputText = it
+                        isValidInput = inputText.length > Chatbot.CHAT_MAX_LENGTH
+                    },
                     modifier =
                         Modifier
                             .weight(1f)
-                            .height(50.dp),
+                            .height(100.dp),
                     placeholder = { Text("Type a message...") },
                     enabled = !isLoading,
+                    isError = isValidInput,
+                    supportingText = { Text("${inputText.length} / ${Chatbot.CHAT_MAX_LENGTH}") },
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
                     onClick = sendMessage,
                     modifier = Modifier.height(50.dp),
-                    enabled = inputText.isNotBlank() && !isLoading,
+                    enabled = inputText.isNotBlank() && !isLoading && inputText.length <= Chatbot.CHAT_MAX_LENGTH,
                 ) {
                     if (isLoading) {
                         CircularProgressIndicator(
@@ -186,38 +195,23 @@ fun ChatroomScreen(
     chatHistory: List<Chat>,
     listState: androidx.compose.foundation.lazy.LazyListState,
 ) {
-    if (chatHistory.isEmpty()) {
-        // Show welcome message when no chat history
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            ChatBubble(
-                avatarRes = R.drawable.gemini_logo,
-                name = "Gemini AI",
-                message = "How can I help you today?",
-            )
-        }
-    } else {
-        LazyColumn(
-            state = listState,
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding =
-                androidx.compose.foundation.layout
-                    .PaddingValues(vertical = 16.dp),
-        ) {
-            items(chatHistory) { chat ->
-                if (chat.isFromUser) {
-                    UserBubble(message = chat.prompt)
-                } else {
-                    ChatBubble(
-                        avatarRes = R.drawable.gemini_logo,
-                        name = "Gemini AI",
-                        message = chat.prompt,
-                    )
-                }
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding =
+            androidx.compose.foundation.layout
+                .PaddingValues(vertical = 16.dp),
+    ) {
+        items(chatHistory) { chat ->
+            if (chat.isFromUser) {
+                UserBubble(message = chat.prompt)
+            } else {
+                ChatBubble(
+                    avatarRes = R.drawable.gemini_logo,
+                    name = "Gemini AI",
+                    message = chat.prompt,
+                )
             }
         }
     }

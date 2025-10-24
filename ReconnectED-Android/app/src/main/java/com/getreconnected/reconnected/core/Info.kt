@@ -16,6 +16,9 @@ data object Chatbot {
         |It includes a physical daily planner to set screen time goals, and goal-setting sections.
         |Users can utilize the companion app to support them in using the planner.
         |You are the chatbot installed on the companion app to help them achieve this goal.
+        |The interface only supports plaintext, refrain from using markdown to format text.
+        |You can use emojis if deemed appropriate.
         """.trimMargin()
     const val INITIAL_RESPONSE = "Hi! How can I help you get reconnected today?"
+    const val CHAT_MAX_LENGTH = 150
 }
