@@ -6,6 +6,9 @@ import com.google.firebase.Firebase
 import com.google.firebase.ai.GenerativeModel
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
+import com.google.firebase.ai.type.HarmBlockThreshold
+import com.google.firebase.ai.type.HarmCategory
+import com.google.firebase.ai.type.SafetySetting
 import com.google.firebase.ai.type.content
 
 object ChatManager {
@@ -23,6 +26,13 @@ object ChatManager {
                 .generativeModel(
                     modelName = Chatbot.MODEL,
                     systemInstruction = content { text(generateInitialPrompt(name)) },
+                    safetySettings =
+                        listOf(
+                            SafetySetting(HarmCategory.HARASSMENT, HarmBlockThreshold.ONLY_HIGH),
+                            SafetySetting(HarmCategory.DANGEROUS_CONTENT, HarmBlockThreshold.ONLY_HIGH),
+                            SafetySetting(HarmCategory.HATE_SPEECH, HarmBlockThreshold.ONLY_HIGH),
+                            SafetySetting(HarmCategory.SEXUALLY_EXPLICIT, HarmBlockThreshold.ONLY_HIGH),
+                        ),
                 )
         if (model == null) {
             throw Exception("Model is null")
