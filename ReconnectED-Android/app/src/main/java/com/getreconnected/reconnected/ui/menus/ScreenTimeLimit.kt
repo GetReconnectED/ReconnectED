@@ -34,14 +34,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.R
+import com.getreconnected.reconnected.core.viewModels.AppUsageViewModel
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
-
-data class AppUsageInfo(
-    val name: String,
-    val usageTime: String,
-    val icon: ImageVector,
-    val iconBackgroundColor: Color,
-)
 
 /**
  * A composable that displays a screen for setting and visualizing application usage limits.
@@ -95,13 +89,13 @@ fun ScreenTimeLimit(modifier: Modifier = Modifier) {
 fun AppUsageContainer() {
     val appList =
         listOf(
-            AppUsageInfo(
+            AppUsageViewModel(
                 name = "YouTube",
                 usageTime = "2h 39m",
                 icon = Icons.Filled.PlayArrow,
                 iconBackgroundColor = Color(0xFFFF0000),
             ),
-            AppUsageInfo(
+            AppUsageViewModel(
                 name = "Facebook",
                 usageTime = "2h 10m",
                 icon = Icons.Filled.ThumbUp,
@@ -138,7 +132,7 @@ fun AppUsageContainer() {
  */
 @Composable
 @Suppress("ktlint:standard:function-naming")
-fun AppUsageLimitItem(appInfo: AppUsageInfo) {
+fun AppUsageLimitItem(appInfo: AppUsageViewModel) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,

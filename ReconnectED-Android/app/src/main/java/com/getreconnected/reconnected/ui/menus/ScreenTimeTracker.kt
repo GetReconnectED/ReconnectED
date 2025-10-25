@@ -14,8 +14,6 @@ import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
-// TODO: WIP
-
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun ScreenTimeTracker(modifier: Modifier = Modifier) {
