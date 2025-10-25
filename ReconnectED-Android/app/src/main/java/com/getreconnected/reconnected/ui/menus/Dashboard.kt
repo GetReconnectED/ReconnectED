@@ -2,6 +2,9 @@ package com.getreconnected.reconnected.ui.menus
 
 import android.content.Intent
 import android.provider.Settings
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,6 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.getreconnected.reconnected.R
+import com.getreconnected.reconnected.activities.MainActivity
+import com.getreconnected.reconnected.core.Application
 import com.getreconnected.reconnected.core.models.Menus
 import com.getreconnected.reconnected.core.models.getMenuRoute
 import com.getreconnected.reconnected.core.util.hasUsageStatsPermission
@@ -105,8 +110,30 @@ fun Dashboard(
         }
     }
 
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (!hasPermission) {
+                Toast
+                    .makeText(
+                        context,
+                        "Please grant permission to continue",
+                        Toast.LENGTH_LONG,
+                    ).show()
+                // if doesn't have permission, exit the application.
+                (context as MainActivity).finish()
+            }
+        }
+
     if (!hasPermission) {
-        context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+        Toast
+            .makeText(
+                context,
+                "Please grant ${Application.NAME} app usage permission to continue",
+                Toast.LENGTH_LONG,
+            ).show()
+        LaunchedEffect(Unit) {
+            launcher.launch(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+        }
     }
 
     val screenTimeValue =
