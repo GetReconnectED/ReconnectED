@@ -29,6 +29,31 @@ This repository contains the source code for both the Android and Web applicatio
 3. Get the Firebase configuration file from the Firebase console and place it in the `ReconnectED-Android/app` directory.
 4. Set the SHA-1 certificate fingerprint in the Firebase console.
 
+### Running Tests
+
+#### Android Tests
+
+The Android project includes comprehensive unit tests covering core components, data models, and utilities.
+
+To run all unit tests:
+```bash
+cd ReconnectED-Android
+./gradlew testDebugUnitTest
+```
+
+To run tests with coverage:
+```bash
+./gradlew testDebugUnitTestCoverage
+```
+
+Test results are available at `app/build/reports/tests/testDebugUnitTest/index.html`
+
+For more details on the test suite, see [app/src/test/README.md](./app/src/test/README.md).
+
+**Test Coverage:**
+- 94 unit tests across 8 test classes
+- Coverage areas: utilities, data models, enums, type converters, entities
+
 ### License
 
 See [LICENSE](./LICENSE) for details.
