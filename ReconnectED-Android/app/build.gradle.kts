@@ -75,4 +75,6 @@ dependencies {
     implementation("com.kizitonwose.calendar:compose:2.9.0")
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
+    testImplementation("org.mockito:mockito-core:5.8.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
 }
