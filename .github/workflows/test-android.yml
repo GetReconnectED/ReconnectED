@@ -58,6 +58,25 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
 
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest --no-daemon
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ReconnectED-Android/app/build/test-results/testDebugUnitTest/
+          retention-days: 30
+
+      - name: Upload Test Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: ReconnectED-Android/app/build/reports/tests/testDebugUnitTest/
+          retention-days: 30
+
       - name: Cleanup Secrets
         if: always()
         run: |
