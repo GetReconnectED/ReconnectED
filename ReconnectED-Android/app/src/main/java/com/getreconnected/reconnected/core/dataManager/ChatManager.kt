@@ -1,8 +1,8 @@
-package com.getreconnected.reconnected.core.chatbot
+package com.getreconnected.reconnected.core.dataManager
 
 import com.getreconnected.reconnected.core.Chatbot
-import com.getreconnected.reconnected.core.models.Chat
 import com.google.firebase.Firebase
+import com.google.firebase.ai.Chat
 import com.google.firebase.ai.GenerativeModel
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
@@ -19,19 +19,31 @@ object ChatManager {
      *
      * @param name The name of the user starting the chat. This will be included in the initial message.
      */
-    fun startChat(name: String?): com.google.firebase.ai.Chat {
+    fun startChat(name: String?): Chat {
         model =
             Firebase
-                .ai(backend = GenerativeBackend.googleAI())
+                .ai(backend = GenerativeBackend.Companion.googleAI())
                 .generativeModel(
                     modelName = Chatbot.MODEL,
                     systemInstruction = content { text(generateInitialPrompt(name)) },
                     safetySettings =
                         listOf(
-                            SafetySetting(HarmCategory.HARASSMENT, HarmBlockThreshold.ONLY_HIGH),
-                            SafetySetting(HarmCategory.DANGEROUS_CONTENT, HarmBlockThreshold.ONLY_HIGH),
-                            SafetySetting(HarmCategory.HATE_SPEECH, HarmBlockThreshold.ONLY_HIGH),
-                            SafetySetting(HarmCategory.SEXUALLY_EXPLICIT, HarmBlockThreshold.ONLY_HIGH),
+                            SafetySetting(
+                                HarmCategory.Companion.HARASSMENT,
+                                HarmBlockThreshold.Companion.ONLY_HIGH,
+                            ),
+                            SafetySetting(
+                                HarmCategory.Companion.DANGEROUS_CONTENT,
+                                HarmBlockThreshold.Companion.ONLY_HIGH,
+                            ),
+                            SafetySetting(
+                                HarmCategory.Companion.HATE_SPEECH,
+                                HarmBlockThreshold.Companion.ONLY_HIGH,
+                            ),
+                            SafetySetting(
+                                HarmCategory.Companion.SEXUALLY_EXPLICIT,
+                                HarmBlockThreshold.Companion.ONLY_HIGH,
+                            ),
                         ),
                 )
         if (model == null) {
@@ -52,19 +64,19 @@ object ChatManager {
      * @param prompt The input string used to generate a response.
      * @return A Chat object containing the generated response text and additional metadata.
      */
-    suspend fun getResponse(prompt: String): Chat {
+    suspend fun getResponse(prompt: String): com.getreconnected.reconnected.core.models.Chat {
         try {
             if (model == null) {
                 throw Exception("Model is null")
             }
             val response = model!!.generateContent(prompt)
-            return Chat(
+            return com.getreconnected.reconnected.core.models.Chat(
                 prompt = response.text ?: "error",
                 bitmap = null,
                 isFromUser = false,
             )
         } catch (e: Exception) {
-            return Chat(
+            return com.getreconnected.reconnected.core.models.Chat(
                 prompt = e.message ?: "error",
                 bitmap = null,
                 isFromUser = false,

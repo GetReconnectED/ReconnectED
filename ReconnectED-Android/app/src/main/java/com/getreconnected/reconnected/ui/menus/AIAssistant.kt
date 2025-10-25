@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.core.Chatbot
 import com.getreconnected.reconnected.core.auth.GoogleAuth
-import com.getreconnected.reconnected.core.chatbot.ChatManager
+import com.getreconnected.reconnected.core.dataManager.ChatManager
 import com.getreconnected.reconnected.core.models.Chat
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
