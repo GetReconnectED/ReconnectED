@@ -47,11 +47,12 @@ import androidx.navigation.NavController
 import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.activities.MainActivity
 import com.getreconnected.reconnected.core.Application
-import com.getreconnected.reconnected.core.formatTime
-import com.getreconnected.reconnected.core.getDaysActive
-import com.getreconnected.reconnected.core.getScreenTimeInMillis
+import com.getreconnected.reconnected.core.dataManager.QuotesManager
 import com.getreconnected.reconnected.core.models.Menus
 import com.getreconnected.reconnected.core.models.getMenuRoute
+import com.getreconnected.reconnected.core.util.formatTime
+import com.getreconnected.reconnected.core.util.getDaysActive
+import com.getreconnected.reconnected.core.util.getScreenTimeInMillis
 import com.getreconnected.reconnected.core.util.hasUsageStatsPermission
 import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
 import com.getreconnected.reconnected.ui.composables.elements.StatCard
@@ -98,6 +99,8 @@ fun Dashboard(
     val scrollState = rememberScrollState()
     val gradientStart = LocalReconnectEDColors.current.gradientStart
     val gradientEnd = LocalReconnectEDColors.current.gradientEnd
+
+    val selectedQuote = QuotesManager.getQuotes(context).random()
 
     val screenTimeMillis by produceState(initialValue = -1L, key1 = hasPermission) {
         if (hasPermission) {
@@ -186,16 +189,7 @@ fun Dashboard(
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(
-                    text = "Daily Inspiration",
-                    style =
-                        TextStyle(
-                            fontFamily = interDisplayFamily,
-                            fontWeight = FontWeight.Light,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        ),
-                )
-                Text(
-                    text = "“Digital detox is not about disconnecting, but reconnecting.”",
+                    text = "“${selectedQuote.quote}”",
                     style =
                         TextStyle(
                             fontFamily = interDisplayFamily,
@@ -206,6 +200,15 @@ fun Dashboard(
                         ),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(vertical = 8.dp),
+                )
+                Text(
+                    text = "- ${selectedQuote.author}",
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                            fontWeight = FontWeight.Light,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        ),
                 )
             }
         }

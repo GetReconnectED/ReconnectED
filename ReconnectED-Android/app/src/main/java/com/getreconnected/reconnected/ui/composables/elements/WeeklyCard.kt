@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.getreconnected.reconnected.R
-import com.getreconnected.reconnected.core.formatTime
 import com.getreconnected.reconnected.core.models.entities.WeeklyScreenTime
+import com.getreconnected.reconnected.core.util.formatTime
 
 /**
  * A composable that displays an icon for a given drawable.

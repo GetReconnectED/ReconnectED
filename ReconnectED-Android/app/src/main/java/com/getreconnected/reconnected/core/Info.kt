@@ -8,6 +8,7 @@ data object Application {
 data object FilePaths {
     const val USER = "user-data.json"
     const val AVATAR = "user-avatar.png"
+    const val QUOTES = "quotes.json"
 }
 
 data object Chatbot {
