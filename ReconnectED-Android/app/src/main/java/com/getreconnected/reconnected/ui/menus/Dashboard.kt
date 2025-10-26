@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -100,7 +101,7 @@ fun Dashboard(
     val gradientStart = LocalReconnectEDColors.current.gradientStart
     val gradientEnd = LocalReconnectEDColors.current.gradientEnd
 
-    val selectedQuote = QuotesManager.getQuotes(context).random()
+    val (selectedQuote, setSelectedQuote) = remember { mutableStateOf(QuotesManager.getQuotes(context).random()) }
 
     val screenTimeMillis by produceState(initialValue = -1L, key1 = hasPermission) {
         if (hasPermission) {
@@ -178,7 +179,10 @@ fun Dashboard(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .height(125.dp),
+                    .height(125.dp)
+                    .clickable {
+                        setSelectedQuote(QuotesManager.getQuotes(context).random())
+                    },
         ) {
             Column(
                 modifier =
