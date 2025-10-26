@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.CardDefaults
@@ -30,8 +31,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -44,6 +48,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.getreconnected.reconnected.R
+import com.getreconnected.reconnected.core.dataManager.UserManager
 import com.getreconnected.reconnected.core.models.Menus
 import com.getreconnected.reconnected.core.models.getMenuRoute
 import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
@@ -233,7 +238,14 @@ fun NavDrawer(
                         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Icon(
+                        UserManager.user?.avatar?.let { avatarBitmap ->
+                            Image(
+                                painter = BitmapPainter(avatarBitmap.asImageBitmap()),
+                                contentDescription = "Profile",
+                                modifier = Modifier.size(48.dp).clip(CircleShape),
+                                contentScale = ContentScale.Crop,
+                            )
+                        } ?: Icon(
                             imageVector = Icons.Default.AccountCircle,
                             contentDescription = "Profile",
                             modifier = Modifier.size(48.dp),

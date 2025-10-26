@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -46,6 +47,7 @@ fun MainScreen(
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     val navController = rememberNavController()
     val screenTimeTrackerViewModel: ScreenTimeTrackerViewModel = viewModel()
 
@@ -67,6 +69,8 @@ fun MainScreen(
             topBar = {
                 TopBar(
                     title = currentMenu.title,
+                    context = context,
+                    navController = navController,
                     onOpenDrawer = {
                         scope.launch {
                             drawerState.apply { if (isClosed) open() else close() }

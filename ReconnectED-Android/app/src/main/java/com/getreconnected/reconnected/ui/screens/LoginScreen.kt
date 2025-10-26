@@ -23,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,11 +39,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.core.auth.GoogleAuth
+import com.getreconnected.reconnected.core.dataManager.UserManager
 import com.getreconnected.reconnected.core.models.Screens
 import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 @Suppress("ktlint:standard:function-naming")
@@ -50,6 +53,7 @@ fun LoginScreen(
     viewModel: UIRouteViewModel,
     navController: NavController,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val firebaseAuth = FirebaseAuth.getInstance()
     val signInLauncher =
         rememberLauncherForActivityResult(
@@ -68,6 +72,9 @@ fun LoginScreen(
                         Log.d("LoginScreen", "User ID: ${firebaseAuth.currentUser?.uid}")
                         Log.d("LoginScreen", "User email: ${firebaseAuth.currentUser?.email}")
                         Log.d("LoginScreen", "User name: ${firebaseAuth.currentUser?.displayName}")
+                        coroutineScope.launch {
+                            UserManager.login(firebaseAuth.currentUser!!)
+                        }
                         Log.d("LoginScreen", "Navigating to Dashboard...")
                         navController.navigate(Screens.Dashboard.name) {
                             popUpTo(Screens.Login.name) { inclusive = true }
@@ -82,6 +89,9 @@ fun LoginScreen(
     val googleAuth = GoogleAuth()
 
     if (firebaseAuth.currentUser != null) {
+        LaunchedEffect(Unit) {
+            UserManager.login(firebaseAuth.currentUser!!)
+        }
         viewModel.setActiveUser(firebaseAuth.currentUser?.displayName ?: "User")
         // User is already signed in, navigate to the main screen
         navController.navigate(Screens.Dashboard.name)
