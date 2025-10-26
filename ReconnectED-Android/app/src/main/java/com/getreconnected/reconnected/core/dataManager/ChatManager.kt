@@ -64,19 +64,19 @@ object ChatManager {
      * @param prompt The input string used to generate a response.
      * @return A Chat object containing the generated response text and additional metadata.
      */
-    suspend fun getResponse(prompt: String): com.getreconnected.reconnected.core.models.Chat {
+    suspend fun getResponse(prompt: String): com.getreconnected.reconnected.core.models.entities.Chat {
         try {
             if (model == null) {
                 throw Exception("Model is null")
             }
             val response = model!!.generateContent(prompt)
-            return com.getreconnected.reconnected.core.models.Chat(
+            return com.getreconnected.reconnected.core.models.entities.Chat(
                 prompt = response.text ?: "error",
                 bitmap = null,
                 isFromUser = false,
             )
         } catch (e: Exception) {
-            return com.getreconnected.reconnected.core.models.Chat(
+            return com.getreconnected.reconnected.core.models.entities.Chat(
                 prompt = e.message ?: "error",
                 bitmap = null,
                 isFromUser = false,

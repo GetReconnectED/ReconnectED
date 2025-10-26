@@ -47,13 +47,13 @@ import androidx.navigation.NavController
 import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.activities.MainActivity
 import com.getreconnected.reconnected.core.Application
+import com.getreconnected.reconnected.core.formatTime
+import com.getreconnected.reconnected.core.getDaysActive
+import com.getreconnected.reconnected.core.getScreenTimeInMillis
 import com.getreconnected.reconnected.core.models.Menus
 import com.getreconnected.reconnected.core.models.getMenuRoute
 import com.getreconnected.reconnected.core.util.hasUsageStatsPermission
 import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
-import com.getreconnected.reconnected.legacy.data.formatScreenTime
-import com.getreconnected.reconnected.legacy.data.getDaysActive
-import com.getreconnected.reconnected.legacy.data.getScreenTimeInMillis
 import com.getreconnected.reconnected.ui.composables.elements.StatCard
 import com.getreconnected.reconnected.ui.theme.LocalReconnectEDColors
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
@@ -139,7 +139,7 @@ fun Dashboard(
     val screenTimeValue =
         when {
             !hasPermission -> "Tap to permit"
-            else -> formatScreenTime(screenTimeMillis)
+            else -> formatTime(screenTimeMillis)
         }
 
     fun navigateTo(route: String) {
@@ -172,10 +172,16 @@ fun Dashboard(
                 CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                 ),
-            modifier = Modifier.fillMaxWidth().height(125.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(125.dp),
         ) {
             Column(
-                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
@@ -205,7 +211,10 @@ fun Dashboard(
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Min),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             StatCard(
@@ -214,18 +223,26 @@ fun Dashboard(
                 icon = painterResource(R.drawable.daily_screen_time),
                 color = Color(0xFF008F46), // dark green
                 modifier =
-                    Modifier.weight(1f).fillMaxWidth().fillMaxHeight().clickable {
-                        if (!hasPermission) {
-                            context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-                        }
-                    },
+                    Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .clickable {
+                            if (!hasPermission) {
+                                context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                            }
+                        },
             )
             StatCard(
                 title = "Days Active",
                 value = "$daysActive days",
                 icon = painterResource(R.drawable.days_active),
                 color = Color(0xFF0453AE), // dark green
-                modifier = Modifier.weight(1f).fillMaxWidth().fillMaxHeight(),
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
             )
         }
 
@@ -259,7 +276,10 @@ fun Dashboard(
             }
         }
         Row(
-            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Min),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             ElevatedCard(
@@ -269,12 +289,18 @@ fun Dashboard(
                         containerColor = MaterialTheme.colorScheme.surface,
                     ),
                 modifier =
-                    Modifier.weight(1f).fillMaxHeight().clickable {
-                        navigateTo(Menus.AIAssistant.name)
-                    },
+                    Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .clickable {
+                            navigateTo(Menus.AIAssistant.name)
+                        },
             ) {
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 16.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp, vertical = 16.dp),
                     horizontalAlignment = Alignment.Start,
                 ) {
                     Text(
@@ -294,7 +320,11 @@ fun Dashboard(
                         Image(
                             painter = painterResource(id = R.drawable.gemini_logo),
                             contentDescription = "Gemini AI Logo",
-                            modifier = Modifier.height(128.dp).width(128.dp).padding(16.dp),
+                            modifier =
+                                Modifier
+                                    .height(128.dp)
+                                    .width(128.dp)
+                                    .padding(16.dp),
                         )
                     }
                     Text(
@@ -316,12 +346,18 @@ fun Dashboard(
                         containerColor = MaterialTheme.colorScheme.surface,
                     ),
                 modifier =
-                    Modifier.weight(1f).fillMaxHeight().clickable {
-                        navigateTo(Menus.ScreenTimeLimit.name)
-                    },
+                    Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .clickable {
+                            navigateTo(Menus.ScreenTimeLimit.name)
+                        },
             ) {
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 16.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp, vertical = 16.dp),
                     horizontalAlignment = Alignment.Start,
                 ) {
                     Text(
@@ -341,7 +377,11 @@ fun Dashboard(
                         Image(
                             painter = painterResource(id = R.drawable.screen_time_limit_green),
                             contentDescription = "Limit App Usage",
-                            modifier = Modifier.height(128.dp).width(128.dp).padding(16.dp),
+                            modifier =
+                                Modifier
+                                    .height(128.dp)
+                                    .width(128.dp)
+                                    .padding(16.dp),
                         )
                     }
                     Text(

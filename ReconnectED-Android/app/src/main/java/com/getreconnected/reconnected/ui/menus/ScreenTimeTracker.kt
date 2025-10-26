@@ -20,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.getreconnected.reconnected.core.formatTime
-import com.getreconnected.reconnected.core.models.AppUsageInfo
+import com.getreconnected.reconnected.core.models.entities.AppUsageInfo
 import com.getreconnected.reconnected.core.viewModels.ScreenTimeTrackerViewModel
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 

@@ -5,6 +5,11 @@ data object Application {
     const val DESCRIPTION = "Minimize the overconsumption of the internet."
 }
 
+data object FilePaths {
+    const val USER = "user-data.json"
+    const val AVATAR = "user-avatar.png"
+}
+
 data object Chatbot {
     const val MODEL = "gemini-2.5-flash"
     val INITIAL_PROMPT =

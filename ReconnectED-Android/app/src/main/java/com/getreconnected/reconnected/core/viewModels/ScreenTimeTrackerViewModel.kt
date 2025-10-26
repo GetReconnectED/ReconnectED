@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.getreconnected.reconnected.core.AppUsageRepository
-import com.getreconnected.reconnected.core.models.AppUsageInfo
+import com.getreconnected.reconnected.core.models.entities.AppUsageInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
