@@ -233,6 +233,8 @@ fun Dashboard(
                         .clickable {
                             if (!hasPermission) {
                                 context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                            } else {
+                                navigateTo(Menus.ScreenTimeTracker.name)
                             }
                         },
             )
