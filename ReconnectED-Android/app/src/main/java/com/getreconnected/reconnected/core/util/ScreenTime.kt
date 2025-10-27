@@ -16,7 +16,7 @@ fun getDaysActive(context: Context): Long {
     val firstInstallTime = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
     val currentTime = System.currentTimeMillis()
     val diff = currentTime - firstInstallTime
-    return TimeUnit.MILLISECONDS.toDays(diff) + 1
+    return TimeUnit.MILLISECONDS.toDays(diff)
 }
 
 /**

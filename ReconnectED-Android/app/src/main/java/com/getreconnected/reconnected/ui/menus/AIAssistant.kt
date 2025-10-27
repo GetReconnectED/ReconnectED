@@ -1,5 +1,6 @@
 package com.getreconnected.reconnected.ui.menus
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,13 +37,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.R
+import com.getreconnected.reconnected.core.AppUsageRepository
 import com.getreconnected.reconnected.core.Chatbot
-import com.getreconnected.reconnected.core.auth.GoogleAuth
 import com.getreconnected.reconnected.core.dataManager.ChatManager
 import com.getreconnected.reconnected.core.models.entities.Chat
 import com.google.firebase.Firebase
@@ -58,19 +60,42 @@ import kotlinx.coroutines.launch
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun AIAssistant(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
     var inputText by remember { mutableStateOf("") }
     var chatHistory by remember {
         mutableStateOf(listOf(Chat(Chatbot.INITIAL_RESPONSE, null, false)))
     }
+    var chat by remember { mutableStateOf<com.google.firebase.ai.Chat?>(null) }
+    var isChatInitializing by remember { mutableStateOf(true) }
     var isLoading by remember { mutableStateOf(false) }
     var isValidInput by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
-    val googleAuth = GoogleAuth()
-    val chat =
-        ChatManager.startChat(
-            googleAuth.currentUser?.displayName,
-        )
+    val currentUser = Firebase.auth.currentUser
+
+    LaunchedEffect(Unit) {
+        isChatInitializing = true
+        try {
+            val apps = AppUsageRepository(context = context).getDailyUsageStats()
+            Log.d("AIAssistant", "App usage data: $apps")
+            chat =
+                ChatManager.startChat(
+                    name = currentUser?.displayName,
+                    appUsageBreakdown = apps,
+                    context = context,
+                )
+        } catch (e: Exception) {
+            val errorMessage =
+                Chat(
+                    prompt = "Sorry, I failed to initialize: ${e.message}",
+                    bitmap = null,
+                    isFromUser = false,
+                )
+            chatHistory = chatHistory + errorMessage
+        } finally {
+            isChatInitializing = false
+        }
+    }
 
     // Auto-scroll to bottom when new messages are added
     LaunchedEffect(chatHistory.size) {
@@ -80,7 +105,7 @@ fun AIAssistant(modifier: Modifier = Modifier) {
     }
 
     val sendMessage = {
-        if (inputText.isNotBlank() && !isLoading) {
+        if (inputText.isNotBlank() && !isLoading && chat != null && !isChatInitializing) {
             val userMessage =
                 Chat(
                     prompt = inputText,
@@ -95,7 +120,7 @@ fun AIAssistant(modifier: Modifier = Modifier) {
 
             coroutineScope.launch {
                 try {
-                    val aiResponse = chat.sendMessage(currentInput)
+                    val aiResponse = chat!!.sendMessage(currentInput)
                     // Convert the AI response to a Chat object
                     val processedAiResponse =
                         Chat(
@@ -139,7 +164,7 @@ fun AIAssistant(modifier: Modifier = Modifier) {
                             .weight(1f)
                             .height(100.dp),
                     placeholder = { Text("Type a message...") },
-                    enabled = !isLoading,
+                    enabled = !isLoading && !isChatInitializing,
                     isError = isValidInput,
                     supportingText = { Text("${inputText.length} / ${Chatbot.CHAT_MAX_LENGTH}") },
                 )
@@ -147,9 +172,11 @@ fun AIAssistant(modifier: Modifier = Modifier) {
                 Button(
                     onClick = sendMessage,
                     modifier = Modifier.height(50.dp),
-                    enabled = inputText.isNotBlank() && !isLoading && inputText.length <= Chatbot.CHAT_MAX_LENGTH,
+                    enabled =
+                        inputText.isNotBlank() && !isLoading && !isChatInitializing &&
+                            inputText.length <= Chatbot.CHAT_MAX_LENGTH,
                 ) {
-                    if (isLoading) {
+                    if (isLoading || isChatInitializing) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(16.dp),
                             color = Color.White,
@@ -178,10 +205,16 @@ fun AIAssistant(modifier: Modifier = Modifier) {
                     .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            ChatroomScreen(
-                chatHistory = chatHistory,
-                listState = listState,
-            )
+            if (isChatInitializing) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                ChatroomScreen(
+                    chatHistory = chatHistory,
+                    listState = listState,
+                )
+            }
         }
     }
 }

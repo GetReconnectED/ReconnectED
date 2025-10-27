@@ -1,6 +1,16 @@
 package com.getreconnected.reconnected.core.dataManager
 
+import android.content.Context
+import android.util.Log
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import com.getreconnected.reconnected.core.AppUsageRepository
 import com.getreconnected.reconnected.core.Chatbot
+import com.getreconnected.reconnected.core.models.entities.AppUsageInfo
+import com.getreconnected.reconnected.core.util.formatTime
+import com.getreconnected.reconnected.core.util.getDaysActive
+import com.getreconnected.reconnected.core.util.getScreenTimeInMillis
 import com.google.firebase.Firebase
 import com.google.firebase.ai.Chat
 import com.google.firebase.ai.GenerativeModel
@@ -19,13 +29,18 @@ object ChatManager {
      *
      * @param name The name of the user starting the chat. This will be included in the initial message.
      */
-    fun startChat(name: String?): Chat {
+    fun startChat(
+        name: String?,
+        appUsageBreakdown: List<AppUsageInfo>,
+        context: Context,
+    ): Chat {
+        val initialPrompt = generateInitialPrompt(name, appUsageBreakdown, context)
         model =
             Firebase
                 .ai(backend = GenerativeBackend.Companion.googleAI())
                 .generativeModel(
                     modelName = Chatbot.MODEL,
-                    systemInstruction = content { text(generateInitialPrompt(name)) },
+                    systemInstruction = content { text(initialPrompt) },
                     safetySettings =
                         listOf(
                             SafetySetting(
@@ -90,23 +105,32 @@ object ChatManager {
      * @param name The name of the user to be included in the generated prompt.
      * @return A string containing the initial chatbot prompt with user-specific details and screen time breakdown.
      */
-    fun generateInitialPrompt(name: String?): String {
+    fun generateInitialPrompt(
+        name: String?,
+        appUsageBreakdown: List<AppUsageInfo>,
+        context: Context,
+    ): String {
         // TODO: Integrate the data aggregation system to get this information
-        val daysSinceStarted = 8
-        val screenTimeTotal = 380.42
-        return Chatbot.INITIAL_PROMPT +
-            """
+        val daysSinceStarted = getDaysActive(context = context)
+        val screenTimeTotal = formatTime(getScreenTimeInMillis(context = context))
+
+        var prompt =
+            Chatbot.INITIAL_PROMPT +
+                """
             |
             |The user has this information:
             |- Name: ${name ?: "Unable to retrieve name"}
             |- Days since started: $daysSinceStarted
             |
-            |Currently, the user's screen time is $screenTimeTotal minutes. This is a breakdown of the total screen time:
-            |- "Facebook": 137 minutes
-            |- "Instagram": 121.71 minutes
-            |- "Call of Duty: Mobile": 61.14
-            |- "Chrome": 40.57 minutes
-            |- "YouTube": 20 minutes
-            """.trimMargin()
+            |The user's screen time for today is $screenTimeTotal. This is a breakdown of the total screen time:
+                """.trimMargin()
+
+        Log.d("ChatManager", "There are ${appUsageBreakdown.size} apps detected.")
+        for (app in appUsageBreakdown) {
+            prompt += "\n- \"${app.appName}\": ${formatTime(app.usageTime)}"
+        }
+
+        Log.d("ChatManager", "generateInitialPrompt: $prompt")
+        return prompt
     }
 }
