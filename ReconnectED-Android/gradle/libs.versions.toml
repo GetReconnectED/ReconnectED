@@ -30,6 +30,7 @@ uiTooling = "1.9.3"
 uiToolingPreview = "1.10.0-alpha05"
 vico = "2.2.0"
 firebaseAi = "17.4.0"
+foundation = "1.9.4"
 
 [libraries]
 accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanistDrawablepainter" }
@@ -69,6 +70,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
 firebase-ai = { group = "com.google.firebase", name = "firebase-ai", version.ref = "firebaseAi" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
