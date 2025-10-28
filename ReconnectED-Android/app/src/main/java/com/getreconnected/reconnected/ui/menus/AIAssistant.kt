@@ -25,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -167,6 +168,12 @@ fun AIAssistant(modifier: Modifier = Modifier) {
                     enabled = !isLoading && !isChatInitializing,
                     isError = isValidInput,
                     supportingText = { Text("${inputText.length} / ${Chatbot.CHAT_MAX_LENGTH}") },
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color(0xFFF5F5F5),
+                        unfocusedContainerColor = Color(0xFFF5F5F5),
+                        disabledContainerColor = Color(0xFFE0E0E0),
+                        errorContainerColor = Color(0xFFFFE0E0)
+                    )
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
