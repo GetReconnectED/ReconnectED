@@ -145,7 +145,7 @@ fun Dashboard(
     val screenTimeValue =
         when {
             !hasPermission -> "Tap to permit"
-            else -> formatTime(screenTimeMillis)
+            else -> formatTime(screenTimeMillis, true)
         }
 
     fun navigateTo(route: String) {

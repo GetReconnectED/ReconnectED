@@ -66,7 +66,7 @@ fun StatCard(
                         TextStyle(
                             fontFamily = interDisplayFamily,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp,
+                            fontSize = 20.sp,
                         ),
                     color = color,
                 )
