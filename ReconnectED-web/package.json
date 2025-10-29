@@ -9,6 +9,7 @@
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare",
         "deploy": "nuxt build && wrangler deploy",
+        "deploy:nobuild": "wrangler deploy",
         "lint": "eslint --ext .js,.ts,.vue .",
         "test": "vitest --run --coverage --typecheck",
         "test:ci": "vitest --run --coverage --typecheck --outputFile test-results.xml --reporter junit",
