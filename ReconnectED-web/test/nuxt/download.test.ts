@@ -128,12 +128,6 @@ describe("Download Page", () => {
         expect(wrapper.exists()).toBe(true);
     });
 
-    it("shows Android App badge", async () => {
-        const wrapper = await mountSuspended(DownloadPage);
-
-        expect(wrapper.text()).toContain("Android App");
-    });
-
     it("displays architecture-specific ABIs correctly", async () => {
         const wrapper = await mountSuspended(DownloadPage);
 

@@ -6,12 +6,10 @@ describe("Landing Page", () => {
     it("renders the hero section with logo and title", async () => {
         const wrapper = await mountSuspended(IndexPage);
 
-        // Check for logo
         const logo = wrapper.find('img[alt="ReconnectED Logo"]');
         expect(logo.exists()).toBe(true);
         expect(logo.attributes("src")).toBe("/logo.png");
 
-        // Check for main heading
         expect(wrapper.text()).toContain("ReconnectED: The Digital Detox Eco-Planner");
     });
 
@@ -29,11 +27,9 @@ describe("Landing Page", () => {
     it("displays the problem section with statistics", async () => {
         const wrapper = await mountSuspended(IndexPage);
 
-        // Check for problem section heading
         expect(wrapper.text()).toContain("The Problem and Its Impact");
         expect(wrapper.text()).toContain("Overconsumption of the Internet");
 
-        // Check for Philippines statistics
         expect(wrapper.text()).toContain("Philippines' average daily internet use");
         expect(wrapper.text()).toContain("2h 12m higher than the global average");
     });
@@ -148,7 +144,6 @@ describe("Landing Page", () => {
         const wrapper = await mountSuspended(IndexPage);
 
         // The component should set up SEO meta tags via useSeoMeta
-        // This is more of an integration test, but we can verify the component renders
         expect(wrapper.exists()).toBe(true);
     });
 });

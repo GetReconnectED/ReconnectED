@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const toast = useToast();
 defineProps<{
     apkDownloads: {
         name: string;
@@ -12,15 +11,26 @@ defineProps<{
     }[];
 }>();
 
+/**
+ * Copy text to clipboard and show toast notification
+ * @param abi The ABI name
+ * @param text The text to copy
+ */
 const copyToClipboard = async (abi: string, text: string) => {
     try {
         await navigator.clipboard.writeText(text);
         console.log(`${abi} copied to clipboard:`, text);
-        // show toast notification
-        toast.add({
-            title: `${abi} SHA-1 fingerprint copied to clipboard!`,
-            icon: "i-lucide-check-circle",
-        });
+
+        // Show toast notification if available
+        try {
+            const toast = useToast();
+            toast.add({
+                title: `${abi} SHA-1 fingerprint copied to clipboard!`,
+                icon: "i-lucide-check-circle",
+            });
+        } catch {
+            console.error("Toast notification not available");
+        }
     } catch (err) {
         console.error("Failed to copy:", err);
     }
