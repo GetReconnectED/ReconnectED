@@ -21,6 +21,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.getreconnected.reconnected.core.models.Menus
 import com.getreconnected.reconnected.core.models.getMenuRoute
+import com.getreconnected.reconnected.core.viewModels.ScreenTimeLimitViewModel
 import com.getreconnected.reconnected.core.viewModels.ScreenTimeTrackerViewModel
 import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
 import com.getreconnected.reconnected.ui.composables.NavDrawer
@@ -50,6 +51,7 @@ fun MainScreen(
     val context = LocalContext.current
     val navController = rememberNavController()
     val screenTimeTrackerViewModel: ScreenTimeTrackerViewModel = viewModel()
+    val screenTimeLimitViewModel: ScreenTimeLimitViewModel = viewModel()
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed) // Initialize the drawer state
     val backStackEntry by navController.currentBackStackEntryAsState() // Get the current back stack entry
@@ -85,9 +87,11 @@ fun MainScreen(
                     ScreenTimeTracker(modifier = Modifier.padding(padding), viewModel = screenTimeTrackerViewModel)
                 }
                 composable(Menus.ScreenTimeLimit.name) {
-                    ScreenTimeLimit(Modifier.padding(padding))
+                    ScreenTimeLimit(viewModel = screenTimeLimitViewModel, Modifier.padding(padding))
                 }
-                composable(Menus.Calendar.name) { Calendar(Modifier.padding(padding)) }
+                composable(
+                    Menus.Calendar.name,
+                ) { Calendar(viewModel = screenTimeTrackerViewModel, Modifier.padding(padding)) }
                 composable(Menus.AIAssistant.name) { AIAssistant(Modifier.padding(padding)) }
             }
         }
