@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import WorkInProgress from "~/components/WorkInProgress.vue";
+
 useSeoMeta({
     title: "ReconnectED - The Digital Detox Eco-Planner",
     description: "Minimize the overconsumption of the internet.",
@@ -10,9 +12,6 @@ useSeoMeta({
 
 <template>
     <div>
-        <IndexHero />
-        <IndexProblem id="info" />
-        <IndexSolution />
-        <IndexCallToAction />
+        <WorkInProgress />
     </div>
 </template>
