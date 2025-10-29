@@ -8,6 +8,7 @@
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare",
+        "deploy": "nuxt build && wrangler deploy",
         "lint": "eslint --ext .js,.ts,.vue .",
         "test": "vitest --run --coverage --typecheck",
         "test:ci": "vitest --run --coverage --typecheck --outputFile test-results.xml --reporter junit",
@@ -29,6 +30,7 @@
         "@vue/test-utils": "^2.4.6",
         "happy-dom": "^20.0.10",
         "playwright-core": "^1.56.1",
-        "vitest": "^4.0.5"
+        "vitest": "^4.0.5",
+        "wrangler": "^4.45.2"
     }
 }
