@@ -1,0 +1,57 @@
+---
+name: Test - Web
+permissions:
+  contents: read
+  pull-requests: read
+
+on:
+  push:
+    branches:
+      - main
+      - stable
+  pull_request:
+    paths:
+      - "ReconnectED-web/**"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  test-web:
+    name: Test - Web
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}/ReconnectED-web
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2 # zizmor: ignore[unpinned-uses]
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build with Nuxt.js
+        run: bun run build
+        env:
+          # Used to upload bundle to Codecov for bundle analysis
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Run Tests
+        run: bun run test:ci
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          directory: ReconnectED-web/
+          flags: web
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}

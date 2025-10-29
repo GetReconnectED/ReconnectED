@@ -1,58 +1,82 @@
 package com.getreconnected.reconnected.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+// Main color palette
+val AppGreen = Color(0xFF008F46) // Primary sidebar/app bar/chart green
+val SelectedGreen = Color(0xFF50C489) // Highlight green for selected sidebar + profile card
+val GradientStart = Color(0xFFD1FAE5) // Gradient top color (mint green)
+val GradientEnd = Color(0xFFDBEAFE) // Gradient bottom color (pale blue)
+val CardSurface = Color(0xFFF4F4F4) // Card background
+val DarkCardSurface = Color(0xFF232323)
+val OnPrimary = Color.White
+val OnSurface = Color(0xFF262626)
+
+private val lightColorScheme =
+    lightColorScheme(
+        primary = AppGreen,
+        onPrimary = OnPrimary,
+        secondary = AppGreen,
+        onSecondary = OnPrimary,
+        tertiary = AppGreen,
+        onTertiary = OnPrimary,
+        background = Color.White,
+        onBackground = OnSurface,
+        surface = CardSurface,
+        onSurface = OnSurface,
+    )
+
+private val darkColorScheme =
+    darkColorScheme(
+        primary = AppGreen,
+        onPrimary = OnPrimary,
+        secondary = AppGreen,
+        onSecondary = OnPrimary,
+        tertiary = AppGreen,
+        onTertiary = OnPrimary,
+        background = Color.White,
+        onBackground = OnSurface,
+        surface = CardSurface,
+        onSurface = OnSurface,
+    )
+
+// Custom colors for gradient and sidebar selection
+data class ReconnectEDColors(
+    val gradientStart: Color,
+    val gradientEnd: Color,
+    val selectedGreen: Color,
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
-)
-
-@Composable
-fun ReconnectEdTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
-) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+val LocalReconnectEDColors =
+    staticCompositionLocalOf {
+        ReconnectEDColors(
+            gradientStart = GradientStart,
+            gradientEnd = GradientEnd,
+            selectedGreen = SelectedGreen,
+        )
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+@Composable
+@Suppress("ktlint:standard:function-naming")
+fun ReconnectEDTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit,
+) {
+    val colorScheme = if (darkTheme) darkColorScheme else lightColorScheme
+    val customColors = ReconnectEDColors(GradientStart, GradientEnd, SelectedGreen)
+    androidx.compose.runtime.CompositionLocalProvider(
+        LocalReconnectEDColors provides customColors,
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content,
+        )
+    }
 }

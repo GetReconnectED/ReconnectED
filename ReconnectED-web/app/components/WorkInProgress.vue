@@ -1,0 +1,3 @@
+<template>
+    <h1>This page is currently under construction.</h1>
+</template>
