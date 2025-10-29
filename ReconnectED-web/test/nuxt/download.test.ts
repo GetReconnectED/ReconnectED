@@ -112,15 +112,6 @@ describe("Download Page", () => {
         expect(wrapper.text()).toContain("We're working on making ReconnectED available on the Google Play Store");
     });
 
-    it("displays support section with help options", async () => {
-        const wrapper = await mountSuspended(DownloadPage);
-
-        expect(wrapper.text()).toContain("Need Help?");
-        expect(wrapper.text()).toContain("If you encounter any issues during installation");
-        expect(wrapper.text()).toContain("Contact Support");
-        expect(wrapper.text()).toContain("Back to Home");
-    });
-
     it("includes proper SEO meta tags", async () => {
         const wrapper = await mountSuspended(DownloadPage);
 

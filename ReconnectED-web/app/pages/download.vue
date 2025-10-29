@@ -112,6 +112,5 @@ const apkDownloads = ref<ApkDownload[]>([
             </div>
         </UContainer>
         <DownloadFAQ />
-        <DownloadSupport />
     </div>
 </template>
