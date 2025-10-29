@@ -17,9 +17,7 @@ describe("Landing Page", () => {
 
     it("displays the tagline", async () => {
         const wrapper = await mountSuspended(IndexPage);
-        expect(wrapper.text()).toContain(
-            "Promoting sustainable digital habits while calculating your positive environmental impact"
-        );
+        expect(wrapper.text()).toContain("Minimize the overconsumption of the internet.");
     });
 
     it("renders call-to-action buttons in hero section", async () => {
@@ -88,13 +86,18 @@ describe("Landing Page", () => {
     it("lists all SDGs advocated by the Eco Planner", async () => {
         const wrapper = await mountSuspended(IndexPage);
 
-        expect(wrapper.text()).toContain("SDG 3");
+        const sdg3Image = wrapper.find('img[src*="SDG3_ICON.png"]');
+        const sdg13Image = wrapper.find('img[src*="SDG13_ICON.png"]');
+        const sdg11Image = wrapper.find('img[src*="SDG11_ICON.png"]');
+        const sdg12Image = wrapper.find('img[src*="SDG12_ICON.png"]');
+
+        expect(sdg3Image.exists()).toBe(true);
         expect(wrapper.text()).toContain("mental well-being");
-        expect(wrapper.text()).toContain("SDG 13");
+        expect(sdg13Image.exists()).toBe(true);
         expect(wrapper.text()).toContain("carbon footprint");
-        expect(wrapper.text()).toContain("SDG 11");
-        expect(wrapper.text()).toContain("biodegradable");
-        expect(wrapper.text()).toContain("SDG 12");
+        expect(sdg11Image.exists()).toBe(true);
+        expect(wrapper.text()).toContain("responsible consumption");
+        expect(sdg12Image.exists()).toBe(true);
         expect(wrapper.text()).toContain("sustainable production");
     });
 
@@ -126,10 +129,10 @@ describe("Landing Page", () => {
     it("shows app feature categories", async () => {
         const wrapper = await mountSuspended(IndexPage);
 
-        expect(wrapper.text()).toContain("Calendar & Planner");
-        expect(wrapper.text()).toContain("Habit Tracker");
-        expect(wrapper.text()).toContain("Journal & Docs");
-        expect(wrapper.text()).toContain("Progress Tracking");
+        expect(wrapper.text()).toContain("Screen Time Tracker");
+        expect(wrapper.text()).toContain("Screen Time Limiter");
+        expect(wrapper.text()).toContain("Calendar");
+        expect(wrapper.text()).toContain("AI Assistant");
     });
 
     it("renders final call-to-action section", async () => {
@@ -138,7 +141,7 @@ describe("Landing Page", () => {
         expect(wrapper.text()).toContain("Start Your Digital Detox Journey Today");
         expect(wrapper.text()).toContain("Join ReconnectED and make a positive impact");
         expect(wrapper.text()).toContain("Download");
-        expect(wrapper.text()).toContain("Contact Us");
+        expect(wrapper.text()).toContain("Log In");
     });
 
     it("includes proper SEO meta tags", async () => {
