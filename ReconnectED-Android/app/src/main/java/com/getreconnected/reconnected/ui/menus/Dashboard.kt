@@ -2,6 +2,7 @@ package com.getreconnected.reconnected.ui.menus
 
 import android.content.Intent
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -147,6 +148,11 @@ fun Dashboard(
             !hasPermission -> "Tap to permit"
             else -> formatTime(screenTimeMillis, true)
         }
+
+    Log.d("Dashboard", "Screen time: $screenTimeMillis")
+    Log.d("Dashboard", "Days active: $daysActive")
+    Log.d("Dashboard", "Has permission: $hasPermission")
+    Log.d("Dashboard", "Screen time value: $screenTimeValue")
 
     fun navigateTo(route: String) {
         navController.navigate(route) {
