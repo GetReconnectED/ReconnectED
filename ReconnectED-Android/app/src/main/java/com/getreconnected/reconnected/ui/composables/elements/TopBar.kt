@@ -30,10 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.getreconnected.reconnected.activities.MainActivity
-import com.getreconnected.reconnected.core.Application
 import com.getreconnected.reconnected.core.dataManager.UserManager
-import com.getreconnected.reconnected.core.models.Screens
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
@@ -84,24 +81,33 @@ fun TopBar(
                 Toast
                     .makeText(
                         context,
-                        "You are now logged out.",
+                        if (UserManager.user != null) {
+                            "You are logged in as ${UserManager.user?.displayName} (${UserManager.user?.email})."
+                        } else {
+                            "You are not logged in."
+                        },
                         Toast.LENGTH_LONG,
                     ).show()
-                UserManager.logout()
-                // TODO: navigate back to login screen
-                (context as MainActivity).finish()
             }) {
                 UserManager.user?.avatar?.let { avatarBitmap ->
                     Image(
                         painter = BitmapPainter(avatarBitmap.asImageBitmap()),
                         contentDescription = "Profile",
-                        modifier = Modifier.width(36.dp).height(36.dp).clip(CircleShape),
+                        modifier =
+                            Modifier
+                                .width(36.dp)
+                                .height(36.dp)
+                                .clip(CircleShape),
                         contentScale = ContentScale.Crop,
                     )
                 } ?: Icon(
                     imageVector = Icons.Default.AccountCircle,
                     contentDescription = "User Profile",
-                    modifier = Modifier.padding(1.dp).width(36.dp).height(36.dp),
+                    modifier =
+                        Modifier
+                            .padding(1.dp)
+                            .width(36.dp)
+                            .height(36.dp),
                     tint = MaterialTheme.colorScheme.onPrimary,
                 )
             }

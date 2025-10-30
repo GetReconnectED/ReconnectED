@@ -1,5 +1,6 @@
 package com.getreconnected.reconnected.ui.composables
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -15,7 +16,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ElevatedCard
@@ -25,10 +29,14 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +45,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +57,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.getreconnected.reconnected.R
+import com.getreconnected.reconnected.activities.MainActivity
 import com.getreconnected.reconnected.core.dataManager.UserManager
 import com.getreconnected.reconnected.core.models.Menus
 import com.getreconnected.reconnected.core.models.getMenuRoute
@@ -76,6 +86,7 @@ fun NavDrawer(
     scope: CoroutineScope,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     val drawerItemShape = RectangleShape
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStack?.destination?.route
@@ -87,6 +98,7 @@ fun NavDrawer(
             color = MaterialTheme.colorScheme.onPrimary,
         )
     val selectedGreen = LocalReconnectEDColors.current.selectedGreen
+    var showLogoutDialog by remember { mutableStateOf(false) }
 
     fun navigateAndClose(route: String) {
         navController.navigate(route) {
@@ -264,9 +276,69 @@ fun NavDrawer(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(24.dp))
             }
+
+            NavigationDrawerItem(
+                icon = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                        contentDescription = "Logout",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                    )
+                },
+                label = { Text("Logout", style = sidebarButtonText) },
+                selected = false,
+                onClick = { showLogoutDialog = true },
+                shape = drawerItemShape,
+                colors =
+                    NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = selectedGreen,
+                        selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                        selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                        unselectedContainerColor = Color.Transparent,
+                        unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                        unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
+            )
+            Spacer(modifier = Modifier.height(16.dp))
         }
+    }
+
+    // Logout confirmation dialog
+    if (showLogoutDialog) {
+        AlertDialog(
+            onDismissRequest = { showLogoutDialog = false },
+            title = { Text("Logout") },
+            text = { Text("Are you sure you want to logout?") },
+            confirmButton = {
+                Button(onClick = {
+                    showLogoutDialog = false
+                    scope.launch { drawerState.close() }
+                    Toast
+                        .makeText(
+                            context,
+                            "You are now logged out.",
+                            Toast.LENGTH_LONG,
+                        ).show()
+                    UserManager.logout()
+                    // TODO: Navigate to login screen
+                    (context as MainActivity).finish()
+                }) {
+                    Text(
+                        style = TextStyle(fontFamily = interDisplayFamily),
+                        text = "Logout",
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showLogoutDialog = false }) {
+                    Text(
+                        style = TextStyle(fontFamily = interDisplayFamily),
+                        text = "Cancel",
+                    )
+                }
+            },
+        )
     }
 }
 
