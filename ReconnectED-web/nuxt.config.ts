@@ -15,6 +15,12 @@ export default defineNuxtConfig({
         cloudflare: {
             wrangler: {
                 name: "reconnected",
+                routes: [
+                    {
+                        pattern: "reconnected.tech",
+                        custom_domain: true,
+                    },
+                ],
                 placement: { mode: "smart" },
                 workers_dev: true,
                 preview_urls: true,
