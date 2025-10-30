@@ -13,15 +13,20 @@ fun formatTime(
     val seconds = (t / 1000) % 60
     val minutes = (t / (1000 * 60)) % 60
     val hours = (t / (1000 * 60 * 60)) % 24
-    val s: String =
-        if (strip) {
-            ""
-        } else {
-            "${seconds}s"
-        }
+    val s = "${seconds}s"
     return when {
-        hours > 0 -> "${hours}h ${minutes}m $s"
-        minutes > 0 -> "${minutes}m $s"
+        hours > 0 ->
+            if (strip) {
+                "${hours}h ${minutes}m"
+            } else {
+                "${hours}h ${minutes}m $s"
+            }
+        minutes > 0 ->
+            if (strip) {
+                "${minutes}m"
+            } else {
+                "${minutes}m $s"
+            }
         else -> s
     }
 }
