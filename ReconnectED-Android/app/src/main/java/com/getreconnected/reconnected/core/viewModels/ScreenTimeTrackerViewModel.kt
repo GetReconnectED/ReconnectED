@@ -7,6 +7,7 @@ import com.getreconnected.reconnected.core.AppUsageRepository
 import com.getreconnected.reconnected.core.models.entities.AppUsageInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -28,9 +29,18 @@ class ScreenTimeTrackerViewModel(
     private val _appUsageStats = MutableStateFlow<List<AppUsageInfo>>(emptyList())
     val appUsageStats: StateFlow<List<AppUsageInfo>> = _appUsageStats
 
+    private val _weeklyUsageStats = MutableStateFlow<Map<String, Long>>(emptyMap())
+    val weeklyUsageStats: StateFlow<Map<String, Long>> = _weeklyUsageStats.asStateFlow()
+
     fun loadUsageStats() {
         viewModelScope.launch {
             _appUsageStats.value = appUsageRepository.getDailyUsageStats()
+        }
+    }
+
+    fun loadWeeklyUsageStats() {
+        viewModelScope.launch {
+            _weeklyUsageStats.value = appUsageRepository.getWeeklyUsageStats()
         }
     }
 }

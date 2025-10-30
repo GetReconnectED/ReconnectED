@@ -29,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
@@ -45,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.activities.MainActivity
@@ -56,6 +58,7 @@ import com.getreconnected.reconnected.core.util.formatTime
 import com.getreconnected.reconnected.core.util.getDaysActive
 import com.getreconnected.reconnected.core.util.getScreenTimeInMillis
 import com.getreconnected.reconnected.core.util.hasUsageStatsPermission
+import com.getreconnected.reconnected.core.viewModels.ScreenTimeTrackerViewModel
 import com.getreconnected.reconnected.core.viewModels.UIRouteViewModel
 import com.getreconnected.reconnected.ui.composables.elements.StatCard
 import com.getreconnected.reconnected.ui.theme.LocalReconnectEDColors
@@ -97,7 +100,7 @@ fun Dashboard(
 ) {
     val context = LocalContext.current
     val daysActive = getDaysActive(context)
-    var daysActiveWord: String = "days"
+    var daysActiveWord = "days"
     val hasPermission = hasUsageStatsPermission(context)
     val scrollState = rememberScrollState()
     val gradientStart = LocalReconnectEDColors.current.gradientStart
@@ -414,8 +417,6 @@ private val BottomAxisValueFormatter =
         context.model.extraStore[BottomAxisLabelKey][x.toInt()]
     }
 
-private val data = mapOf("Sun" to 1, "Mon" to 2, "Tue" to 6, "Wed" to 4, "Thu" to 9, "Fri" to 5, "Sat" to 3)
-
 /**
  * A composable that renders a bar chart representing the average screen time for a week.
  *
@@ -473,11 +474,25 @@ private fun WeeklyAvgScreenTimeChart(
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun WeeklyAvgScreenTimeChart(modifier: Modifier = Modifier) {
+    val screenTimeViewModel: ScreenTimeTrackerViewModel = viewModel()
+    val weeklyUsage by screenTimeViewModel.weeklyUsageStats.collectAsState()
     val modelProducer = remember { CartesianChartModelProducer() }
+
     LaunchedEffect(Unit) {
-        modelProducer.runTransaction {
-            columnSeries { series(data.values) }
-            extras { it[BottomAxisLabelKey] = data.keys.toList() }
+        screenTimeViewModel.loadWeeklyUsageStats()
+    }
+
+    LaunchedEffect(key1 = weeklyUsage) {
+        if (weeklyUsage.isNotEmpty()) {
+            Log.d("WeeklyAvgScreenTimeChart", "Weekly usage stats: $weeklyUsage")
+            for ((day, time) in weeklyUsage) {
+                Log.d("WeeklyAvgScreenTimeChart", "Day: $day, Time: $time")
+            }
+
+            modelProducer.runTransaction {
+                columnSeries { series(weeklyUsage.values) }
+                extras { it[BottomAxisLabelKey] = weeklyUsage.keys.toList() }
+            }
         }
     }
     WeeklyAvgScreenTimeChart(modelProducer, modifier)

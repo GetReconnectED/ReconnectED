@@ -1,14 +1,15 @@
 package com.getreconnected.reconnected.core
 
-import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.util.Log
 import com.getreconnected.reconnected.core.models.entities.AppUsageInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.concurrent.TimeUnit
+import java.util.Locale
 
 /**
  * Repository for fetching application usage statistics from the device.
@@ -67,24 +68,49 @@ class AppUsageRepository(
 
     /**
      * Retrieves the weekly application usage statistics. Uses the `UsageStatsManager` to
-     * collect usage data over the last 7 days and returns a list of `UsageStats` objects
-     * containing information about app usage.
+     * collect usage data over the last 7 days and returns a map of day to usage time in minutes.
      *
-     * @param context The context used to access system services such as `UsageStatsManager`.
-     * @return A list of `UsageStats`, where each object represents the usage statistics
-     *         for an app during the past week. Returns an empty list if no data is available.
+     * @return A map where the key is the day of the week (e.g., "Mon") and the value is the
+     *         total screen time in minutes.
      */
-    fun getWeeklyUsageStats(context: Context): List<UsageStats> {
-        val usageStatsManager =
-            context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+    suspend fun getWeeklyUsageStats(): Map<String, Long> =
+        withContext(Dispatchers.IO) {
+            val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+            val weeklyUsage = linkedMapOf<String, Long>()
+            val cal = Calendar.getInstance()
+            val dayFormat = SimpleDateFormat("EEE", Locale.getDefault())
 
-        val endTime = System.currentTimeMillis()
-        val startTime = endTime - TimeUnit.DAYS.toMillis(7) // last 7 days
+            for (i in 6 downTo 0) {
+                cal.time = java.util.Date()
+                cal.add(Calendar.DAY_OF_YEAR, -i)
+                val dayKey = dayFormat.format(cal.time)
 
-        return usageStatsManager.queryUsageStats(
-            UsageStatsManager.INTERVAL_DAILY,
-            startTime,
-            endTime,
-        ) ?: emptyList()
-    }
+                cal.set(Calendar.HOUR_OF_DAY, 0)
+                cal.set(Calendar.MINUTE, 0)
+                cal.set(Calendar.SECOND, 0)
+                cal.set(Calendar.MILLISECOND, 0)
+                val startTime = cal.timeInMillis
+
+                cal.add(Calendar.DAY_OF_YEAR, 1)
+                cal.add(Calendar.MILLISECOND, -1)
+                val endTime = cal.timeInMillis
+
+                val usageStats =
+                    usageStatsManager.queryUsageStats(
+                        UsageStatsManager.INTERVAL_DAILY,
+                        startTime,
+                        endTime,
+                    )
+
+                val totalTime = usageStats.sumOf { it.totalTimeInForeground }
+
+                Log.d("WeeklyUsageStats", "Start Time: ${java.util.Date(startTime)}")
+                Log.d("WeeklyUsageStats", "End Time: ${java.util.Date(endTime)}")
+                Log.d("WeeklyUsageStats", "Day: $dayKey")
+                Log.d("WeeklyUsageStats", "Total Usage: $totalTime")
+
+                weeklyUsage[dayKey] = totalTime / (1000 * 60) // Convert to minutes
+            }
+            weeklyUsage
+        }
 }
