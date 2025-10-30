@@ -24,10 +24,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -80,6 +82,9 @@ fun ScreenTimeLimit(
     modifier: Modifier = Modifier,
 ) {
     val appUsageStats by viewModel.appUsageStats.collectAsState()
+    val appLimits by viewModel.appLimits.collectAsState()
+    val context = androidx.compose.ui.platform.LocalContext.current
+
     LaunchedEffect(Unit) {
         viewModel.loadUsageStats()
     }
@@ -111,6 +116,52 @@ fun ScreenTimeLimit(
                     color = Color.Black,
                 ),
         )
+
+        // Show info card with active limits count
+        if (appLimits.isNotEmpty()) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF10B981).copy(alpha = 0.1f)),
+            ) {
+                Row(
+                    modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Column {
+                        Text(
+                            text = "${appLimits.size} app${if (appLimits.size != 1) "s" else ""} with limits",
+                            style =
+                                TextStyle(
+                                    fontFamily = interDisplayFamily,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF10B981),
+                                ),
+                        )
+                        Text(
+                            text = "Monitoring active",
+                            style =
+                                TextStyle(
+                                    fontFamily = interDisplayFamily,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray,
+                                ),
+                        )
+                    }
+                    Icon(
+                        painter =
+                            androidx.compose.ui.res
+                                .painterResource(R.drawable.screen_time_limit_green),
+                        contentDescription = "Active",
+                        tint = Color(0xFF10B981),
+                        modifier = Modifier.size(32.dp),
+                    )
+                }
+            }
+        }
+
         AppUsageContainer(appList = appUsageStats)
     }
 }
@@ -129,7 +180,9 @@ fun AppUsageContainer(
     Column {
         // Display selected date header if a date is selected
         if (selectedDate != null) {
-            val dateFormatter = java.time.format.DateTimeFormatter.ofPattern("MMMM dd, yyyy")
+            val dateFormatter =
+                java.time.format.DateTimeFormatter
+                    .ofPattern("MMMM dd, yyyy")
             Text(
                 text = "Usage for ${selectedDate.format(dateFormatter)}",
                 style =
@@ -137,7 +190,9 @@ fun AppUsageContainer(
                         fontFamily = com.getreconnected.reconnected.ui.theme.interDisplayFamily,
                         fontSize = 16.sp,
                         fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
-                        color = androidx.compose.ui.graphics.Color(0xFF020202),
+                        color =
+                            androidx.compose.ui.graphics
+                                .Color(0xFF020202),
                     ),
                 modifier = Modifier.padding(bottom = 8.dp),
             )
@@ -155,7 +210,12 @@ fun AppUsageContainer(
                 contentPadding = PaddingValues(vertical = 8.dp),
             ) {
                 items(appList) { app ->
-                    AppUsageLimitItem(appInfo = app)
+                    AppUsageLimitItem(
+                        appInfo = app,
+                        viewModel =
+                            androidx.lifecycle.viewmodel.compose
+                                .viewModel(),
+                    )
                 }
             }
         }
@@ -171,8 +231,25 @@ fun AppUsageContainer(
  */
 @Composable
 @Suppress("ktlint:standard:function-naming")
-fun AppUsageLimitItem(appInfo: AppUsageInfo) {
+fun AppUsageLimitItem(
+    appInfo: AppUsageInfo,
+    viewModel: ScreenTimeLimitViewModel,
+) {
     var showPicker by remember { mutableStateOf(false) }
+    val appLimits by viewModel.appLimits.collectAsState()
+    val limit = appLimits.find { it.packageName == appInfo.packageName }
+
+    // Calculate if limit is exceeded
+    val isLimitExceeded = limit?.let { appInfo.usageTime >= it.limitMillis } ?: false
+    val limitProgress =
+        limit?.let {
+            if (it.limitMillis > 0) {
+                (appInfo.usageTime.toFloat() / it.limitMillis.toFloat()).coerceIn(0f, 1f)
+            } else {
+                0f
+            }
+        } ?: 0f
+
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -196,6 +273,7 @@ fun AppUsageLimitItem(appInfo: AppUsageInfo) {
                         fontFamily = interDisplayFamily,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold,
+                        color = if (isLimitExceeded) Color(0xFFEF4444) else Color.Black,
                     ),
             )
             Text(
@@ -204,27 +282,54 @@ fun AppUsageLimitItem(appInfo: AppUsageInfo) {
                     TextStyle(
                         fontFamily = interDisplayFamily,
                         fontSize = 16.sp,
-                        color = Color.Gray,
+                        color = if (isLimitExceeded) Color(0xFFEF4444) else Color.Gray,
                     ),
             )
+            // Show limit if set
+            if (limit != null) {
+                Text(
+                    text = "Limit: ${formatTime(limit.limitMillis)} ${if (limit.isEnabled) "✓" else "(disabled)"}",
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                            fontSize = 14.sp,
+                            color = if (isLimitExceeded) Color(0xFFEF4444) else Color(0xFF10B981),
+                            fontWeight = FontWeight.Medium,
+                        ),
+                )
+            }
         }
-        var showPicker by remember { mutableStateOf(false) }
 
         IconButton(onClick = { showPicker = true }) {
             Icon(
                 painter = painterResource(R.drawable.screen_time_limit_icon),
                 contentDescription = "Set Limit",
-                tint = Color.Gray,
+                tint =
+                    when {
+                        isLimitExceeded -> Color(0xFFEF4444)
+                        limit != null -> Color(0xFF10B981)
+                        else -> Color.Gray
+                    },
             )
         }
 
         if (showPicker) {
             TimeLimitPickerDialog(
+                currentLimit = limit,
                 onDismiss = { showPicker = false },
                 onConfirm = { hours, minutes ->
-                    println("Limit set for ${appInfo.appName}: ${hours}h ${minutes}m")
-                    // TODO: Save to ViewModel or database
+                    if (limit != null) {
+                        viewModel.updateLimit(appInfo.packageName, hours, minutes)
+                    } else {
+                        viewModel.setLimit(appInfo.packageName, appInfo.appName, hours, minutes)
+                    }
                 },
+                onDelete =
+                    if (limit != null) {
+                        { viewModel.deleteLimit(appInfo.packageName) }
+                    } else {
+                        null
+                    },
             )
         }
     }
@@ -232,34 +337,64 @@ fun AppUsageLimitItem(appInfo: AppUsageInfo) {
 
 @Composable
 fun TimeLimitPickerDialog(
+    currentLimit: com.getreconnected.reconnected.core.database.entities.AppLimit? = null,
     onDismiss: () -> Unit,
     onConfirm: (hours: Int, minutes: Int) -> Unit,
+    onDelete: (() -> Unit)? = null,
 ) {
-    var selectedHours by remember { mutableIntStateOf(0) }
-    var selectedMinutes by remember { mutableIntStateOf(0) } // TODO: Minutes should start by zero
+    // Initialize with current limit values if editing
+    val initialHours = currentLimit?.let { (it.limitMillis / (1000 * 60 * 60)).toInt() } ?: 0
+    val initialMinutes = currentLimit?.let { ((it.limitMillis / (1000 * 60)) % 60).toInt() } ?: 0
+
+    var selectedHours by remember { mutableIntStateOf(initialHours) }
+    var selectedMinutes by remember { mutableIntStateOf(initialMinutes) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Set Time Limit") },
+        title = { Text(if (currentLimit != null) "Edit Time Limit" else "Set Time Limit") },
         text = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                LoopingNumberPicker(
-                    range = 0..99,
-                    value = selectedHours,
-                    onValueChange = { selectedHours = it },
-                    label = "hrs",
-                )
-                Spacer(modifier = Modifier.width(32.dp))
-                LoopingNumberPicker(
-                    range = 0..59,
-                    value = selectedMinutes,
-                    onValueChange = { selectedMinutes = it },
-                    label = "min",
-                )
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    LoopingNumberPicker(
+                        range = 0..99,
+                        value = selectedHours,
+                        onValueChange = { selectedHours = it },
+                        label = "hrs",
+                    )
+                    Spacer(modifier = Modifier.width(32.dp))
+                    LoopingNumberPicker(
+                        range = 0..59,
+                        value = selectedMinutes,
+                        onValueChange = { selectedMinutes = it },
+                        label = "min",
+                    )
+                }
+
+                // Show delete button if editing existing limit
+                if (onDelete != null) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    TextButton(
+                        onClick = {
+                            onDelete()
+                            onDismiss()
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(
+                            text = "Remove Limit",
+                            style =
+                                TextStyle(
+                                    fontFamily = interDisplayFamily,
+                                    color = Color(0xFFEF4444),
+                                    fontWeight = FontWeight.Bold,
+                                ),
+                        )
+                    }
+                }
             }
         },
         confirmButton = {
@@ -270,7 +405,7 @@ fun TimeLimitPickerDialog(
                 Text(
                     style =
                         TextStyle(fontFamily = interDisplayFamily),
-                    text = "Set Limit",
+                    text = if (currentLimit != null) "Update" else "Set Limit",
                 )
             }
         },
