@@ -109,8 +109,61 @@ class AppUsageRepository(
                 Log.d("WeeklyUsageStats", "Day: $dayKey")
                 Log.d("WeeklyUsageStats", "Total Usage: $totalTime")
 
-                weeklyUsage[dayKey] = totalTime / (1000 * 60) // Convert to minutes
-            }
-            weeklyUsage
+            weeklyUsage[dayKey] = totalTime / (1000 * 60) // Convert to minutes
+        }
+        weeklyUsage
+    }
+
+    /**
+     * Retrieves usage statistics for a specific date.
+     *
+     * @param date The date to retrieve usage statistics for (as Calendar instance).
+     * @return A list of [AppUsageInfo] objects representing the usage statistics for that date.
+     */
+    suspend fun getUsageStatsForDate(date: Calendar): List<AppUsageInfo> =
+        withContext(Dispatchers.IO) {
+            val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+            val packageManager = context.packageManager
+
+            // Set to start of day
+            val startCal = date.clone() as Calendar
+            startCal.set(Calendar.HOUR_OF_DAY, 0)
+            startCal.set(Calendar.MINUTE, 0)
+            startCal.set(Calendar.SECOND, 0)
+            startCal.set(Calendar.MILLISECOND, 0)
+            val startTime = startCal.timeInMillis
+
+            // Set to end of day
+            val endCal = date.clone() as Calendar
+            endCal.set(Calendar.HOUR_OF_DAY, 23)
+            endCal.set(Calendar.MINUTE, 59)
+            endCal.set(Calendar.SECOND, 59)
+            endCal.set(Calendar.MILLISECOND, 999)
+            val endTime = endCal.timeInMillis
+
+            val usageStatsList =
+                usageStatsManager.queryUsageStats(
+                    UsageStatsManager.INTERVAL_DAILY,
+                    startTime,
+                    endTime,
+                )
+
+            usageStatsList
+                .filter { it.totalTimeInForeground > 0 }
+                .mapNotNull { usageStats ->
+                    try {
+                        val applicationInfo = packageManager.getApplicationInfo(usageStats.packageName, 0)
+                        val appName = packageManager.getApplicationLabel(applicationInfo).toString()
+                        val appIcon = packageManager.getApplicationIcon(applicationInfo)
+                        AppUsageInfo(
+                            appName = appName,
+                            packageName = usageStats.packageName,
+                            usageTime = usageStats.totalTimeInForeground,
+                            appIcon = appIcon,
+                        )
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        null
+                    }
+                }.sortedByDescending { it.usageTime }
         }
 }

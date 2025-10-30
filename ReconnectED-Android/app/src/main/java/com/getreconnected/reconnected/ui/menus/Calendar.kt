@@ -1,6 +1,7 @@
 package com.getreconnected.reconnected.ui.menus
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -63,6 +64,8 @@ fun Calendar(
     modifier: Modifier = Modifier,
 ) {
     val appUsageStats by viewModel.appUsageStats.collectAsState()
+    val selectedDate by viewModel.selectedDate.collectAsState()
+
     Column(
         modifier =
             modifier
@@ -87,19 +90,37 @@ fun Calendar(
                 ),
             modifier = Modifier.fillMaxWidth(),
         ) {
-            ScreenTimeCalendar()
+            ScreenTimeCalendar(
+                selectedDate = selectedDate,
+                onDateSelected = { date ->
+                    if (selectedDate == date) {
+                        viewModel.clearSelectedDate()
+                    } else {
+                        viewModel.loadUsageStatsForDate(date)
+                    }
+                },
+            )
         }
-        AppUsageContainer(appList = appUsageStats)
+        AppUsageContainer(
+            appList = appUsageStats,
+            selectedDate = selectedDate,
+        )
     }
 }
 
 /**
  * A composable that displays a screen time calendar with the ability to navigate between months
  * and view the days of the selected month. It also highlights today's date for better visibility.
+ *
+ * @param selectedDate The currently selected date, if any.
+ * @param onDateSelected Callback invoked when a date is clicked.
  */
 @Composable
 @Suppress("ktlint:standard:function-naming")
-fun ScreenTimeCalendar() {
+fun ScreenTimeCalendar(
+    selectedDate: LocalDate? = null,
+    onDateSelected: (LocalDate) -> Unit = {},
+) {
     val currentMonth = remember { YearMonth.now() }
     var displayedMonth by remember { mutableStateOf(currentMonth) }
 
@@ -189,7 +210,12 @@ fun ScreenTimeCalendar() {
         HorizontalCalendar(
             state = state,
             dayContent = { day ->
-                DayCell(day.date, today)
+                DayCell(
+                    date = day.date,
+                    today = today,
+                    isSelected = selectedDate == day.date,
+                    onClick = { onDateSelected(day.date) },
+                )
             },
         )
     }
@@ -200,36 +226,54 @@ fun ScreenTimeCalendar() {
  *
  * @param date The specific date to be displayed in the cell.
  * @param today The current date, used to determine if the cell represents today.
+ * @param isSelected Whether this date is currently selected.
+ * @param onClick Callback invoked when the cell is clicked.
  */
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun DayCell(
     date: LocalDate,
     today: LocalDate,
+    isSelected: Boolean = false,
+    onClick: () -> Unit = {},
 ) {
     val isToday = date == today
+
     Box(
-        modifier = Modifier.aspectRatio(1f).padding(2.dp),
+        modifier =
+            Modifier
+                .aspectRatio(1f)
+                .padding(2.dp)
+                .background(
+                    color =
+                        when {
+                            isSelected -> Color(0xFF10B981) // Green background for selected date
+                            isToday -> Color(0xFFE0F2FE) // Light blue background for today
+                            else -> Color.Transparent
+                        },
+                    shape = androidx.compose.foundation.shape.CircleShape,
+                ).clickable { onClick() },
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = date.dayOfMonth.toString(),
             style =
-                if (isToday) {
-                    TextStyle(
-                        fontFamily = interDisplayFamily,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Companion.Normal,
-                        color = Color(0xFF020202),
-                    )
-                } else {
-                    TextStyle(
-                        fontFamily = interDisplayFamily,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Companion.Normal,
-                        color = Color(0xAA595959),
-                    )
-                },
+                TextStyle(
+                    fontFamily = interDisplayFamily,
+                    fontSize = 16.sp,
+                    fontWeight =
+                        if (isSelected) {
+                            FontWeight.Companion.Bold
+                        } else {
+                            FontWeight.Companion.Normal
+                        },
+                    color =
+                        when {
+                            isSelected -> Color.White // White text for selected date
+                            isToday -> Color(0xFF020202) // Black text for today
+                            else -> Color(0xAA595959) // Gray text for other dates
+                        },
+                ),
         )
     }
 }

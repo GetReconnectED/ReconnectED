@@ -117,11 +117,32 @@ fun ScreenTimeLimit(
 
 /**
  * A composable function that represents a container displaying app usage information.
+ * @param appList List of AppUsageInfo objects to display.
+ * @param selectedDate The currently selected date, if any, to display in the header.
  */
 @Composable
 @Suppress("ktlint:standard:function-naming")
-fun AppUsageContainer(appList: List<AppUsageInfo>) {
+fun AppUsageContainer(
+    appList: List<AppUsageInfo>,
+    selectedDate: java.time.LocalDate? = null,
+) {
     Column {
+        // Display selected date header if a date is selected
+        if (selectedDate != null) {
+            val dateFormatter = java.time.format.DateTimeFormatter.ofPattern("MMMM dd, yyyy")
+            Text(
+                text = "Usage for ${selectedDate.format(dateFormatter)}",
+                style =
+                    androidx.compose.ui.text.TextStyle(
+                        fontFamily = com.getreconnected.reconnected.ui.theme.interDisplayFamily,
+                        fontSize = 16.sp,
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
+                        color = androidx.compose.ui.graphics.Color(0xFF020202),
+                    ),
+                modifier = Modifier.padding(bottom = 8.dp),
+            )
+        }
+
         Card(
             modifier = Modifier.fillMaxWidth().weight(1f),
             // Allow card to take remaining space
