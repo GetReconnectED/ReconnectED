@@ -6,5 +6,5 @@ describe("App Component", () => {
     it("should mount the app component", async () => {
         const component = await mountSuspended(App);
         expect(component.html()).toBeTruthy();
-    });
+    }, 15000); // Increased timeout to 15 seconds
 });

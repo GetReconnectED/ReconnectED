@@ -10,11 +10,13 @@
         <div class="space-y-4 mb-6">
             <div>
                 <UIcon name="i-lucide-circle-check" class="size-5 text-success mr-2" />
-                <span class="text-sm">Tracks screen time and progress</span>
+                <span class="text-sm">Tracks screen time and limits app usage</span>
             </div>
             <div>
                 <UIcon name="i-lucide-circle-check" class="size-5 text-success mr-2" />
-                <span class="text-sm">Provides prompts, reminders, and personalized support</span>
+                <span class="text-sm"
+                    >Provides personalized support, reminders, and assistance on planner activities</span
+                >
             </div>
             <div>
                 <UIcon name="i-lucide-circle-check" class="size-5 text-success mr-2" />
@@ -25,7 +27,7 @@
         <div class="bg-elevated p-4 rounded-lg mb-4">
             <h4 class="font-semibold mb-3 flex items-center gap-2">
                 <UIcon name="i-lucide-layers" class="size-5" />
-                Integrated Tools
+                Google Tools Used
             </h4>
             <div class="grid grid-cols-2 gap-3">
                 <div class="flex items-center gap-2">

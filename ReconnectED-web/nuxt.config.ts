@@ -7,7 +7,7 @@ export default defineNuxtConfig({
         enabled: true,
         timeline: { enabled: true },
     },
-    modules: ["@nuxt/eslint", "@nuxt/ui", "@nuxt/test-utils/module"],
+    modules: ["@nuxt/eslint", "@nuxt/ui", "@nuxt/test-utils/module", "motion-v/nuxt"],
     css: ["~/assets/css/main.css"],
     vite: { plugins: [tailwindcss()] },
     nitro: {
