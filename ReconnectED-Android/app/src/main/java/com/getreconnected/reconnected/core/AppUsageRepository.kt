@@ -14,10 +14,9 @@ import java.util.Locale
 /**
  * Repository for fetching application usage statistics from the device.
  *
- * This class provides methods to retrieve usage data about applications
- * over a specific period of time. It interacts with the system's UsageStatsManager
- * to gather detailed information about app usage such as app name, package name,
- * usage duration, and app icon.
+ * This class provides methods to retrieve usage data about applications over a specific period of
+ * time. It interacts with the system's UsageStatsManager to gather detailed information about app
+ * usage such as app name, package name, usage duration, and app icon.
  *
  * @constructor Initializes the repository with the given application context.
  */
@@ -25,9 +24,13 @@ class AppUsageRepository(
     private val context: Context,
 ) {
     /**
-     * Retrieves usage statistics for the last 24 hours.
+     * Retrieves daily application usage statistics from midnight (00:00) to now.
      *
-     * @return A list of [AppUsageInfo] objects representing the usage statistics.
+     * This uses the same time range as `AppLimitMonitorService.getAppUsageToday()` to ensure
+     * consistent usage tracking between UI display and limit enforcement. Usage resets
+     * daily at midnight (00:00).
+     *
+     * @return A list of [AppUsageInfo] objects representing today's usage statistics.
      */
     suspend fun getDailyUsageStats(): List<AppUsageInfo> =
         withContext(Dispatchers.IO) {
@@ -35,14 +38,18 @@ class AppUsageRepository(
             val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
             val packageManager = context.packageManager
 
+            // Get usage from TODAY (midnight to now) to match AppLimitMonitorService
             val calendar = Calendar.getInstance()
-            val endTime = calendar.timeInMillis
-            calendar.add(Calendar.DAY_OF_YEAR, -1)
+            calendar.set(Calendar.HOUR_OF_DAY, 0)
+            calendar.set(Calendar.MINUTE, 0)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
             val startTime = calendar.timeInMillis
+            val endTime = System.currentTimeMillis()
 
             val usageStatsList =
                 usageStatsManager.queryUsageStats(
-                    UsageStatsManager.INTERVAL_DAILY,
+                    UsageStatsManager.INTERVAL_BEST,
                     startTime,
                     endTime,
                 )
@@ -67,11 +74,11 @@ class AppUsageRepository(
         }
 
     /**
-     * Retrieves the weekly application usage statistics. Uses the `UsageStatsManager` to
-     * collect usage data over the last 7 days and returns a map of day to usage time in minutes.
+     * Retrieves the weekly application usage statistics. Uses the `UsageStatsManager` to collect
+     * usage data over the last 7 days and returns a map of day to usage time in minutes.
      *
-     * @return A map where the key is the day of the week (e.g., "Mon") and the value is the
-     *         total screen time in minutes.
+     * @return A map where the key is the day of the week (e.g., "Mon") and the value is the total
+     * screen time in minutes.
      */
     suspend fun getWeeklyUsageStats(): Map<String, Long> =
         withContext(Dispatchers.IO) {
@@ -109,10 +116,10 @@ class AppUsageRepository(
                 Log.d("WeeklyUsageStats", "Day: $dayKey")
                 Log.d("WeeklyUsageStats", "Total Usage: $totalTime")
 
-            weeklyUsage[dayKey] = totalTime / (1000 * 60) // Convert to minutes
+                weeklyUsage[dayKey] = totalTime / (1000 * 60) // Convert to minutes
+            }
+            weeklyUsage
         }
-        weeklyUsage
-    }
 
     /**
      * Retrieves usage statistics for a specific date.
