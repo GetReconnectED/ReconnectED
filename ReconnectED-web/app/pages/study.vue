@@ -489,7 +489,7 @@ const initializeCharts = () => {
                 :while-in-view="{ opacity: 1, y: 0 }"
                 :transition="{ duration: 0.6, delay: 0.7 }"
                 :viewport="{ once: true }"
-                class="mb-12"
+                class="mb-12 pt-10"
             >
                 <UCard class="bg-linear-to-br from-primary/5 to-success/5">
                     <template #header>
