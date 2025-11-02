@@ -5,5 +5,8 @@
         <p class="text-lg text-muted mb-8">
             Get the ReconnectED companion app for Android. Choose the right version for your device architecture below.
         </p>
+        <UBadge color="info">
+            Note: The Eco-planner is a must-have since the Android application is only a companion for it
+        </UBadge>
     </div>
 </template>
