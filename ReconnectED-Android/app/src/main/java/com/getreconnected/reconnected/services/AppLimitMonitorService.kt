@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat
 import com.getreconnected.reconnected.R
 import com.getreconnected.reconnected.core.database.AppLimitDatabase
 import com.getreconnected.reconnected.core.database.entities.AppLimit
+import com.getreconnected.reconnected.core.repository.FirebaseUsageSyncRepository
 import java.util.Calendar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,7 @@ class AppLimitMonitorService : Service() {
     private val serviceScope = CoroutineScope(Dispatchers.Default + Job())
     private lateinit var database: AppLimitDatabase
     private lateinit var usageStatsManager: UsageStatsManager
+    private lateinit var firebaseSyncRepository: FirebaseUsageSyncRepository
     private val blockedApps = mutableSetOf<String>()
     private val currentlyBlockingApps =
             mutableMapOf<String, Long>() // packageName -> block timestamp
@@ -70,6 +72,7 @@ class AppLimitMonitorService : Service() {
         super.onCreate()
         database = AppLimitDatabase.getDatabase(applicationContext)
         usageStatsManager = getSystemService(USAGE_STATS_SERVICE) as UsageStatsManager
+        firebaseSyncRepository = FirebaseUsageSyncRepository(database)
 
         createNotificationChannel()
         startForeground(NOTIFICATION_ID, createNotification())
@@ -133,10 +136,12 @@ class AppLimitMonitorService : Service() {
     private fun startMonitoring() {
         serviceScope.launch {
             var lastMidnightCheck = System.currentTimeMillis()
+            var lastSyncTime = System.currentTimeMillis()
+            val syncIntervalMs = 5 * 60 * 1000L // Sync every 5 minutes
 
             while (isActive) {
                 try {
-                    // Check if we've passed midnight - reset session cache
+                    // Check if we've passed midnight - reset session cache and sync previous day
                     val now = System.currentTimeMillis()
                     val todayMidnight =
                             Calendar.getInstance()
@@ -150,10 +155,19 @@ class AppLimitMonitorService : Service() {
 
                     if (lastMidnightCheck < todayMidnight && now >= todayMidnight) {
                         Log.i(TAG, "New day detected! Resetting session usage cache")
+                        // Sync yesterday's data before resetting
+                        syncCurrentUsageToFirebase()
                         sessionUsageCache.clear()
                         currentForegroundApp = null
                         sessionStartTime = 0L
                         lastMidnightCheck = now
+                    }
+
+                    // Periodic sync every 5 minutes
+                    if (now - lastSyncTime >= syncIntervalMs) {
+                        Log.d(TAG, "Periodic sync triggered")
+                        syncCurrentUsageToFirebase()
+                        lastSyncTime = now
                     }
 
                     checkAppLimits()
@@ -436,6 +450,37 @@ class AppLimitMonitorService : Service() {
             )
 
             Log.d(TAG, "${limit.appName} blocked with overlay")
+        }
+    }
+
+    private suspend fun syncCurrentUsageToFirebase() {
+        try {
+            // Get all apps with limits to sync their usage
+            val limits = database.appLimitDao().getAllLimits().first()
+            val usageData = mutableMapOf<String, Pair<String, Long>>()
+
+            limits.forEach { limit ->
+                val baseUsage = getAppUsageToday(limit.packageName)
+                val cachedSession = sessionUsageCache[limit.packageName] ?: 0L
+                val currentSession =
+                        if (currentForegroundApp == limit.packageName && sessionStartTime > 0) {
+                            System.currentTimeMillis() - sessionStartTime
+                        } else {
+                            0L
+                        }
+
+                val totalUsage = baseUsage + cachedSession + currentSession
+                if (totalUsage > 0) {
+                    usageData[limit.packageName] = Pair(limit.appName, totalUsage)
+                }
+            }
+
+            if (usageData.isNotEmpty()) {
+                firebaseSyncRepository.syncTodayUsage(usageData)
+                Log.d(TAG, "Synced ${usageData.size} apps to Firebase")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error syncing usage to Firebase", e)
         }
     }
 }
