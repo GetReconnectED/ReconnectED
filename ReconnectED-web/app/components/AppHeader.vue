@@ -5,6 +5,16 @@ import { motion } from "motion-v";
 const route = useRoute();
 const items = computed<NavigationMenuItem[]>(() => [
     {
+        label: "Home",
+        to: "/",
+        active: route.path === "/",
+    },
+    {
+        label: "Study",
+        to: "/study",
+        active: route.path.startsWith("/study"),
+    },
+    {
         label: "Download",
         to: "/download",
         active: route.path.startsWith("/download"),
