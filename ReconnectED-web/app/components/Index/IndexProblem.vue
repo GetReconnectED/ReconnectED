@@ -88,29 +88,29 @@
                             <p class="text-sm text-muted">
                                 ReconnectED calculates your
                                 <strong class="text-success">positive environmental impact</strong>
-                                by converting app screen time saved into carbon (CO2e) savings.
+                                by converting app screen time saved into carbon (CO<sub>2</sub>e) savings.
                             </p>
                         </div>
                     </div>
                     <div class="bg-elevated p-4 rounded-lg">
                         <p class="text-center font-mono text-sm mb-3">
-                            <strong>Total CO2e Saved = ∑ (Minutes Saved × Emission Factor)</strong>
+                            <strong>Total CO<sub>2</sub>e Saved = ∑ (Minutes Saved × Emission Factor)</strong>
                         </p>
                         <div class="grid grid-cols-3 gap-3 text-center">
                             <div>
                                 <UIcon name="i-lucide-monitor" class="size-8 mx-auto mb-2 text-primary" />
                                 <p class="text-xs font-semibold">Video Streaming</p>
-                                <p class="text-xs text-muted">0.92 gCO2e/min</p>
+                                <p class="text-xs text-muted">0.92 gCO<sub>2</sub>e/min</p>
                             </div>
                             <div>
                                 <UIcon name="i-lucide-globe" class="size-8 mx-auto mb-2 text-primary" />
                                 <p class="text-xs font-semibold">Web Browsing</p>
-                                <p class="text-xs text-muted">1.20 gCO2e/min</p>
+                                <p class="text-xs text-muted">1.20 gCO<sub>2</sub>e/min</p>
                             </div>
                             <div>
                                 <UIcon name="i-lucide-share-2" class="size-8 mx-auto mb-2 text-primary" />
                                 <p class="text-xs font-semibold">Social Media</p>
-                                <p class="text-xs text-muted">1.21 gCO2e/min</p>
+                                <p class="text-xs text-muted">1.21 gCO<sub>2</sub>e/min</p>
                             </div>
                         </div>
                     </div>
