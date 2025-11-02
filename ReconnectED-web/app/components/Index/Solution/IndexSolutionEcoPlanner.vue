@@ -53,6 +53,12 @@
                     <img src="/SDG/SDG12_ICON.png" alt="SDG 13" class="size-25 mt-1" />
                 </div>
             </div>
+            <p class="text-xs text-muted mt-5">
+                Reference: United Nations. (2015). The 17 goals. Sustainable Development Goals.
+                <a href="https://sdgs.un.org/goals" class="text-primary hover:underline" target="_blank"
+                    >https://sdgs.un.org/goals</a
+                >
+            </p>
         </div>
 
         <template #footer>
@@ -65,9 +71,11 @@
                     sustainable habits that reduce one's digital carbon footprint.
                 </p>
                 <p class="text-xs text-muted mt-5">
-                    Reference: United Nations. (2015). The 17 goals. Sustainable Development Goals.
-                    <a href="https://sdgs.un.org/goals" class="text-primary hover:underline" target="_blank"
-                        >https://sdgs.un.org/goals</a
+                    Reference: Stern, P. C., Dietz, T., Abel, T., Guagnano, G. A., & Kalof, L. (1999). A
+                    Value-Belief-Norm Theory of Support for Social Movements: The Case of Environmentalism. Human
+                    Ecology Review, 6(2), 81–97.
+                    <a href="https://www.jstor.org/stable/24707060" class="text-primary hover:underline" target="_blank"
+                        >https://www.jstor.org/stable/24707060</a
                     >
                 </p>
             </div>
