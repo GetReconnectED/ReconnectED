@@ -13,11 +13,6 @@ describe("Landing Page", () => {
         expect(wrapper.text()).toContain("ReconnectED: The Digital Detox Eco-Planner");
     });
 
-    it("displays the tagline", async () => {
-        const wrapper = await mountSuspended(IndexPage);
-        expect(wrapper.text()).toContain("Minimize the overconsumption of the internet.");
-    });
-
     it("renders call-to-action buttons in hero section", async () => {
         const wrapper = await mountSuspended(IndexPage);
         expect(wrapper.text()).toContain("Download");
@@ -56,11 +51,11 @@ describe("Landing Page", () => {
         const wrapper = await mountSuspended(IndexPage);
 
         expect(wrapper.text()).toContain("Video Streaming");
-        expect(wrapper.text()).toContain("3.45 gCO2e/min");
+        expect(wrapper.text()).toContain("0.92 gCO2e/min");
         expect(wrapper.text()).toContain("Web Browsing");
-        expect(wrapper.text()).toContain("4.0 gCO2e/min");
+        expect(wrapper.text()).toContain("1.20 gCO2e/min");
         expect(wrapper.text()).toContain("Social Media");
-        expect(wrapper.text()).toContain("1.15 gCO2e/min");
+        expect(wrapper.text()).toContain("1.21 gCO2e/min");
     });
 
     it("renders the solution section with both products", async () => {
@@ -106,8 +101,10 @@ describe("Landing Page", () => {
     it("displays AI-Companion App features", async () => {
         const wrapper = await mountSuspended(IndexPage);
 
-        expect(wrapper.text()).toContain("Tracks screen time and progress");
-        expect(wrapper.text()).toContain("Provides prompts, reminders, and personalized support");
+        expect(wrapper.text()).toContain("Tracks screen time and limits app usage");
+        expect(wrapper.text()).toContain(
+            "Provides personalized support, reminders, and assistance on planner activities"
+        );
         expect(wrapper.text()).toContain("Google Tools");
     });
 

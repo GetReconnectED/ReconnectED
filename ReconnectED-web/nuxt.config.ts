@@ -7,7 +7,7 @@ export default defineNuxtConfig({
         enabled: true,
         timeline: { enabled: true },
     },
-    modules: ["@nuxt/eslint", "@nuxt/ui", "@nuxt/test-utils/module"],
+    modules: ["@nuxt/eslint", "@nuxt/ui", "@nuxt/test-utils/module", "motion-v/nuxt"],
     css: ["~/assets/css/main.css"],
     vite: { plugins: [tailwindcss()] },
     nitro: {
@@ -15,9 +15,23 @@ export default defineNuxtConfig({
         cloudflare: {
             wrangler: {
                 name: "reconnected",
+                routes: [
+                    {
+                        pattern: "reconnected.tech",
+                        custom_domain: true,
+                    },
+                ],
                 placement: { mode: "smart" },
                 workers_dev: true,
                 preview_urls: true,
+                observability: {
+                    logs: {
+                        enabled: true,
+                        head_sampling_rate: 1,
+                        invocation_logs: true,
+                        persist: true,
+                    },
+                },
             },
             deployConfig: true,
             nodeCompat: true,
