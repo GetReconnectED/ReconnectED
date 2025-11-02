@@ -100,17 +100,17 @@
                             <div>
                                 <UIcon name="i-lucide-monitor" class="size-8 mx-auto mb-2 text-primary" />
                                 <p class="text-xs font-semibold">Video Streaming</p>
-                                <p class="text-xs text-muted">3.45 gCO2e/min</p>
+                                <p class="text-xs text-muted">0.92 gCO2e/min</p>
                             </div>
                             <div>
                                 <UIcon name="i-lucide-globe" class="size-8 mx-auto mb-2 text-primary" />
                                 <p class="text-xs font-semibold">Web Browsing</p>
-                                <p class="text-xs text-muted">4.0 gCO2e/min</p>
+                                <p class="text-xs text-muted">1.20 gCO2e/min</p>
                             </div>
                             <div>
                                 <UIcon name="i-lucide-share-2" class="size-8 mx-auto mb-2 text-primary" />
                                 <p class="text-xs font-semibold">Social Media</p>
-                                <p class="text-xs text-muted">1.15 gCO2e/min</p>
+                                <p class="text-xs text-muted">1.21 gCO2e/min</p>
                             </div>
                         </div>
                     </div>
