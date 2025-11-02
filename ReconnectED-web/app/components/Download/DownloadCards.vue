@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import { motion } from "motion-v";
 
-defineProps<{
-    apkDownloads: {
-        name: string;
-        abi: string;
-        description: string;
-        icon: string;
-        recommended?: boolean;
-        driveUrl: string;
-        sha1: string;
-    }[];
-}>();
+interface ApkDownload {
+    name: string;
+    abi: string;
+    description: string;
+    icon: string;
+    recommended?: boolean;
+    driveUrl: string;
+    sha1: string;
+}
+
+interface Props {
+    apkDownloads: ApkDownload[];
+}
+
+defineProps<Props>();
 
 /**
  * Copy text to clipboard and show toast notification

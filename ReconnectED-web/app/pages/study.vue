@@ -35,7 +35,7 @@ const chartRefs = ref<{ [key: string]: HTMLCanvasElement | null }>({});
  * @param key The key to identify the chart
  * @param el The canvas element
  */
-const setChartRef = (key: string, el: any) => {
+const setChartRef = (key: string, el: HTMLCanvasElement | null) => {
     if (el) chartRefs.value[key] = el;
 };
 
@@ -282,7 +282,7 @@ const initializeCharts = () => {
                             <h3 class="text-xl font-bold">Quality Criteria Scores</h3>
                         </template>
                         <div class="h-96">
-                            <canvas :ref="(el) => setChartRef('isoResults', el)"></canvas>
+                            <canvas :ref="(el) => setChartRef('isoResults', el)" />
                         </div>
                     </UCard>
 
