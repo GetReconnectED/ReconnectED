@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+import { motion } from "motion-v";
+
+const SDGIconHoverEffect = { scale: 1.15 };
+</script>
+
 <template>
     <UCard>
         <template #header>
@@ -19,7 +25,12 @@
             <h4 class="font-semibold mb-3">SDGs Advocated</h4>
             <div class="space-y-3">
                 <div class="flex items-start gap-3">
-                    <img src="/SDG/SDG3_ICON.png" alt="SDG 3" class="size-25 mt-1" />
+                    <motion.img
+                        src="/SDG/SDG3_ICON.png"
+                        alt="SDG 3"
+                        class="size-25 mt-1"
+                        :while-hover="SDGIconHoverEffect"
+                    />
                     <p class="text-sm text-muted">
                         <strong
                             >Promotes mental well-being by reducing screen time and encouraging real-world
@@ -34,10 +45,20 @@
                         planner uses eco-friendly materials and encourages tree planting. This helps lower carbon
                         footprints and supports environmental sustainability.
                     </p>
-                    <img src="/SDG/SDG13_ICON.png" alt="SDG 13" class="size-25 mt-1" />
+                    <motion.img
+                        src="/SDG/SDG13_ICON.png"
+                        alt="SDG 13"
+                        class="size-25 mt-1"
+                        :while-hover="SDGIconHoverEffect"
+                    />
                 </div>
                 <div class="flex items-start gap-3">
-                    <img src="/SDG/SDG11_ICON.png" alt="SDG 12" class="size-25 mt-1" />
+                    <motion.img
+                        src="/SDG/SDG11_ICON.png"
+                        alt="SDG 12"
+                        class="size-25 mt-1"
+                        :while-hover="SDGIconHoverEffect"
+                    />
                     <p class="text-sm text-muted">
                         <strong>Reduces waste with a sustainable, biodegradable eco-planner</strong>. The planner
                         supports responsible consumption of energy. It also promotes sustainable production and reducing
@@ -50,7 +71,12 @@
                         encouraging reduced screen time and using eco-friendly materials, the planner helps combat
                         overconsumption and supports sustainable practices.
                     </p>
-                    <img src="/SDG/SDG12_ICON.png" alt="SDG 13" class="size-25 mt-1" />
+                    <motion.img
+                        src="/SDG/SDG12_ICON.png"
+                        alt="SDG 13"
+                        class="size-25 mt-1"
+                        :while-hover="SDGIconHoverEffect"
+                    />
                 </div>
             </div>
             <p class="text-xs text-muted mt-5">
