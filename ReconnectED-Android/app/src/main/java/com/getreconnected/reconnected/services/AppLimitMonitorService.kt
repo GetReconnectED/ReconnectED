@@ -53,6 +53,8 @@ class AppLimitMonitorService : Service() {
         private const val BLOCK_NOTIFICATION_ID = 1002
         private const val CHECK_INTERVAL_MS = 2000L // Check every 2 seconds
 
+        private var serviceInstance: AppLimitMonitorService? = null
+
         fun start(context: Context) {
             val intent = Intent(context, AppLimitMonitorService::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -66,19 +68,49 @@ class AppLimitMonitorService : Service() {
             val intent = Intent(context, AppLimitMonitorService::class.java)
             context.stopService(intent)
         }
+
+        fun syncNow() {
+            if (serviceInstance == null) {
+                Log.w(TAG, "Cannot sync: service is not running")
+            } else {
+                Log.d(TAG, "Manual sync triggered")
+                serviceInstance?.let { service ->
+                    service.serviceScope.launch {
+                        service.syncCurrentUsageToFirebase()
+                        Log.d(TAG, "Manual sync completed")
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreate() {
         super.onCreate()
+        Log.i(TAG, "onCreate: ═══════════════════════════════════════")
+        Log.i(TAG, "onCreate: AppLimitMonitorService initializing")
+        Log.i(TAG, "onCreate: ═══════════════════════════════════════")
+
+        serviceInstance = this
+        Log.d(TAG, "onCreate: Service instance registered")
+
         database = AppLimitDatabase.getDatabase(applicationContext)
+        Log.d(TAG, "onCreate: Database initialized")
+
         usageStatsManager = getSystemService(USAGE_STATS_SERVICE) as UsageStatsManager
+        Log.d(TAG, "onCreate: UsageStatsManager acquired")
+
         firebaseSyncRepository = FirebaseUsageSyncRepository(database)
+        Log.d(TAG, "onCreate: Firebase sync repository initialized")
 
         createNotificationChannel()
+        Log.d(TAG, "onCreate: Notification channels created")
+
         startForeground(NOTIFICATION_ID, createNotification())
+        Log.i(TAG, "onCreate: Service started in foreground mode")
 
         // Start monitoring
         startMonitoring()
+        Log.i(TAG, "onCreate: ✓ Service initialization complete")
     }
 
     override fun onStartCommand(
@@ -91,7 +123,16 @@ class AppLimitMonitorService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.i(TAG, "onDestroy: ═══════════════════════════════════════")
+        Log.i(TAG, "onDestroy: AppLimitMonitorService shutting down")
+        Log.i(TAG, "onDestroy: ═══════════════════════════════════════")
+
+        serviceInstance = null
+        Log.d(TAG, "onDestroy: Service instance cleared")
+
         serviceScope.coroutineContext[Job]?.cancel()
+        Log.d(TAG, "onDestroy: Coroutine scope cancelled")
+        Log.i(TAG, "onDestroy: ✓ Service shutdown complete")
     }
 
     private fun createNotificationChannel() {
@@ -134,10 +175,18 @@ class AppLimitMonitorService : Service() {
                     .build()
 
     private fun startMonitoring() {
+        Log.i(TAG, "startMonitoring: App limit monitoring service started")
+        Log.d(
+                TAG,
+                "startMonitoring: Check interval: ${CHECK_INTERVAL_MS}ms, Sync interval: 5 minutes"
+        )
+
         serviceScope.launch {
             var lastMidnightCheck = System.currentTimeMillis()
             var lastSyncTime = System.currentTimeMillis()
             val syncIntervalMs = 5 * 60 * 1000L // Sync every 5 minutes
+
+            Log.d(TAG, "startMonitoring: Monitoring loop started")
 
             while (isActive) {
                 try {
@@ -154,18 +203,24 @@ class AppLimitMonitorService : Service() {
                                     .timeInMillis
 
                     if (lastMidnightCheck < todayMidnight && now >= todayMidnight) {
-                        Log.i(TAG, "New day detected! Resetting session usage cache")
+                        Log.i(TAG, "✓ Midnight rollover detected! Resetting session cache")
+                        Log.d(TAG, "startMonitoring: Syncing previous day's data before reset")
                         // Sync yesterday's data before resetting
                         syncCurrentUsageToFirebase()
                         sessionUsageCache.clear()
                         currentForegroundApp = null
                         sessionStartTime = 0L
                         lastMidnightCheck = now
+                        Log.d(TAG, "startMonitoring: Session cache cleared for new day")
                     }
 
                     // Periodic sync every 5 minutes
                     if (now - lastSyncTime >= syncIntervalMs) {
-                        Log.d(TAG, "Periodic sync triggered")
+                        val minutesSinceLastSync = (now - lastSyncTime) / 60000
+                        Log.d(
+                                TAG,
+                                "startMonitoring: Periodic sync triggered (${minutesSinceLastSync} minutes since last sync)"
+                        )
                         syncCurrentUsageToFirebase()
                         lastSyncTime = now
                     }
@@ -454,33 +509,61 @@ class AppLimitMonitorService : Service() {
     }
 
     private suspend fun syncCurrentUsageToFirebase() {
-        try {
-            // Get all apps with limits to sync their usage
-            val limits = database.appLimitDao().getAllLimits().first()
-            val usageData = mutableMapOf<String, Pair<String, Long>>()
+        Log.d(TAG, "syncCurrentUsageToFirebase: Starting Firebase sync process")
 
-            limits.forEach { limit ->
-                val baseUsage = getAppUsageToday(limit.packageName)
-                val cachedSession = sessionUsageCache[limit.packageName] ?: 0L
+        try {
+            // Get ALL installed apps and sync their usage (not just those with limits)
+            Log.v(TAG, "syncCurrentUsageToFirebase: Querying all installed apps from database")
+            val installedApps = database.installedAppDao().getAllInstalledApps().first()
+            Log.d(TAG, "syncCurrentUsageToFirebase: Found ${installedApps.size} installed apps")
+
+            val usageData = mutableMapOf<String, Pair<String, Long>>()
+            var appsWithUsage = 0
+
+            installedApps.forEach { app ->
+                val baseUsage = getAppUsageToday(app.packageName)
+                val cachedSession = sessionUsageCache[app.packageName] ?: 0L
                 val currentSession =
-                        if (currentForegroundApp == limit.packageName && sessionStartTime > 0) {
+                        if (currentForegroundApp == app.packageName && sessionStartTime > 0) {
                             System.currentTimeMillis() - sessionStartTime
                         } else {
                             0L
                         }
 
                 val totalUsage = baseUsage + cachedSession + currentSession
+
+                // Only sync apps that have been used today
                 if (totalUsage > 0) {
-                    usageData[limit.packageName] = Pair(limit.appName, totalUsage)
+                    usageData[app.packageName] = Pair(app.appName, totalUsage)
+                    appsWithUsage++
+                    Log.v(
+                            TAG,
+                            "syncCurrentUsageToFirebase: ${app.appName}: ${totalUsage}ms (base: ${baseUsage}ms, cached: ${cachedSession}ms, current: ${currentSession}ms)"
+                    )
                 }
             }
 
+            Log.d(
+                    TAG,
+                    "syncCurrentUsageToFirebase: $appsWithUsage out of ${installedApps.size} apps have usage > 0"
+            )
+
             if (usageData.isNotEmpty()) {
+                Log.d(TAG, "syncCurrentUsageToFirebase: Sending ${usageData.size} apps to Firebase")
                 firebaseSyncRepository.syncTodayUsage(usageData)
-                Log.d(TAG, "Synced ${usageData.size} apps to Firebase")
+                Log.i(
+                        TAG,
+                        "syncCurrentUsageToFirebase: ✓ Sync completed - ${usageData.size} apps synced"
+                )
+            } else {
+                Log.d(TAG, "syncCurrentUsageToFirebase: No app usage to sync today")
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error syncing usage to Firebase", e)
+            Log.e(
+                    TAG,
+                    "syncCurrentUsageToFirebase: ✗ Error syncing usage to Firebase: ${e.message}",
+                    e
+            )
         }
     }
 }

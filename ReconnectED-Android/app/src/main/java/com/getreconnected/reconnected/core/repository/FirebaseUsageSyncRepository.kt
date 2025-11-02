@@ -27,18 +27,29 @@ class FirebaseUsageSyncRepository(
      * users/{userId}/appUsage/{date}/{packageName}
      */
     suspend fun syncTodayUsage(usageData: Map<String, Pair<String, Long>>) {
+        Log.d(TAG, "syncTodayUsage: Starting sync for ${usageData.size} apps")
+
         val userId = auth.currentUser?.uid
         if (userId == null) {
-            Log.w(TAG, "User not authenticated, skipping sync")
+            Log.w(TAG, "syncTodayUsage: User not authenticated, skipping sync")
             return
         }
+        Log.d(TAG, "syncTodayUsage: Authenticated user found (uid length: ${userId.length})")
 
         val today = getTodayDateString()
+        Log.d(TAG, "syncTodayUsage: Syncing data for date: $today")
+
         val batch = firestore.batch()
+        Log.d(TAG, "syncTodayUsage: Created Firestore batch")
 
         try {
+            var processedCount = 0
             usageData.forEach { (packageName, data) ->
                 val (appName, usageMillis) = data
+                Log.v(
+                        TAG,
+                        "syncTodayUsage: Processing app #${processedCount + 1}: $appName (${usageMillis}ms)"
+                )
 
                 // Save to local database
                 val appUsage =
@@ -50,6 +61,7 @@ class FirebaseUsageSyncRepository(
                                 usageMillis = usageMillis,
                         )
                 database.appUsageDao().insertOrUpdate(appUsage)
+                Log.v(TAG, "syncTodayUsage: Saved to local DB: $appName")
 
                 // Prepare Firestore batch update
                 val docRef =
@@ -71,25 +83,34 @@ class FirebaseUsageSyncRepository(
                         )
 
                 batch.set(docRef, usageMap)
+                Log.v(TAG, "syncTodayUsage: Added to batch: $appName")
+                processedCount++
             }
 
             // Commit the batch
+            Log.d(TAG, "syncTodayUsage: Committing batch with $processedCount apps to Firestore")
             batch.commit().await()
-            Log.d(TAG, "Successfully synced ${usageData.size} app usage records for $today")
+            Log.i(
+                    TAG,
+                    "syncTodayUsage: ✓ Successfully synced ${usageData.size} app usage records for $today"
+            )
         } catch (e: Exception) {
-            Log.e(TAG, "Error syncing usage data to Firestore", e)
+            Log.e(TAG, "syncTodayUsage: ✗ Error syncing usage data to Firestore: ${e.message}", e)
         }
     }
 
     /** Upload a single app's usage for today. */
     suspend fun syncAppUsage(packageName: String, appName: String, usageMillis: Long) {
+        Log.d(TAG, "syncAppUsage: Syncing single app: $appName (${usageMillis}ms)")
+
         val userId = auth.currentUser?.uid
         if (userId == null) {
-            Log.w(TAG, "User not authenticated, skipping sync")
+            Log.w(TAG, "syncAppUsage: User not authenticated, skipping sync")
             return
         }
 
         val today = getTodayDateString()
+        Log.v(TAG, "syncAppUsage: Date: $today")
 
         try {
             // Save to local database
@@ -122,10 +143,11 @@ class FirebaseUsageSyncRepository(
                             "timestamp" to System.currentTimeMillis(),
                     )
 
+            Log.v(TAG, "syncAppUsage: Writing to Firestore...")
             docRef.set(usageMap).await()
-            Log.d(TAG, "Synced usage for $appName: ${usageMillis}ms")
+            Log.i(TAG, "syncAppUsage: ✓ Synced usage for $appName: ${usageMillis}ms")
         } catch (e: Exception) {
-            Log.e(TAG, "Error syncing usage for $packageName", e)
+            Log.e(TAG, "syncAppUsage: ✗ Error syncing usage for $packageName: ${e.message}", e)
         }
     }
 

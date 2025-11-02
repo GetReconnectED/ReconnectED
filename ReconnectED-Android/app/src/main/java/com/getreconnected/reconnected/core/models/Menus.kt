@@ -6,13 +6,14 @@ package com.getreconnected.reconnected.core.models
  * @property title The title of the menu.
  */
 enum class Menus(
-    val title: String,
+        val title: String,
 ) {
     Dashboard("Dashboard"),
     ScreenTimeTracker("Screen Time Tracker"),
     ScreenTimeLimit("Screen Time Limit"),
     Calendar("Calendar"),
     AIAssistant("AI Assistant"),
+    Settings("Settings"),
 }
 
 /**
@@ -22,4 +23,5 @@ enum class Menus(
  * @return The corresponding menu.
  */
 fun getMenuRoute(route: String): Menus =
-    Menus.entries.find { it.name == route } ?: throw IllegalArgumentException("Invalid menu route: $route")
+        Menus.entries.find { it.name == route }
+                ?: throw IllegalArgumentException("Invalid menu route: $route")

@@ -31,6 +31,7 @@ import com.getreconnected.reconnected.ui.menus.Calendar
 import com.getreconnected.reconnected.ui.menus.Dashboard
 import com.getreconnected.reconnected.ui.menus.ScreenTimeLimit
 import com.getreconnected.reconnected.ui.menus.ScreenTimeTracker
+import com.getreconnected.reconnected.ui.menus.Settings
 import com.getreconnected.reconnected.ui.theme.ReconnectEDTheme
 import kotlinx.coroutines.launch
 
@@ -44,8 +45,8 @@ import kotlinx.coroutines.launch
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun MainScreen(
-    viewModel: UIRouteViewModel,
-    modifier: Modifier = Modifier,
+        viewModel: UIRouteViewModel,
+        modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -53,46 +54,52 @@ fun MainScreen(
     val screenTimeTrackerViewModel: ScreenTimeTrackerViewModel = viewModel()
     val screenTimeLimitViewModel: ScreenTimeLimitViewModel = viewModel()
 
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed) // Initialize the drawer state
-    val backStackEntry by navController.currentBackStackEntryAsState() // Get the current back stack entry
+    val drawerState =
+            rememberDrawerState(initialValue = DrawerValue.Closed) // Initialize the drawer state
+    val backStackEntry by
+            navController.currentBackStackEntryAsState() // Get the current back stack entry
     val currentRouteString = backStackEntry?.destination?.route ?: Menus.Dashboard.title
 
     // Get the screen title based on the current route
     val currentMenu = getMenuRoute(currentRouteString)
 
     ModalNavigationDrawer(
-        modifier = Modifier.background(MaterialTheme.colorScheme.primary),
-        drawerState = drawerState,
-        drawerContent = {
-            NavDrawer(navController, viewModel, drawerState, scope, modifier)
-        },
+            modifier = Modifier.background(MaterialTheme.colorScheme.primary),
+            drawerState = drawerState,
+            drawerContent = { NavDrawer(navController, viewModel, drawerState, scope, modifier) },
     ) {
         Scaffold(
-            topBar = {
-                TopBar(
-                    title = currentMenu.title,
-                    context = context,
-                    navController = navController,
-                    onOpenDrawer = {
-                        scope.launch {
-                            drawerState.apply { if (isClosed) open() else close() }
-                        }
-                    },
-                )
-            },
+                topBar = {
+                    TopBar(
+                            title = currentMenu.title,
+                            context = context,
+                            navController = navController,
+                            onOpenDrawer = {
+                                scope.launch {
+                                    drawerState.apply { if (isClosed) open() else close() }
+                                }
+                            },
+                    )
+                },
         ) { padding ->
             NavHost(navController = navController, startDestination = Menus.Dashboard.name) {
-                composable(Menus.Dashboard.name) { Dashboard(navController, viewModel, Modifier.padding(padding)) }
+                composable(Menus.Dashboard.name) {
+                    Dashboard(navController, viewModel, Modifier.padding(padding))
+                }
                 composable(Menus.ScreenTimeTracker.name) {
-                    ScreenTimeTracker(modifier = Modifier.padding(padding), viewModel = screenTimeTrackerViewModel)
+                    ScreenTimeTracker(
+                            modifier = Modifier.padding(padding),
+                            viewModel = screenTimeTrackerViewModel
+                    )
                 }
                 composable(Menus.ScreenTimeLimit.name) {
                     ScreenTimeLimit(viewModel = screenTimeLimitViewModel, Modifier.padding(padding))
                 }
                 composable(
-                    Menus.Calendar.name,
+                        Menus.Calendar.name,
                 ) { Calendar(viewModel = screenTimeTrackerViewModel, Modifier.padding(padding)) }
                 composable(Menus.AIAssistant.name) { AIAssistant(Modifier.padding(padding)) }
+                composable(Menus.Settings.name) { Settings(Modifier.padding(padding)) }
             }
         }
     }
@@ -103,7 +110,5 @@ fun MainScreen(
 @Suppress("ktlint:standard:function-naming")
 fun MainScreenPreview() {
     val viewModel: UIRouteViewModel = viewModel()
-    ReconnectEDTheme {
-        MainScreen(viewModel = viewModel)
-    }
+    ReconnectEDTheme { MainScreen(viewModel = viewModel) }
 }
