@@ -20,7 +20,7 @@ const items = computed<NavigationMenuItem[]>(() => [
         active: route.path.startsWith("/download"),
     },
     {
-        label: "Log In",
+        label: "Dashboard",
         to: "/login",
         active: route.path.startsWith("/login"),
     },
@@ -50,6 +50,9 @@ const items = computed<NavigationMenuItem[]>(() => [
                         aria-label="GitHub"
                     />
                 </UTooltip>
+            </template>
+            <template #body>
+                <UNavigationMenu :items="items" orientation="vertical" class="-mx-2.5" />
             </template>
         </UHeader>
     </motion.div>

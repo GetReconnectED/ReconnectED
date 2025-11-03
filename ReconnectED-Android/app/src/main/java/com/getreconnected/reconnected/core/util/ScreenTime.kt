@@ -1,22 +1,31 @@
-package com.getreconnected.reconnected.legacy.data
+package com.getreconnected.reconnected.core.util
 
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
-import com.getreconnected.reconnected.core.util.hasUsageStatsPermission
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
-fun getDaysActive(context: Context): Long =
-    try {
-        val firstInstallTime = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
-        val currentTime = System.currentTimeMillis()
-        val diff = currentTime - firstInstallTime
-        TimeUnit.MILLISECONDS.toDays(diff) + 1
-    } catch (e: Exception) {
-        1L
-    }
+/**
+ * Calculates the number of days the application has been active since its first installation.
+ *
+ * @param context The application context used to retrieve package information.
+ * @return The number of days the application has been active (installation date inclusive).
+ */
+fun getDaysActive(context: Context): Long {
+    val firstInstallTime = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
+    val currentTime = System.currentTimeMillis()
+    val diff = currentTime - firstInstallTime
+    return TimeUnit.MILLISECONDS.toDays(diff)
+}
 
+/**
+ * Retrieves the total screen time in milliseconds for the current day.
+ *
+ * @param context The context used to access system services like `UsageStatsManager`.
+ * @return The total screen time in milliseconds for the current day. If the app does not
+ *         have the required usage stats permission, it returns 0L.
+ */
 fun getScreenTimeInMillis(context: Context): Long {
     if (!hasUsageStatsPermission(context)) return 0L
 
@@ -60,18 +69,4 @@ fun getScreenTimeInMillis(context: Context): Long {
     }
 
     return totalScreenTime
-}
-
-// Formats the millis into h/m
-fun formatScreenTime(millis: Long): String {
-    if (millis <= 0L) return "0m"
-
-    val hours = TimeUnit.MILLISECONDS.toHours(millis)
-    val minutes = TimeUnit.MILLISECONDS.toMinutes(millis) % 60
-
-    return when {
-        hours > 0 -> "${hours}h ${minutes}m"
-        minutes > 0 -> "${minutes}m"
-        else -> "< 1m"
-    }
 }

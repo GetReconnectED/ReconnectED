@@ -39,10 +39,22 @@ android {
         viewBinding = true
         buildConfig = true
     }
+    splits {
+        abi {
+            // https://developer.android.com/build/configure-apk-splits#kts
+            isEnable = true // enable multiple APKs per ABI
+            reset() // reset included ABIs
+            include("armeabi-v7a", "arm64-v8a", "x86_64")
+            isUniversalApk = true
+        }
+    }
 }
 
 dependencies {
     implementation(libs.firebase.ai)
+    implementation(libs.firebase.firestore)
+    implementation(libs.androidx.datastore)
+    implementation(libs.gson)
     implementation(libs.androidx.compose.foundation)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)

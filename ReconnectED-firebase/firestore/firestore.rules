@@ -2,6 +2,22 @@ rules_version = '2';
 
 service cloud.firestore {
     match /databases/{database}/documents {
+        // Users can only read/write their own data
+        match /users/{userId} {
+            allow read, write, delete: if request.auth != null && request.auth.uid == userId;
+
+            // App usage data - user can read and write their own usage data
+            // Allows listing all documents in the collection for deletion
+            match /appUsage/{date} {
+                allow read, write, delete: if request.auth != null && request.auth.uid == userId;
+
+                match /apps/{appId} {
+                    allow read, write, delete: if request.auth != null && request.auth.uid == userId;
+                }
+            }
+        }
+
+        // Default deny all other access
         match /{document=**} {
             allow read, write: if false;
         }

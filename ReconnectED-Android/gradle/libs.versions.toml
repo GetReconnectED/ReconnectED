@@ -30,6 +30,8 @@ uiTooling = "1.9.3"
 uiToolingPreview = "1.10.0-alpha05"
 vico = "2.2.0"
 firebaseAi = "17.4.0"
+datastore = "1.2.0-beta01"
+gson = "2.13.1"
 foundation = "1.9.4"
 
 [libraries]
@@ -62,6 +64,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 firebase-ui = { group = "com.firebase", name = "firebase-ui", version.ref = "firebaseUi" }
 firebase-ui-auth = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseUiAuth" }
 googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
@@ -70,6 +73,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
 firebase-ai = { group = "com.google.firebase", name = "firebase-ai", version.ref = "firebaseAi" }
+androidx-datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 
 [plugins]

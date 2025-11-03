@@ -20,8 +20,10 @@
         "@nuxt/ui": "4.1.0",
         "chart.js": "^4.5.1",
         "eslint": "^9.38.0",
+        "firebase": "^12.5.0",
         "motion-v": "^1.7.4",
         "nuxt": "^4.2.0",
+        "nuxt-vuefire": "^1.1.0",
         "typescript": "^5.6.3",
         "vue": "^3.5.22",
         "vue-router": "^4.6.3"
@@ -31,6 +33,7 @@
         "@nuxt/test-utils": "^3.20.1",
         "@vitest/coverage-v8": "^4.0.5",
         "@vue/test-utils": "^2.4.6",
+        "firebase-admin": "^13.5.0",
         "happy-dom": "^20.0.10",
         "playwright-core": "^1.56.1",
         "vitest": "^4.0.5",

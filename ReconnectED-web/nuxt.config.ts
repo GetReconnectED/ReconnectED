@@ -10,6 +10,16 @@ export default defineNuxtConfig({
     modules: ["@nuxt/eslint", "@nuxt/ui", "@nuxt/test-utils/module", "motion-v/nuxt"],
     css: ["~/assets/css/main.css"],
     vite: { plugins: [tailwindcss()] },
+    runtimeConfig: {
+        public: {
+            firebaseApiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY,
+            firebaseAuthDomain: process.env.NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+            firebaseProjectId: process.env.NUXT_PUBLIC_FIREBASE_PROJECT_ID,
+            firebaseStorageBucket: process.env.NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+            firebaseMessagingSenderId: process.env.NUXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+            firebaseAppId: process.env.NUXT_PUBLIC_FIREBASE_APP_ID,
+        },
+    },
     nitro: {
         preset: "cloudflare_module",
         cloudflare: {
@@ -22,8 +32,8 @@ export default defineNuxtConfig({
                     },
                 ],
                 placement: { mode: "smart" },
-                workers_dev: true,
-                preview_urls: true,
+                workers_dev: false,
+                preview_urls: false,
                 observability: {
                     logs: {
                         enabled: true,

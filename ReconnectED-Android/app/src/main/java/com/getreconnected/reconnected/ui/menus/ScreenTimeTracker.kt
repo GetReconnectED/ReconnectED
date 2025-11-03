@@ -1,28 +1,32 @@
 package com.getreconnected.reconnected.ui.menus
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.getreconnected.reconnected.core.formatTime
-import com.getreconnected.reconnected.core.models.AppUsageInfo
+import androidx.compose.ui.unit.sp
 import com.getreconnected.reconnected.core.viewModels.ScreenTimeTrackerViewModel
-import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import com.getreconnected.reconnected.ui.composables.elements.AppTrackerContainer
+import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
 /**
  * Composable that displays and track screen time usage.
@@ -42,40 +46,57 @@ fun ScreenTimeTracker(
         viewModel.loadUsageStats()
     }
 
-    LazyColumn(modifier = modifier) {
-        items(appUsageStats) { appUsageInfo ->
-            AppUsageItem(appUsageInfo = appUsageInfo)
-        }
-    }
-}
-
-/**
- * Display an item showing application usage information.
- *
- * @param appUsageInfo An object containing the application's icon, name, and usage time details.
- */
-@Composable
-@Suppress("ktlint:standard:function-naming")
-fun AppUsageItem(appUsageInfo: AppUsageInfo) {
-    Row(
+    Column(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+            modifier
+                .fillMaxSize()
+                .background(
+                    brush =
+                        Brush.verticalGradient(
+                            colors =
+                                listOf(
+                                    Color(0xFFD1FAE5),
+                                    Color(0xFFDBEAFE),
+                                ),
+                        ),
+                ).padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Image(
-            painter = rememberDrawablePainter(drawable = appUsageInfo.appIcon),
-            contentDescription = "${appUsageInfo.appName} icon",
-            modifier = Modifier.size(40.dp),
+        Text(
+            modifier = Modifier.padding(top = 16.dp),
+            text = "Track your application usage",
+            style =
+                TextStyle(
+                    fontFamily = interDisplayFamily,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+                ),
         )
-        Spacer(modifier = Modifier.width(8.dp))
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = appUsageInfo.appName, style = MaterialTheme.typography.bodyMedium)
-            Text(
-                text = formatTime(appUsageInfo.usageTime),
-                style = MaterialTheme.typography.bodySmall,
-            )
+
+        // Display app usage stats in the tracker container
+        if (appUsageStats.isNotEmpty()) {
+            AppTrackerContainer(appList = appUsageStats, weekNumber = 1)
+        } else {
+            // Show placeholder or loading state when no data
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+            ) {
+                Text(
+                    modifier = Modifier.padding(16.dp),
+                    text = "No app usage data available",
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.Gray,
+                        ),
+                )
+            }
         }
     }
 }

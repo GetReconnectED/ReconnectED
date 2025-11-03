@@ -1,4 +1,4 @@
-package com.getreconnected.reconnected.core.models
+package com.getreconnected.reconnected.core.models.entities
 
 import android.graphics.drawable.Drawable
 

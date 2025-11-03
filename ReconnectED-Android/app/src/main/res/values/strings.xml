@@ -10,4 +10,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+    <!-- App Blocking Strings -->
+    <string name="lock_icon">Lock Icon</string>
+    <string name="times_up">Time\'s Up!</string>
+    <string name="go_to_home_screen">Go to Home Screen</string>
 </resources>
