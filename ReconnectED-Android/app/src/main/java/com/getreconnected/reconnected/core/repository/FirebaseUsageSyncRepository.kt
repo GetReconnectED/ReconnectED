@@ -100,6 +100,89 @@ class FirebaseUsageSyncRepository(
         }
     }
 
+    /**
+     * Upload the last 7 days of app usage data to Firestore. This is useful for initial sync to
+     * provide historical context for CO2e calculations.
+     */
+    suspend fun syncLast7DaysUsage(usageDataByDate: Map<String, Map<String, Pair<String, Long>>>) {
+        Log.d(TAG, "syncLast7DaysUsage: Starting sync for ${usageDataByDate.size} days")
+
+        val userId = auth.currentUser?.uid
+        if (userId == null) {
+            Log.w(TAG, "syncLast7DaysUsage: User not authenticated, skipping sync")
+            return
+        }
+
+        try {
+            var totalApps = 0
+            usageDataByDate.forEach { (date, usageData) ->
+                if (usageData.isEmpty()) {
+                    Log.d(TAG, "syncLast7DaysUsage: No data for $date, skipping")
+                    return@forEach
+                }
+
+                Log.d(TAG, "syncLast7DaysUsage: Syncing ${usageData.size} apps for $date")
+
+                // Process in batches of 500 (Firestore batch limit)
+                val appList = usageData.toList()
+                appList.chunked(500).forEach { chunk ->
+                    val batch = firestore.batch()
+
+                    chunk.forEach { (packageName, data) ->
+                        val (appName, usageMillis) = data
+
+                        // Save to local database
+                        val appUsage =
+                                AppUsage(
+                                        id = "${date}_$packageName",
+                                        packageName = packageName,
+                                        appName = appName,
+                                        date = date,
+                                        usageMillis = usageMillis,
+                                )
+                        database.appUsageDao().insertOrUpdate(appUsage)
+
+                        // Prepare Firestore batch update
+                        val docRef =
+                                firestore
+                                        .collection(COLLECTION_USERS)
+                                        .document(userId)
+                                        .collection(COLLECTION_APP_USAGE)
+                                        .document(date)
+                                        .collection("apps")
+                                        .document(packageName)
+
+                        val usageMap =
+                                hashMapOf(
+                                        "packageName" to packageName,
+                                        "appName" to appName,
+                                        "usageMillis" to usageMillis,
+                                        "date" to date,
+                                        "timestamp" to System.currentTimeMillis(),
+                                )
+
+                        batch.set(docRef, usageMap)
+                        totalApps++
+                    }
+
+                    // Commit the batch
+                    batch.commit().await()
+                    Log.d(
+                            TAG,
+                            "syncLast7DaysUsage: Committed batch of ${chunk.size} apps for $date"
+                    )
+                }
+            }
+
+            Log.i(
+                    TAG,
+                    "syncLast7DaysUsage: ✓ Successfully synced $totalApps app usage records for ${usageDataByDate.size} days"
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "syncLast7DaysUsage: ✗ Error syncing historical usage data: ${e.message}", e)
+        }
+    }
+
     /** Upload a single app's usage for today. */
     suspend fun syncAppUsage(packageName: String, appName: String, usageMillis: Long) {
         Log.d(TAG, "syncAppUsage: Syncing single app: $appName (${usageMillis}ms)")
@@ -159,5 +242,28 @@ class FirebaseUsageSyncRepository(
                     timeZone = TimeZone.getTimeZone("UTC")
                 }
         return dateFormat.format(calendar.time)
+    }
+
+    /**
+     * Get date strings for the last N days (including today) in UTC format.
+     * @param days Number of days to retrieve (default 7)
+     * @return List of date strings in "yyyy-MM-dd" format, ordered from oldest to newest
+     */
+    fun getLastNDaysDateStrings(days: Int = 7): List<String> {
+        val dateFormat =
+                SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+                    timeZone = TimeZone.getTimeZone("UTC")
+                }
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        val dates = mutableListOf<String>()
+
+        // Start from (days - 1) days ago to include today
+        for (i in (days - 1) downTo 0) {
+            val date = calendar.clone() as Calendar
+            date.add(Calendar.DAY_OF_YEAR, -i)
+            dates.add(dateFormat.format(date.time))
+        }
+
+        return dates
     }
 }

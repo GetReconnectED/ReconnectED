@@ -108,6 +108,9 @@ class AppLimitMonitorService : Service() {
         startForeground(NOTIFICATION_ID, createNotification())
         Log.i(TAG, "onCreate: Service started in foreground mode")
 
+        // Perform initial 7-day historical sync on first launch
+        performInitialHistoricalSync()
+
         // Start monitoring
         startMonitoring()
         Log.i(TAG, "onCreate: ✓ Service initialization complete")
@@ -564,6 +567,117 @@ class AppLimitMonitorService : Service() {
                     "syncCurrentUsageToFirebase: ✗ Error syncing usage to Firebase: ${e.message}",
                     e
             )
+        }
+    }
+
+    /**
+     * Perform initial historical sync of the last 7 days of app usage data. This is done once to
+     * provide historical context for CO2e calculations.
+     */
+    private fun performInitialHistoricalSync() {
+        val sharedPrefs = getSharedPreferences("app_sync_prefs", Context.MODE_PRIVATE)
+        val hasPerformedInitialSync = sharedPrefs.getBoolean("initial_7day_sync_completed", false)
+
+        if (hasPerformedInitialSync) {
+            Log.d(TAG, "performInitialHistoricalSync: Initial sync already completed, skipping")
+            return
+        }
+
+        Log.i(TAG, "performInitialHistoricalSync: Starting initial 7-day historical sync")
+
+        serviceScope.launch {
+            try {
+                val dates = firebaseSyncRepository.getLastNDaysDateStrings(7)
+                Log.d(TAG, "performInitialHistoricalSync: Syncing data for dates: $dates")
+
+                val usageDataByDate = mutableMapOf<String, Map<String, Pair<String, Long>>>()
+
+                dates.forEach { date ->
+                    Log.d(TAG, "performInitialHistoricalSync: Collecting data for $date")
+
+                    // Parse date to get start/end times
+                    val calendar = Calendar.getInstance()
+                    val dateComponents = date.split("-")
+                    calendar.set(
+                            dateComponents[0].toInt(),
+                            dateComponents[1].toInt() - 1,
+                            dateComponents[2].toInt(),
+                            0,
+                            0,
+                            0
+                    )
+                    calendar.set(Calendar.MILLISECOND, 0)
+                    val startTime = calendar.timeInMillis
+
+                    calendar.add(Calendar.DAY_OF_YEAR, 1)
+                    val endTime = calendar.timeInMillis - 1
+
+                    // Query usage stats for this date
+                    val stats =
+                            usageStatsManager.queryUsageStats(
+                                    UsageStatsManager.INTERVAL_DAILY,
+                                    startTime,
+                                    endTime
+                            )
+
+                    if (stats.isNullOrEmpty()) {
+                        Log.d(TAG, "performInitialHistoricalSync: No usage data for $date")
+                        return@forEach
+                    }
+
+                    val dayUsageData = mutableMapOf<String, Pair<String, Long>>()
+                    val packageManager = packageManager
+
+                    stats.forEach { usageStat ->
+                        val packageName = usageStat.packageName
+                        val totalTimeInForeground = usageStat.totalTimeInForeground
+
+                        if (totalTimeInForeground > 0) {
+                            try {
+                                val appInfo = packageManager.getApplicationInfo(packageName, 0)
+                                val appName = packageManager.getApplicationLabel(appInfo).toString()
+                                dayUsageData[packageName] = Pair(appName, totalTimeInForeground)
+                            } catch (e: Exception) {
+                                Log.v(
+                                        TAG,
+                                        "performInitialHistoricalSync: Could not get app name for $packageName"
+                                )
+                            }
+                        }
+                    }
+
+                    if (dayUsageData.isNotEmpty()) {
+                        usageDataByDate[date] = dayUsageData
+                        Log.d(
+                                TAG,
+                                "performInitialHistoricalSync: Collected ${dayUsageData.size} apps for $date"
+                        )
+                    }
+                }
+
+                if (usageDataByDate.isNotEmpty()) {
+                    Log.i(
+                            TAG,
+                            "performInitialHistoricalSync: Uploading ${usageDataByDate.size} days of data"
+                    )
+                    firebaseSyncRepository.syncLast7DaysUsage(usageDataByDate)
+
+                    // Mark as completed
+                    sharedPrefs.edit().putBoolean("initial_7day_sync_completed", true).apply()
+                    Log.i(
+                            TAG,
+                            "performInitialHistoricalSync: ✓ Initial 7-day sync completed successfully"
+                    )
+                } else {
+                    Log.d(TAG, "performInitialHistoricalSync: No historical data to sync")
+                }
+            } catch (e: Exception) {
+                Log.e(
+                        TAG,
+                        "performInitialHistoricalSync: ✗ Error during initial sync: ${e.message}",
+                        e
+                )
+            }
         }
     }
 }
