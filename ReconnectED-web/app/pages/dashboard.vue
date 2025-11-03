@@ -206,13 +206,18 @@ const signOut = async () => {
                         :key="app.packageName"
                         class="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
-                        <img
-                            :src="`https://ui-avatars.com/api/?name=${encodeURIComponent(
-                                app.appName
-                            )}&background=random&size=48`"
-                            :alt="app.appName"
-                            class="w-12 h-12 rounded-lg"
-                        />
+                        <div
+                            class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden"
+                        >
+                            <img
+                                v-if="!app.iconError"
+                                :src="`/api/app-icon/${app.packageName}`"
+                                :alt="app.appName"
+                                class="w-full h-full object-cover"
+                                @error="app.iconError = true"
+                            />
+                            <UIcon v-else name="i-lucide-smartphone" class="w-6 h-6 text-gray-400 dark:text-gray-500" />
+                        </div>
                         <div class="flex-1 min-w-0">
                             <h3 class="font-semibold text-gray-900 dark:text-white truncate">
                                 {{ app.appName }}

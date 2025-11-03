@@ -63,6 +63,7 @@ const signInWithGoogle = async () => {
         <UCard class="w-full max-w-md">
             <template #header>
                 <div class="text-center space-y-2">
+                    <img src="/logo.png" alt="ReconnectED Logo" class="mx-auto w-64 h-auto" />
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Welcome to ReconnectED</h1>
                     <p class="text-gray-600 dark:text-gray-400">Sign in to view your app usage analytics</p>
                 </div>
@@ -85,10 +86,6 @@ const signInWithGoogle = async () => {
                     </template>
                     Sign in with Google
                 </UButton>
-
-                <div class="text-center text-sm text-gray-600 dark:text-gray-400">
-                    <p>By signing in, you agree to sync your app usage data from your Android device.</p>
-                </div>
             </div>
 
             <template #footer>
