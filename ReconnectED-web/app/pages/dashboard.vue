@@ -133,7 +133,16 @@ const signOut = async () => {
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <UButton color="neutral" variant="soft" @click="signOut"> Sign Out </UButton>
+                        <UButton color="neutral" variant="soft" class="hidden sm:flex" @click="signOut">
+                            Sign Out
+                        </UButton>
+                        <UButton
+                            color="neutral"
+                            variant="soft"
+                            icon="i-lucide-log-out"
+                            class="sm:hidden"
+                            @click="signOut"
+                        />
                     </div>
                 </div>
             </div>
@@ -142,19 +151,27 @@ const signOut = async () => {
         <!-- Main Content -->
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <!-- Date Navigation -->
-            <div class="flex items-center justify-between mb-6">
-                <UButton variant="soft" @click="goToPreviousDay">
+            <div class="flex items-center justify-between mb-6 gap-2">
+                <UButton variant="soft" class="hidden sm:flex" @click="goToPreviousDay">
                     <UIcon name="i-lucide-chevron-left" />
                     Previous Day
                 </UButton>
-                <div class="text-center">
+                <UButton variant="soft" icon="i-lucide-chevron-left" class="sm:hidden" @click="goToPreviousDay" />
+                <div class="text-center flex-1">
                     <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ selectedDateDisplay }}</p>
                     <p class="text-xs text-gray-500 dark:text-gray-500">UTC: {{ selectedDate }}</p>
                 </div>
-                <UButton variant="soft" :disabled="isToday" @click="goToNextDay">
+                <UButton variant="soft" class="hidden sm:flex" :disabled="isToday" @click="goToNextDay">
                     Next Day
                     <UIcon name="i-lucide-chevron-right" />
                 </UButton>
+                <UButton
+                    variant="soft"
+                    icon="i-lucide-chevron-right"
+                    class="sm:hidden"
+                    :disabled="isToday"
+                    @click="goToNextDay"
+                />
             </div>
             <div v-if="!isToday" class="flex justify-center mb-6">
                 <UButton variant="outline" @click="goToToday"> Go to Today </UButton>
