@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.TimeZone
 import kotlinx.coroutines.tasks.await
 
 /** Repository for syncing app usage data to Firebase Firestore. */
@@ -152,8 +153,11 @@ class FirebaseUsageSyncRepository(
     }
 
     private fun getTodayDateString(): String {
-        val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        val dateFormat =
+                SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+                    timeZone = TimeZone.getTimeZone("UTC")
+                }
         return dateFormat.format(calendar.time)
     }
 }
