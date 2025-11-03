@@ -20,7 +20,7 @@ const items = computed<NavigationMenuItem[]>(() => [
         active: route.path.startsWith("/download"),
     },
     {
-        label: "Log In",
+        label: "Dashboard",
         to: "/login",
         active: route.path.startsWith("/login"),
     },
