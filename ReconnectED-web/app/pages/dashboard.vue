@@ -80,6 +80,103 @@ const goToToday = () => {
 
 const appUsageData = useCollection(usageDataRef);
 
+// Query previous day's data for comparison
+const previousDate = computed(() => {
+    const date = new Date(selectedDate.value + "T00:00:00Z");
+    date.setUTCDate(date.getUTCDate() - 1);
+    return date.toISOString().split("T")[0];
+});
+
+const previousDayDataRef = computed(() => {
+    if (!user.value?.uid || !db) {
+        return null;
+    }
+
+    const path = `users/${user.value.uid}/appUsage/${previousDate.value}/apps`;
+    return query(collection(db, path), orderBy("usageMillis", "desc"), limit(50));
+});
+
+const previousDayData = useCollection(previousDayDataRef);
+
+// App category CO2e rates (gCO2e per minute)
+const CO2_RATES = {
+    videoStreaming: 0.92,
+    webBrowsing: 1.2,
+    socialMedia: 1.21,
+    other: 0.5, // Default for uncategorized apps
+} as const;
+
+// Categorize apps by package name patterns
+const getAppCategory = (packageName: string): keyof typeof CO2_RATES => {
+    const pkg = packageName.toLowerCase();
+
+    // Video Streaming
+    if (
+        pkg.includes("youtube") ||
+        pkg.includes("netflix") ||
+        pkg.includes("primevideo") ||
+        pkg.includes("hbo") ||
+        pkg.includes("disney") ||
+        pkg.includes("hotstar") ||
+        pkg.includes("vimeo") ||
+        pkg.includes("twitch") ||
+        pkg.includes("peacock") ||
+        pkg.includes("paramount") ||
+        pkg.includes("hulu") ||
+        pkg.includes("crunchyroll")
+    ) {
+        return "videoStreaming";
+    }
+
+    // Social Media
+    if (
+        pkg.includes("facebook") ||
+        pkg.includes("instagram") ||
+        pkg.includes("twitter") ||
+        pkg.includes("tiktok") ||
+        pkg.includes("snapchat") ||
+        pkg.includes("whatsapp") ||
+        pkg.includes("telegram") ||
+        pkg.includes("discord") ||
+        pkg.includes("reddit") ||
+        pkg.includes("linkedin") ||
+        pkg.includes("pinterest") ||
+        pkg.includes("messenger") ||
+        pkg.includes("wechat") ||
+        pkg.includes("line") ||
+        pkg.includes("viber")
+    ) {
+        return "socialMedia";
+    }
+
+    // Web Browsing
+    if (
+        pkg.includes("chrome") ||
+        pkg.includes("firefox") ||
+        pkg.includes("safari") ||
+        pkg.includes("edge") ||
+        pkg.includes("browser") ||
+        pkg.includes("opera") ||
+        pkg.includes("brave") ||
+        (pkg.includes("samsung") && pkg.includes("internet"))
+    ) {
+        return "webBrowsing";
+    }
+
+    return "other";
+};
+
+// Get category display name
+const getCategoryName = (category: keyof typeof CO2_RATES): string => {
+    const names = {
+        videoStreaming: "Video Streaming",
+        webBrowsing: "Web Browsing",
+        socialMedia: "Social Media",
+        other: "Other",
+    };
+    return names[category];
+};
+
 // Calculate total usage
 const totalUsage = computed(() => {
     if (!appUsageData.value) return 0;
@@ -88,6 +185,55 @@ const totalUsage = computed(() => {
         0
     );
 });
+
+// Calculate previous day's total usage
+const previousDayUsage = computed(() => {
+    if (!previousDayData.value) return 0;
+    return previousDayData.value.reduce(
+        (sum: number, app: Record<string, unknown>) => sum + (Number(app.usageMillis) || 0),
+        0
+    );
+});
+
+// Calculate total CO2e emissions (in grams)
+const totalCO2e = computed(() => {
+    if (!appUsageData.value) return 0;
+    return appUsageData.value.reduce((sum: number, app: Record<string, unknown>) => {
+        const usageMinutes = Number(app.usageMillis) / (1000 * 60);
+        const category = getAppCategory(String(app.packageName));
+        const co2Rate = CO2_RATES[category];
+        return sum + usageMinutes * co2Rate;
+    }, 0);
+});
+
+// Calculate previous day's CO2e emissions
+const previousDayCO2e = computed(() => {
+    if (!previousDayData.value) return 0;
+    return previousDayData.value.reduce((sum: number, app: Record<string, unknown>) => {
+        const usageMinutes = Number(app.usageMillis) / (1000 * 60);
+        const category = getAppCategory(String(app.packageName));
+        const co2Rate = CO2_RATES[category];
+        return sum + usageMinutes * co2Rate;
+    }, 0);
+});
+
+// Calculate CO2e savings (negative means increase)
+const co2eSavings = computed(() => {
+    return previousDayCO2e.value - totalCO2e.value;
+});
+
+// Calculate usage time difference
+const usageTimeDiff = computed(() => {
+    return previousDayUsage.value - totalUsage.value;
+});
+
+// Calculate CO2e for a specific app
+const getAppCO2e = (app: Record<string, unknown>): number => {
+    const usageMinutes = Number(app.usageMillis) / (1000 * 60);
+    const category = getAppCategory(String(app.packageName));
+    const co2Rate = CO2_RATES[category];
+    return usageMinutes * co2Rate;
+};
 
 // Format milliseconds to readable time
 const formatTime = (ms: number) => {
@@ -178,14 +324,36 @@ const signOut = async () => {
             </div>
 
             <!-- Summary Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <UCard>
                     <div class="space-y-2">
                         <p class="text-sm text-gray-600 dark:text-gray-400">Total Screen Time</p>
                         <p class="text-3xl font-bold text-gray-900 dark:text-white">
                             {{ formatTime(totalUsage) }}
                         </p>
-                        <p class="text-xs text-gray-500 dark:text-gray-500">{{ selectedDateDisplay }}</p>
+                        <div v-if="previousDayUsage > 0" class="flex items-center gap-1 text-xs">
+                            <UIcon
+                                v-if="usageTimeDiff > 0"
+                                name="i-lucide-trending-down"
+                                class="text-green-600 dark:text-green-400"
+                            />
+                            <UIcon
+                                v-else-if="usageTimeDiff < 0"
+                                name="i-lucide-trending-up"
+                                class="text-red-600 dark:text-red-400"
+                            />
+                            <UIcon v-else name="i-lucide-minus" class="text-gray-500 dark:text-gray-500" />
+                            <span
+                                :class="{
+                                    'text-green-600 dark:text-green-400': usageTimeDiff > 0,
+                                    'text-red-600 dark:text-red-400': usageTimeDiff < 0,
+                                    'text-gray-500 dark:text-gray-500': usageTimeDiff === 0,
+                                }"
+                            >
+                                {{ formatTime(Math.abs(usageTimeDiff)) }}
+                            </span>
+                        </div>
+                        <p v-else class="text-xs text-gray-500 dark:text-gray-500">{{ selectedDateDisplay }}</p>
                     </div>
                 </UCard>
 
@@ -207,6 +375,36 @@ const signOut = async () => {
                         <p class="text-xs text-gray-500 dark:text-gray-500">
                             {{ appUsageData?.[0] ? formatTime(appUsageData[0].usageMillis) : "" }}
                         </p>
+                    </div>
+                </UCard>
+
+                <UCard>
+                    <div class="space-y-2">
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Carbon Footprint</p>
+                        <p class="text-3xl font-bold text-green-600 dark:text-green-400">{{ totalCO2e.toFixed(1) }}g</p>
+                        <div v-if="previousDayCO2e > 0" class="flex items-center gap-1 text-xs">
+                            <UIcon
+                                v-if="co2eSavings > 0"
+                                name="i-lucide-trending-down"
+                                class="text-green-600 dark:text-green-400"
+                            />
+                            <UIcon
+                                v-else-if="co2eSavings < 0"
+                                name="i-lucide-trending-up"
+                                class="text-red-600 dark:text-red-400"
+                            />
+                            <UIcon v-else name="i-lucide-minus" class="text-gray-500 dark:text-gray-500" />
+                            <span
+                                :class="{
+                                    'text-green-600 dark:text-green-400': co2eSavings > 0,
+                                    'text-red-600 dark:text-red-400': co2eSavings < 0,
+                                    'text-gray-500 dark:text-gray-500': co2eSavings === 0,
+                                }"
+                            >
+                                {{ Math.abs(co2eSavings).toFixed(1) }}g
+                            </span>
+                        </div>
+                        <p v-else class="text-xs text-gray-500 dark:text-gray-500">CO₂e emissions today</p>
                     </div>
                 </UCard>
             </div>
@@ -240,15 +438,18 @@ const signOut = async () => {
                                 {{ app.appName }}
                             </h3>
                             <p class="text-sm text-gray-600 dark:text-gray-400 truncate">
-                                {{ app.packageName }}
+                                {{ getCategoryName(getAppCategory(app.packageName)) }}
                             </p>
                         </div>
                         <div class="text-right space-y-1">
                             <p class="text-lg font-bold text-gray-900 dark:text-white">
                                 {{ formatTime(app.usageMillis) }}
                             </p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                {{ getUsagePercentage(app.usageMillis) }}%
+                            <p class="text-xs text-green-600 dark:text-green-400">
+                                {{ getAppCO2e(app).toFixed(1) }}g CO₂e
+                            </p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">
+                                {{ getUsagePercentage(app.usageMillis) }}% of time
                             </p>
                         </div>
                     </div>
