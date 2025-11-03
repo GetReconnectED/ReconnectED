@@ -32,8 +32,8 @@ export default defineNuxtConfig({
                     },
                 ],
                 placement: { mode: "smart" },
-                workers_dev: true,
-                preview_urls: true,
+                workers_dev: false,
+                preview_urls: false,
                 observability: {
                     logs: {
                         enabled: true,
