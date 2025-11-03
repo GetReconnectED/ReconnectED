@@ -24,10 +24,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.getreconnected.reconnected.core.models.entities.AppUsageInfo
 import com.getreconnected.reconnected.core.viewModels.ScreenTimeTrackerViewModel
 import com.getreconnected.reconnected.ui.composables.elements.AppTrackerContainer
-import com.getreconnected.reconnected.ui.composables.elements.AppUsageItem
 import com.getreconnected.reconnected.ui.theme.interDisplayFamily
 
 /**
@@ -75,37 +73,30 @@ fun ScreenTimeTracker(
                     color = Color.Black,
                 ),
         )
-        AppWeekSummary()
-        AppWeekSummary()
-        AppWeekSummary()
-    }
-}
 
-@Composable
-fun AppWeekSummary(){
-    Column {
-        Card(
-            modifier =
-                Modifier.Companion
-                    .fillMaxWidth(),
-            // Allow card to take remaining space
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.Companion.White),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-
+        // Display app usage stats in the tracker container
+        if (appUsageStats.isNotEmpty()) {
+            AppTrackerContainer(appList = appUsageStats, weekNumber = 1)
+        } else {
+            // Show placeholder or loading state when no data
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             ) {
-            Text(
-                modifier = Modifier.Companion.padding(8.dp),
-                text = "Week 1 - 40h 32m",
-                style =
-                    TextStyle(
-                        fontFamily = interDisplayFamily,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Companion.Bold,
-                        color = Color.Companion.Black,
-                    ),
-            )
-
+                Text(
+                    modifier = Modifier.padding(16.dp),
+                    text = "No app usage data available",
+                    style =
+                        TextStyle(
+                            fontFamily = interDisplayFamily,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.Gray,
+                        ),
+                )
+            }
         }
     }
 }
