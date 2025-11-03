@@ -409,6 +409,28 @@ const signOut = async () => {
                 </UCard>
             </div>
 
+            <!-- Environmental Impact Comparison -->
+            <div
+                v-if="totalCO2e > 0"
+                class="mb-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
+            >
+                <div class="flex items-start gap-3">
+                    <UIcon name="i-lucide-leaf" class="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5 shrink-0" />
+                    <div class="flex-1">
+                        <p class="text-sm text-gray-900 dark:text-white font-medium mb-1">Environmental Impact</p>
+                        <p class="text-sm text-gray-700 dark:text-gray-300">
+                            Your <span class="font-semibold">{{ totalCO2e.toFixed(1) }}g CO₂e</span> from app usage
+                            {{ isToday ? "today" : "on " + selectedDateDisplay }} is equivalent to driving
+                            <span class="font-semibold">{{ ((totalCO2e / 400) * 1.60934).toFixed(2) }} km</span> in a
+                            typical passenger vehicle.
+                            <span class="text-xs text-gray-600 dark:text-gray-400 block mt-1">
+                                (Based on average vehicle emissions of ~400g CO₂ per mile or ~248g CO₂ per km)
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <!-- App Usage List -->
             <UCard>
                 <template #header>
