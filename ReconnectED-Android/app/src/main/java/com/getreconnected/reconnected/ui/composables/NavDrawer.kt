@@ -3,6 +3,7 @@ package com.getreconnected.reconnected.ui.composables
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,13 +19,17 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
@@ -81,25 +86,26 @@ import kotlinx.coroutines.launch
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun NavDrawer(
-        navController: NavController,
-        viewModel: UIRouteViewModel,
-        drawerState: DrawerState,
-        scope: CoroutineScope,
-        modifier: Modifier = Modifier,
+    navController: NavController,
+    viewModel: UIRouteViewModel,
+    drawerState: DrawerState,
+    scope: CoroutineScope,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val drawerItemShape = RectangleShape
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStack?.destination?.route
     val sidebarButtonText =
-            TextStyle(
-                    fontFamily = interDisplayFamily,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimary,
-            )
+        TextStyle(
+            fontFamily = interDisplayFamily,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onPrimary,
+        )
     val selectedGreen = LocalReconnectEDColors.current.selectedGreen
     var showLogoutDialog by remember { mutableStateOf(false) }
+    var showMoreOptionsMenu by remember { mutableStateOf(false) }
 
     fun navigateAndClose(route: String) {
         navController.navigate(route) {
@@ -111,219 +117,263 @@ fun NavDrawer(
     }
 
     ModalDrawerSheet(
-            modifier = Modifier.fillMaxHeight(),
-            drawerContainerColor = MaterialTheme.colorScheme.primary, // Sidebar background green
+        modifier = Modifier.fillMaxHeight(),
+        drawerContainerColor = MaterialTheme.colorScheme.primary, // Sidebar background green
     ) {
         Column {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
                 Image(
-                        painter = painterResource(id = R.drawable.recologo_ca),
-                        contentDescription = "Companion App Logo",
-                        modifier = Modifier.width(237.dp).height(232.dp),
-                        contentScale = ContentScale.Fit,
-                        alignment = Alignment.Center,
+                    painter = painterResource(id = R.drawable.recologo_ca),
+                    contentDescription = "Companion App Logo",
+                    modifier = Modifier.width(237.dp).height(232.dp),
+                    contentScale = ContentScale.Fit,
+                    alignment = Alignment.Center,
                 )
             }
 
             NavigationDrawerItem(
-                    icon = {
-                        Icon(
-                                painter = painterResource(R.drawable.dashboard_icon),
-                                contentDescription = "Dashboard",
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    },
-                    label = { Text("Dashboard", style = sidebarButtonText) },
-                    selected = currentDestination == Menus.Dashboard.name,
-                    onClick = { navigateAndClose(Menus.Dashboard.name) },
-                    shape = drawerItemShape,
-                    colors =
-                            NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = selectedGreen,
-                                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedContainerColor = Color.Transparent,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                            ),
+                icon = {
+                    Icon(
+                        painter = painterResource(R.drawable.dashboard_icon),
+                        contentDescription = "Dashboard",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                    )
+                },
+                label = { Text("Dashboard", style = sidebarButtonText) },
+                selected = currentDestination == Menus.Dashboard.name,
+                onClick = { navigateAndClose(Menus.Dashboard.name) },
+                shape = drawerItemShape,
+                colors =
+                    NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = selectedGreen,
+                        selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                        selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                        unselectedContainerColor = Color.Transparent,
+                        unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                        unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
             )
 
             NavigationDrawerItem(
-                    icon = {
-                        Icon(
-                                painter = painterResource(R.drawable.screen_time_tracker_icon),
-                                contentDescription = "Screen Time Tracker",
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    },
-                    label = { Text("Screen Time Tracker", style = sidebarButtonText) },
-                    selected = currentDestination == Menus.ScreenTimeTracker.name,
-                    onClick = { navigateAndClose(Menus.ScreenTimeTracker.name) },
-                    shape = drawerItemShape,
-                    colors =
-                            NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = selectedGreen,
-                                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedContainerColor = Color.Transparent,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                            ),
+                icon = {
+                    Icon(
+                        painter = painterResource(R.drawable.screen_time_tracker_icon),
+                        contentDescription = "Screen Time Tracker",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                    )
+                },
+                label = { Text("Screen Time Tracker", style = sidebarButtonText) },
+                selected = currentDestination == Menus.ScreenTimeTracker.name,
+                onClick = { navigateAndClose(Menus.ScreenTimeTracker.name) },
+                shape = drawerItemShape,
+                colors =
+                    NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = selectedGreen,
+                        selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                        selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                        unselectedContainerColor = Color.Transparent,
+                        unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                        unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
             )
 
             NavigationDrawerItem(
-                    icon = {
-                        Icon(
-                                painter = painterResource(R.drawable.screen_time_limit_icon),
-                                contentDescription = "Screen Time Limit",
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    },
-                    label = { Text("Screen Time Limit", style = sidebarButtonText) },
-                    selected = currentDestination == Menus.ScreenTimeLimit.name,
-                    onClick = { navigateAndClose(Menus.ScreenTimeLimit.name) },
-                    shape = drawerItemShape,
-                    colors =
-                            NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = selectedGreen,
-                                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedContainerColor = Color.Transparent,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                            ),
+                icon = {
+                    Icon(
+                        painter = painterResource(R.drawable.screen_time_limit_icon),
+                        contentDescription = "Screen Time Limit",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                    )
+                },
+                label = { Text("Screen Time Limit", style = sidebarButtonText) },
+                selected = currentDestination == Menus.ScreenTimeLimit.name,
+                onClick = { navigateAndClose(Menus.ScreenTimeLimit.name) },
+                shape = drawerItemShape,
+                colors =
+                    NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = selectedGreen,
+                        selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                        selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                        unselectedContainerColor = Color.Transparent,
+                        unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                        unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
             )
 
             NavigationDrawerItem(
-                    icon = {
-                        Icon(
-                                painter = painterResource(R.drawable.calendar_icon),
-                                contentDescription = "Calendar",
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    },
-                    label = { Text("Calendar", style = sidebarButtonText) },
-                    selected = currentDestination == Menus.Calendar.name,
-                    onClick = { navigateAndClose(Menus.Calendar.name) },
-                    shape = drawerItemShape,
-                    colors =
-                            NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = selectedGreen,
-                                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedContainerColor = Color.Transparent,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                            ),
+                icon = {
+                    Icon(
+                        painter = painterResource(R.drawable.calendar_icon),
+                        contentDescription = "Calendar",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                    )
+                },
+                label = { Text("Calendar", style = sidebarButtonText) },
+                selected = currentDestination == Menus.Calendar.name,
+                onClick = { navigateAndClose(Menus.Calendar.name) },
+                shape = drawerItemShape,
+                colors =
+                    NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = selectedGreen,
+                        selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                        selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                        unselectedContainerColor = Color.Transparent,
+                        unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                        unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
             )
 
             NavigationDrawerItem(
-                    icon = {
-                        Icon(
-                                painter = painterResource(R.drawable.ai_assistant_icon),
-                                contentDescription = "AI Assistant",
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    },
-                    label = { Text("AI Assistant", style = sidebarButtonText) },
-                    selected = currentDestination == Menus.AIAssistant.name,
-                    onClick = { navigateAndClose(Menus.AIAssistant.name) },
-                    shape = drawerItemShape,
-                    colors =
-                            NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = selectedGreen,
-                                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedContainerColor = Color.Transparent,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                            ),
-            )
-
-            NavigationDrawerItem(
-                    icon = {
-                        Icon(
-                                imageVector = Icons.Default.Settings,
-                                contentDescription = "Settings",
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    },
-                    label = { Text("Settings", style = sidebarButtonText) },
-                    selected = currentDestination == Menus.Settings.name,
-                    onClick = { navigateAndClose(Menus.Settings.name) },
-                    shape = drawerItemShape,
-                    colors =
-                            NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = selectedGreen,
-                                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedContainerColor = Color.Transparent,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                            ),
+                icon = {
+                    Icon(
+                        painter = painterResource(R.drawable.ai_assistant_icon),
+                        contentDescription = "AI Assistant",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                    )
+                },
+                label = { Text("AI Assistant", style = sidebarButtonText) },
+                selected = currentDestination == Menus.AIAssistant.name,
+                onClick = { navigateAndClose(Menus.AIAssistant.name) },
+                shape = drawerItemShape,
+                colors =
+                    NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = selectedGreen,
+                        selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                        selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                        unselectedContainerColor = Color.Transparent,
+                        unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                        unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
             )
 
             Spacer(modifier = Modifier.weight(1f))
-            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
+
+            // Profile box and more options button
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 ElevatedCard(
-                        modifier = Modifier.width(302.dp).height(84.dp),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                        colors =
-                                CardDefaults.cardColors(
-                                        containerColor = selectedGreen
-                                ), // Profile box
+                    modifier = Modifier.weight(1f).height(84.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    colors =
+                        CardDefaults.cardColors(
+                            containerColor = selectedGreen,
+                        ),
+                    // Profile box
                 ) {
                     Row(
-                            modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         UserManager.user?.avatar?.let { avatarBitmap ->
                             Image(
-                                    painter = BitmapPainter(avatarBitmap.asImageBitmap()),
-                                    contentDescription = "Profile",
-                                    modifier = Modifier.size(48.dp).clip(CircleShape),
-                                    contentScale = ContentScale.Crop,
+                                painter = BitmapPainter(avatarBitmap.asImageBitmap()),
+                                contentDescription = "Profile",
+                                modifier = Modifier.size(48.dp).clip(CircleShape),
+                                contentScale = ContentScale.Crop,
                             )
-                        }
-                                ?: Icon(
-                                        imageVector = Icons.Default.AccountCircle,
-                                        contentDescription = "Profile",
-                                        modifier = Modifier.size(48.dp),
-                                        tint = MaterialTheme.colorScheme.onPrimary,
-                                )
+                        } ?: Icon(
+                            imageVector = Icons.Default.AccountCircle,
+                            contentDescription = "Profile",
+                            modifier = Modifier.size(48.dp),
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                        )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                                text = viewModel.activeUser.value,
-                                style = sidebarButtonText.copy(fontSize = 20.sp),
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                modifier = Modifier.weight(1f),
+                            text = viewModel.activeUser.value,
+                            style = sidebarButtonText.copy(fontSize = 20.sp),
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
+                }
+
+                // More options button
+                Box {
+                    ElevatedCard(
+                        modifier = Modifier.size(84.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        colors =
+                            CardDefaults.cardColors(
+                                containerColor = selectedGreen,
+                            ),
+                    ) {
+                        IconButton(
+                            onClick = { showMoreOptionsMenu = true },
+                            modifier = Modifier.fillMaxSize(),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = "More Options",
+                                tint = MaterialTheme.colorScheme.onPrimary,
+                                modifier = Modifier.size(32.dp),
+                            )
+                        }
+                    }
+
+                    // Dropdown menu
+                    DropdownMenu(
+                        expanded = showMoreOptionsMenu,
+                        onDismissRequest = { showMoreOptionsMenu = false },
+                    ) {
+                        DropdownMenuItem(
+                            text = {
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Settings,
+                                        contentDescription = "Settings",
+                                    )
+                                    Text(
+                                        text = "Settings",
+                                        style =
+                                            TextStyle(
+                                                fontFamily = interDisplayFamily,
+                                                fontSize = 18.sp,
+                                                fontWeight = FontWeight.Medium,
+                                            ),
+                                    )
+                                }
+                            },
+                            onClick = {
+                                showMoreOptionsMenu = false
+                                navigateAndClose(Menus.Settings.name)
+                            },
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                                        contentDescription = "Logout",
+                                    )
+                                    Text(
+                                        text = "Logout",
+                                        style =
+                                            TextStyle(
+                                                fontFamily = interDisplayFamily,
+                                                fontSize = 18.sp,
+                                                fontWeight = FontWeight.Medium,
+                                            ),
+                                    )
+                                }
+                            },
+                            onClick = {
+                                showMoreOptionsMenu = false
+                                showLogoutDialog = true
+                            },
                         )
                     }
                 }
             }
 
-            NavigationDrawerItem(
-                    icon = {
-                        Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                                contentDescription = "Logout",
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    },
-                    label = { Text("Logout", style = sidebarButtonText) },
-                    selected = false,
-                    onClick = { showLogoutDialog = true },
-                    shape = drawerItemShape,
-                    colors =
-                            NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = selectedGreen,
-                                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedContainerColor = Color.Transparent,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                            ),
-            )
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
@@ -331,39 +381,39 @@ fun NavDrawer(
     // Logout confirmation dialog
     if (showLogoutDialog) {
         AlertDialog(
-                onDismissRequest = { showLogoutDialog = false },
-                title = { Text("Logout") },
-                text = { Text("Are you sure you want to logout?") },
-                confirmButton = {
-                    Button(
-                            onClick = {
-                                showLogoutDialog = false
-                                scope.launch { drawerState.close() }
-                                Toast.makeText(
-                                                context,
-                                                "You are now logged out.",
-                                                Toast.LENGTH_LONG,
-                                        )
-                                        .show()
-                                UserManager.logout()
-                                // TODO: Navigate to login screen
-                                (context as MainActivity).finish()
-                            }
-                    ) {
-                        Text(
-                                style = TextStyle(fontFamily = interDisplayFamily),
-                                text = "Logout",
-                        )
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { showLogoutDialog = false }) {
-                        Text(
-                                style = TextStyle(fontFamily = interDisplayFamily),
-                                text = "Cancel",
-                        )
-                    }
-                },
+            onDismissRequest = { showLogoutDialog = false },
+            title = { Text("Logout") },
+            text = { Text("Are you sure you want to logout?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showLogoutDialog = false
+                        scope.launch { drawerState.close() }
+                        Toast
+                            .makeText(
+                                context,
+                                "You are now logged out.",
+                                Toast.LENGTH_LONG,
+                            ).show()
+                        UserManager.logout()
+                        // TODO: Navigate to login screen
+                        (context as MainActivity).finish()
+                    },
+                ) {
+                    Text(
+                        style = TextStyle(fontFamily = interDisplayFamily),
+                        text = "Logout",
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showLogoutDialog = false }) {
+                    Text(
+                        style = TextStyle(fontFamily = interDisplayFamily),
+                        text = "Cancel",
+                    )
+                }
+            },
         )
     }
 }
@@ -375,8 +425,7 @@ fun NavDrawerContentPreview() {
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
     val viewModel: UIRouteViewModel = viewModel()
-    val drawerState =
-            rememberDrawerState(initialValue = androidx.compose.material3.DrawerValue.Closed)
+    val drawerState = rememberDrawerState(initialValue = androidx.compose.material3.DrawerValue.Closed)
 
     ReconnectEDTheme { NavDrawer(navController, viewModel, drawerState, scope) }
 }
