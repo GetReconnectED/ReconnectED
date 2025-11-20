@@ -25,7 +25,7 @@ const apkDownloads = ref<ApkDownload[]>([
         icon: "i-lucide-smartphone",
         recommended: true,
         driveUrl: "https://drive.google.com/file/d/1QADy5mvc_4pWhCkLK9ywzzL7EDuEW7-M/view?usp=sharing",
-        sha1: "CBBCC3259FF91C96741BEAE860E183E7814C56E2",
+        sha1: "2287B7631F0E0938F15F18EAED3140D6DEC08034",
     },
     {
         name: "ARMv7a",
@@ -33,7 +33,7 @@ const apkDownloads = ref<ApkDownload[]>([
         description: "For 32-bit ARM devices (older Android phones and tablets).",
         icon: "i-lucide-tablet",
         driveUrl: "https://drive.google.com/file/d/1FFQKkCDx_i7vFpdUD2aZ8e6eeQFxHSDs/view?usp=sharing",
-        sha1: "2CB5939D9D270F3E0B0F7653C64E42EB4D501074",
+        sha1: "40AC4D495E95B91243D3F40A9BDC9F12F8287E88",
     },
     {
         name: "Universal",
@@ -41,7 +41,7 @@ const apkDownloads = ref<ApkDownload[]>([
         description: "Works on all devices. Larger file size but guaranteed compatibility.",
         icon: "i-lucide-package",
         driveUrl: "https://drive.google.com/file/d/15ybKIt0Vy4uzcOuce4gzjIeOYDbcjzBV/view?usp=sharing",
-        sha1: "5D3C1209CF114F1A81FF4368A9D5B19833E07DA1",
+        sha1: "2E0E5DA2848686388A861416942A3637CB1D98D0",
     },
     {
         name: "x86_64",
@@ -49,7 +49,7 @@ const apkDownloads = ref<ApkDownload[]>([
         description: "For Intel/AMD 64-bit processors (emulators and some tablets).",
         icon: "i-lucide-cpu",
         driveUrl: "https://drive.google.com/file/d/1mJ97NHD-XV1Cm02x8DvrO01znkBMreaV/view?usp=sharing",
-        sha1: "0124013E6533D8483D734520B72F11351EDF254D",
+        sha1: "05A39AE8F9715B163A693FF0EBCBAB4416EB3A97",
     },
 ]);
 </script>
