@@ -20,7 +20,7 @@
         "@nuxt/ui": "4.1.0",
         "chart.js": "^4.5.1",
         "eslint": "^9.39.1",
-        "firebase": "^12.5.0",
+        "firebase": "^12.6.0",
         "motion-v": "^1.7.4",
         "nuxt": "^4.2.1",
         "nuxt-vuefire": "^1.1.0",
