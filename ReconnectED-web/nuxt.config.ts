@@ -27,7 +27,7 @@ export default defineNuxtConfig({
                 name: "reconnected",
                 routes: [
                     {
-                        pattern: "reconnected.tech",
+                        pattern: "reconnected.cheeseless.party",
                         custom_domain: true,
                     },
                 ],
